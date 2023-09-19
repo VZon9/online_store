@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-09-19T09:26:26.583Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="Hoj3cgtlmhiy-iAkABIz" version="21.7.5" type="github">
+<mxfile host="app.diagrams.net" modified="2023-09-19T09:28:55.418Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="8AXtNJbru8d4fnERXMOz" version="21.7.5" type="github">
   <diagram name="Page-1" id="03018318-947c-dd8e-b7a3-06fadd420f32">
     <mxGraphModel dx="2074" dy="1118" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="#ffffff" math="0" shadow="0">
       <root>
@@ -199,7 +199,7 @@
         <mxCell id="xe6w3f1EAQAV8qn113Va-68" value="" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.browserWindow;rSize=0;strokeColor2=#008cff;strokeColor3=#c4c4c4;mainText=,;recursiveResize=0;" vertex="1" parent="1">
           <mxGeometry x="10" y="1640" width="1010" height="760" as="geometry" />
         </mxCell>
-        <mxCell id="xe6w3f1EAQAV8qn113Va-69" value="Main" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;fontSize=17;fontColor=#666666;align=left;whiteSpace=wrap;" vertex="1" parent="xe6w3f1EAQAV8qn113Va-68">
+        <mxCell id="xe6w3f1EAQAV8qn113Va-69" value="Sneakers" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;fontSize=17;fontColor=#666666;align=left;whiteSpace=wrap;" vertex="1" parent="xe6w3f1EAQAV8qn113Va-68">
           <mxGeometry x="60" y="12" width="110" height="26" as="geometry" />
         </mxCell>
         <mxCell id="xe6w3f1EAQAV8qn113Va-70" value="https://www.bubnashop.ru/sneakers" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;rSize=0;fontSize=17;fontColor=#666666;align=left;" vertex="1" parent="xe6w3f1EAQAV8qn113Va-68">
@@ -322,7 +322,7 @@
         <mxCell id="xe6w3f1EAQAV8qn113Va-205" value="" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.browserWindow;rSize=0;strokeColor2=#008cff;strokeColor3=#c4c4c4;mainText=,;recursiveResize=0;" vertex="1" parent="1">
           <mxGeometry x="10" y="2450" width="1010" height="760" as="geometry" />
         </mxCell>
-        <mxCell id="xe6w3f1EAQAV8qn113Va-206" value="Main" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;fontSize=17;fontColor=#666666;align=left;whiteSpace=wrap;" vertex="1" parent="xe6w3f1EAQAV8qn113Va-205">
+        <mxCell id="xe6w3f1EAQAV8qn113Va-206" value="Sneakers" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;fontSize=17;fontColor=#666666;align=left;whiteSpace=wrap;" vertex="1" parent="xe6w3f1EAQAV8qn113Va-205">
           <mxGeometry x="60" y="12" width="110" height="26" as="geometry" />
         </mxCell>
         <mxCell id="xe6w3f1EAQAV8qn113Va-207" value="https://www.bubnashop.ru/sneakers/item1" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;rSize=0;fontSize=17;fontColor=#666666;align=left;" vertex="1" parent="xe6w3f1EAQAV8qn113Va-205">
@@ -430,7 +430,7 @@
         <mxCell id="xe6w3f1EAQAV8qn113Va-295" value="" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.browserWindow;rSize=0;strokeColor2=#008cff;strokeColor3=#c4c4c4;mainText=,;recursiveResize=0;" vertex="1" parent="1">
           <mxGeometry x="10" y="3270" width="1010" height="760" as="geometry" />
         </mxCell>
-        <mxCell id="xe6w3f1EAQAV8qn113Va-296" value="Main" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;fontSize=17;fontColor=#666666;align=left;whiteSpace=wrap;" vertex="1" parent="xe6w3f1EAQAV8qn113Va-295">
+        <mxCell id="xe6w3f1EAQAV8qn113Va-296" value="Cart" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;fontSize=17;fontColor=#666666;align=left;whiteSpace=wrap;" vertex="1" parent="xe6w3f1EAQAV8qn113Va-295">
           <mxGeometry x="60" y="12" width="110" height="26" as="geometry" />
         </mxCell>
         <mxCell id="xe6w3f1EAQAV8qn113Va-297" value="https://www.bubnashop.ru/sneakers/cart" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;rSize=0;fontSize=17;fontColor=#666666;align=left;" vertex="1" parent="xe6w3f1EAQAV8qn113Va-295">
