@@ -21,4 +21,9 @@ public class AppController {
     String getMain(Model model){
         return "main";
     }
+
+    @GetMapping("/login")
+    String getLogin(Model model){
+        return "login";
+    }
 }
