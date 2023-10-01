@@ -6,28 +6,28 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "firms")
-public class Firm {
+@Table(name = "brands")
+public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "firm_id")
+    @Column(name = "brand_id")
     private Integer id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "firm", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
     private Set<Shoe> shoesSet = new HashSet<>();
 
     private void addShoes(Shoe shoe){
         shoesSet.add(shoe);
-        shoe.setFirm(this);
+        shoe.setBrand(this);
     }
 
     private void deleteShoes(Shoe shoe){
         shoesSet.remove(shoe);
-        shoe.setFirm(null);
+        shoe.setBrand(null);
     }
 
     public Integer getId() {

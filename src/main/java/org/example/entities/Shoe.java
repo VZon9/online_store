@@ -33,8 +33,8 @@ public class Shoe {
     private Integer boughtNum;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "firm_id")
-    private Firm firm;
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
     @ManyToMany(mappedBy = "shoesSet")
     private Set<Order> orderSet = new HashSet<>();
@@ -95,12 +95,12 @@ public class Shoe {
         this.boughtNum = boughtNum;
     }
 
-    public Firm getFirm() {
-        return firm;
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setFirm(Firm firm) {
-        this.firm = firm;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public Set<Order> getOrderSet() {
