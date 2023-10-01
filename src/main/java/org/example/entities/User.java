@@ -24,6 +24,9 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
+    @Column(name = "user_name")
+    private String name;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Order> orderSet = new HashSet<>();
 
@@ -67,6 +70,14 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Order> getOrderSet() {
