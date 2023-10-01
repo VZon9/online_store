@@ -18,16 +18,16 @@ public class Firm {
     private String name;
 
     @OneToMany(mappedBy = "firm", cascade = CascadeType.ALL)
-    private Set<Shoes> shoesSet = new HashSet<>();
+    private Set<Shoe> shoesSet = new HashSet<>();
 
-    private void addShoes(Shoes shoes){
-        shoesSet.add(shoes);
-        shoes.setFirm(this);
+    private void addShoes(Shoe shoe){
+        shoesSet.add(shoe);
+        shoe.setFirm(this);
     }
 
-    private void deleteShoes(Shoes shoes){
-        shoesSet.remove(shoes);
-        shoes.setFirm(null);
+    private void deleteShoes(Shoe shoe){
+        shoesSet.remove(shoe);
+        shoe.setFirm(null);
     }
 
     public Integer getId() {
@@ -46,11 +46,11 @@ public class Firm {
         this.name = name;
     }
 
-    public Set<Shoes> getShoes() {
+    public Set<Shoe> getShoes() {
         return shoesSet;
     }
 
-    public void setShoes(Set<Shoes> shoesSet) {
+    public void setShoes(Set<Shoe> shoesSet) {
         this.shoesSet = shoesSet;
     }
 }

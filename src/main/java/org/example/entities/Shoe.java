@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "shoes")
-public class Shoes {
+public class Shoe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Shoes {
     private String description;
 
     @Column(name = "num")
-    private Integer num;
+    private Integer remainingNum;
 
     @Column(name = "bought_num")
     private Integer boughtNum;
@@ -79,12 +79,12 @@ public class Shoes {
         this.description = description;
     }
 
-    public Integer getNum() {
-        return num;
+    public Integer getRemainingNum() {
+        return remainingNum;
     }
 
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setRemainingNum(Integer num) {
+        this.remainingNum = num;
     }
 
     public Integer getBoughtNum() {
