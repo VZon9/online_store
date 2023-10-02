@@ -1,0 +1,47 @@
+import React, {useState} from 'react';
+import './style.css'
+import {useLocation} from "react-router-dom";
+import LoginPage from "./loginPage/login";
+import RegisterPage from "./registerPage/register";
+import {Box} from "@mui/material";
+import async from "async";
+
+const AuthRoot = () => {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('')
+
+    const location = useLocation();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(email)
+        console.log(password)
+        console.log(username)
+    }
+
+    return (
+        <div className='root'>
+            <form className='form' onSubmit={handleSubmit}>
+                <Box sx = {{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    margin: 'auto',
+                    padding: 5,
+                    borderRadius: 2,
+                    boxShadow: '5px 5px 10px #ccc',
+                    width: '30%'
+                }}>
+                    {location.pathname === '/login' ?
+                        <LoginPage setEmail={setEmail} setPassword={setPassword}/> : location.pathname === '/register' ?
+                        <RegisterPage setEmail={setEmail} setPassword={setPassword} setUsername ={setUsername}/> : null}
+                </Box>
+            </form>
+
+        </div>
+    );
+};
+
+export default AuthRoot;
