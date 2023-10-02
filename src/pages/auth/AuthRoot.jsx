@@ -4,7 +4,6 @@ import {useLocation} from "react-router-dom";
 import LoginPage from "./loginPage/login";
 import RegisterPage from "./registerPage/register";
 import {Box} from "@mui/material";
-import async from "async";
 
 const AuthRoot = () => {
 

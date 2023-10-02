@@ -1,8 +1,9 @@
-import logo from './logo.svg';
+
 import './App.css';
 import HomePage from "./pages/homePage/home";
 import PrivateRoute from "./components/utils/router/privateRoute";
 import AuthRoot from "./pages/auth/AuthRoot";
+import {Route, Routes} from "react-router-dom";
 
 function App() {
   return (
