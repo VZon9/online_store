@@ -1,0 +1,14 @@
+.brands{
+    font-weight: 900;
+    font-size:22px;
+    line-height: 60px;
+    text-transform: uppercase;
+    padding: 60px 0 55px;
+    max-height: 186px;
+    align-items: center;
+}
+.brands_list{
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+}

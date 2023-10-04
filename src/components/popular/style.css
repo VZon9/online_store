@@ -1,0 +1,16 @@
+.popular{
+    padding-top: 120px;
+    padding-bottom: 140px;
+}
+.popular_header{
+    margin-bottom: 100px;
+    font-weight: 900;
+    font-size:34px;
+    line-height: 60px;
+    text-transform: uppercase;
+}
+
+.popular_cards{
+    display: flex;
+    justify-content: space-between;
+}
