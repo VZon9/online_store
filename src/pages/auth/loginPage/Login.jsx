@@ -9,7 +9,7 @@ const LoginPage = (props) => {
 
     return (
         <div className="form-box">
-            <Typography variant="h4" component="h2" padding = {2} textAlign = 'center'>
+            <Typography variant="h4" component="h2" padding = {2} textAlign = 'center' fontFamily='Poppins'>
                 SIGN IN
             </Typography>
             <TextField
@@ -31,7 +31,6 @@ const LoginPage = (props) => {
             <Typography variant="body1" component="p" textAlign = 'center' sx = {{marginTop: '5px'}}>
                 don't have an account? <Link to="/register" className="link-auth"> create an account</Link>
             </Typography>
-
         </div>
     );
 };

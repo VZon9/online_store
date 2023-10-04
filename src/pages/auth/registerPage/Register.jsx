@@ -5,14 +5,14 @@ import {Link} from "react-router-dom";
 
 const RegisterPage = (props) => {
 
-    const {setEmail, setUsername, setPassword} = props
+    const {setEmail, setUsername, setPassword, setRepeatPassword} = props
 
     return (
         <div className="form-box">
-            <Typography variant="h4" component="h2" padding = {2} textAlign = 'center'>
+            <Typography variant="h4" component="h2" padding = {2} textAlign = 'center' fontFamily="Poppins">
                 SIGN UP
             </Typography>
-            <TextField required fullWidth={true} defaultValue="niggers@gmail.com" margin="normal"  label="email" variant="outlined" placeholder="enter your email here"
+            <TextField required fullWidth={true} defaultValue="qwerty@gmail.com" margin="normal"  label="email" variant="outlined" placeholder="enter your email here"
                        onChange={(e) => setEmail(e.target.value)}
             />
             <TextField required fullWidth={true} defaultValue="myUsername" margin="normal"  label="username" variant="outlined" placeholder="enter your username here"
@@ -22,7 +22,7 @@ const RegisterPage = (props) => {
                        onChange={(e) => setPassword(e.target.value)}
             />
             <TextField type="password" required fullWidth={true} defaultValue="ihateniggers" margin="normal" label="password" variant="outlined" placeholder="re-enter your password here"
-                       onChange={(e) => setPassword(e.target.value)}
+                       onChange={(e) => setRepeatPassword(e.target.value)}
             />
             <Button variant="contained" endIcon={<LoginIcon />} sx = {{width: '60%', margin: '0 auto', display: "flex"}} color = "secondary" type = "submit">
                 sign up
