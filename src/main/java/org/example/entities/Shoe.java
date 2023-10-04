@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "shoes")
-public class Shoes {
+public class Shoe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +27,14 @@ public class Shoes {
     private String description;
 
     @Column(name = "num")
-    private Integer num;
+    private Integer remainingNum;
 
     @Column(name = "bought_num")
     private Integer boughtNum;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "firm_id")
-    private Firm firm;
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
     @ManyToMany(mappedBy = "shoesSet")
     private Set<Order> orderSet = new HashSet<>();
@@ -79,12 +79,12 @@ public class Shoes {
         this.description = description;
     }
 
-    public Integer getNum() {
-        return num;
+    public Integer getRemainingNum() {
+        return remainingNum;
     }
 
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setRemainingNum(Integer num) {
+        this.remainingNum = num;
     }
 
     public Integer getBoughtNum() {
@@ -95,12 +95,12 @@ public class Shoes {
         this.boughtNum = boughtNum;
     }
 
-    public Firm getFirm() {
-        return firm;
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setFirm(Firm firm) {
-        this.firm = firm;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public Set<Order> getOrderSet() {
