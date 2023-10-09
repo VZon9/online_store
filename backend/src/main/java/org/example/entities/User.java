@@ -27,6 +27,9 @@ public class User {
     @Column(name = "user_name")
     private String name;
 
+    @Column(name = "user_email")
+    private String email;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Order> orderSet = new HashSet<>();
 
@@ -86,5 +89,13 @@ public class User {
 
     public void setOrderSet(Set<Order> orderSet) {
         this.orderSet = orderSet;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
