@@ -1,5 +1,5 @@
 import React from 'react';
-import promoImg from './../../img/promo2.jpg'
+import promoImg from '../../img/promo2.jpg'
 import './style.css'
 import {Button} from "@mui/material";
 const Promo = () => {

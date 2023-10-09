@@ -1,5 +1,5 @@
 import React from 'react';
-import card1 from './../../img/home_cards/card1.jpg'
+import card1 from '../../img/home_cards/card1.jpg'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import './style.css'
 const Card = () => {

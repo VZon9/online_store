@@ -1,5 +1,5 @@
 import React from 'react';
-import logoImg from './../../img/logologo.png'
+import logoImg from '../../img/logologo.png'
 import './style.css'
 import {Button} from "@mui/material";
 import {Link} from "react-router-dom";
