@@ -1,0 +1,37 @@
+.footer{
+    background-color: black;
+}
+.footer_content{
+    display: flex;
+    padding: 120px 100px 100px 120px;
+    color:white;
+}
+.footer_promo{
+    margin-right: 450px;
+    max-width: 415px;
+    text-align: center;
+}
+.footer_bubna{
+    font-weight: 900;
+    margin-bottom: 32px;
+    font-size: 40px;
+    line-height: 60px;
+    letter-spacing: 0.03em;
+}
+.footer_desc{
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 40px;
+    letter-spacing: 0.02em;
+    color: #8E8E8E;
+}
+.footer_about{
+
+}
+.footer_list{
+    list-style: none;
+    justify-content: space-between;
+}
+.footer_list li{
+    margin-bottom: 16px;
+}

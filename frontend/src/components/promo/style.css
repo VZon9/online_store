@@ -1,0 +1,35 @@
+.promo{
+    margin-bottom: 63px;
+}
+.promo_content {
+    background-color: #F4F6F5;
+    display: flex;
+    column-gap: 24px;
+    padding-top: 68px;
+    padding-left: 60px;
+    padding-right: 60px;
+}
+.promo_text{
+    text-align: center;
+}
+.promo-title{
+    font-weight: 900;
+    font-size: 96px;
+    line-height: 1.25;
+    margin-bottom: 40px;
+}
+.promo-desc{
+    font-weight: 400;
+    font-size: 32px;
+    line-height: calc(48 / 32);
+    letter-spacing: -0.05em;
+    margin-bottom: 32px;
+}
+.promo_btn-wrapper{
+
+}
+
+.promo_nikeimg{
+    height: 784px;
+    border-radius: 21px;
+}
