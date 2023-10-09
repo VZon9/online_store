@@ -1,6 +1,6 @@
-package org.example.services;
+package ru.bbnshp.services;
 
-import org.example.entities.User;
+import ru.bbnshp.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
