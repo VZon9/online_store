@@ -1,6 +1,6 @@
-package org.example.confing;
+package ru.bbnshp.confing;
 
-import org.example.services.UserDetailsServiceImpl;
+import ru.bbnshp.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

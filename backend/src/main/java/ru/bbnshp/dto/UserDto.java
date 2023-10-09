@@ -1,4 +1,4 @@
-package org.example.dto;
+package ru.bbnshp.dto;
 
 public class UserDto {
 

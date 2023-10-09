@@ -1,8 +1,8 @@
-package org.example.controllers;
-import org.example.dto.UserDto;
-import org.example.entities.User;
-import org.example.entities.UserRole;
-import org.example.repositories.UserRepository;
+package ru.bbnshp.controllers;
+import ru.bbnshp.dto.UserDto;
+import ru.bbnshp.entities.User;
+import ru.bbnshp.entities.UserRole;
+import ru.bbnshp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

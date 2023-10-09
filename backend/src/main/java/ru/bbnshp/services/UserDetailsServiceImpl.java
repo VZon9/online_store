@@ -1,7 +1,7 @@
-package org.example.services;
+package ru.bbnshp.services;
 
-import org.example.entities.User;
-import org.example.repositories.UserRepository;
+import ru.bbnshp.entities.User;
+import ru.bbnshp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
