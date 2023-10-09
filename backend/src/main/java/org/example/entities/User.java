@@ -24,6 +24,12 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
+    @Column(name = "user_name")
+    private String name;
+
+    @Column(name = "user_email")
+    private String email;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Order> orderSet = new HashSet<>();
 
@@ -69,11 +75,27 @@ public class User {
         this.role = role;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Set<Order> getOrderSet() {
         return orderSet;
     }
 
     public void setOrderSet(Set<Order> orderSet) {
         this.orderSet = orderSet;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

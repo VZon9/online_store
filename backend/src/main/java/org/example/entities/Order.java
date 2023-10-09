@@ -15,7 +15,7 @@ public class Order {
     private Integer id;
 
     @Column(name = "data")
-    private Date data;
+    private Date date;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -27,16 +27,16 @@ public class Order {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "orders_shoes", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "shoes_id"))
-    private Set<Shoes> shoesSet = new HashSet<>();
+    private Set<Shoe> shoesSet = new HashSet<>();
 
-    public void addShoes(Shoes shoes){
-        shoesSet.add(shoes);
-        shoes.getOrderSet().add(this);
+    public void addShoes(Shoe shoe){
+        shoesSet.add(shoe);
+        shoe.getOrderSet().add(this);
     }
 
-    public void deleteShoes(Shoes shoes){
-        shoesSet.remove(shoes);
-        shoes.getOrderSet().remove(this);
+    public void deleteShoe(Shoe shoe){
+        shoesSet.remove(shoe);
+        shoe.getOrderSet().remove(this);
     }
 
     public Integer getId() {
@@ -47,12 +47,12 @@ public class Order {
         this.id = id;
     }
 
-    public Date getData() {
-        return data;
+    public Date getDate() {
+        return date;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setDate(Date data) {
+        this.date = data;
     }
 
     public OrderStatus getStatus() {
@@ -71,11 +71,11 @@ public class Order {
         this.user = user;
     }
 
-    public Set<Shoes> getShoesSet() {
+    public Set<Shoe> getShoesSet() {
         return shoesSet;
     }
 
-    public void setShoesSet(Set<Shoes> shoesSet) {
+    public void setShoesSet(Set<Shoe> shoesSet) {
         this.shoesSet = shoesSet;
     }
 }
