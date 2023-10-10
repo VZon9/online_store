@@ -21,5 +21,22 @@
     </tr>
 </table>
 <br>
+<table th:if="${not #lists.isEmpty(olders)}">
+    <tr th:each="older : ${olders}">
+        <td>
+            <span th:text="${'Заказ №' + older.id + ' ' + older.date + ' ' + older.status }"></span>
+            <table th:if="${not #lists.isEmpty(older.shoesSet)}">
+                <tr th:each="shoe : ${older.shoesSet}">
+                    <td>
+                        <span th:text="${shoe.id + ' ' + shoe.color + ' ' + shoe.price + ' ' + shoe.num }"></span>
+                    </td>
+                </tr>
+            </table>
+            <span th:text="${older.sum}"></span>
+        </td>
+    </tr>
+</table>
+
+
 </body>
 </html>
