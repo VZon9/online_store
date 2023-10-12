@@ -1,5 +1,6 @@
 package ru.bbnshp.services;
 
+import jakarta.transaction.Transactional;
 import ru.bbnshp.entities.User;
 import ru.bbnshp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     UserRepository users;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = users.findByLogin(username);
+        User user = users.findByLogin(username).
+                orElseThrow(() -> new UsernameNotFoundException("Not found with login: " + username));
         return UserDetailsImpl.build(user);
     }
 }

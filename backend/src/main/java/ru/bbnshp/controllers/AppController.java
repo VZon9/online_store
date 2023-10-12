@@ -1,13 +1,8 @@
 package ru.bbnshp.controllers;
-import ru.bbnshp.dto.UserDto;
-import ru.bbnshp.entities.User;
-import ru.bbnshp.entities.UserRole;
+
 import ru.bbnshp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -22,14 +17,4 @@ public class AppController {
         this.users = users;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<UserDto> register(@RequestBody UserDto regUser){
-        User newUser = new User();
-        newUser.setRole(UserRole.USER);
-        newUser.setLogin(regUser.getLogin());
-        newUser.setName(regUser.getName());
-        newUser.setEmail(regUser.getEmail());
-        users.save(newUser);
-        return ResponseEntity.ok(regUser);
-    }
 }
