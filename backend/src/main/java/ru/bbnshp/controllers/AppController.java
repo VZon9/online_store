@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.bbnshp.dto.LoginUserDto;
@@ -54,7 +55,7 @@ public class AppController {
     public ResponseEntity<?> register(@RequestBody RegisterUserDto registerUser){
         User user = new User();
         user.setLogin(registerUser.getLogin());
-        user.setPassword(registerUser.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(registerUser.getPassword()));
         user.setEmail(registerUser.getEmail());
         user.setRole(UserRole.USER);
         users.save(user);
