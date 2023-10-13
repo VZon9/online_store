@@ -4,27 +4,53 @@ import {useLocation} from "react-router-dom";
 import LoginPage from "./loginPage/Login";
 import RegisterPage from "./registerPage/Register";
 import {Box} from "@mui/material";
+import {instance} from "../../utils/axios";
+import {useForm} from "react-hook-form";
 
+
+// const ACCESS_TOKEN_KEY = "access_token"
 const AuthRoot = () => {
 
     const [email, setEmail] = useState('')
+    const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
     const [repeatPassword, setRepeatPassword] = useState('')
-    const [username, setUsername] = useState('')
 
     const location = useLocation();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(email)
-        console.log(password)
-        console.log(repeatPassword)
-        console.log(username)
+    const {register, formState:{errors}, handleSubmit} = useForm()
+
+    const handleSubmitForm = async (data) => {
+        // e.preventDefault();
+        if (location.pathname === '/login'){
+            const userData = {
+                login: data.login,
+                password: data.password
+            }
+            const response = await instance.post('login', userData)
+            console.log(response.data)
+            if (response.status === 200){
+                instance.headers = {'Authorization': response.data.token}
+                // localStorage.setItem(ACCESS_TOKEN_KEY, response.data.token)
+                console.log(response.data)
+            }else {
+                alert("Upd the ")
+            }
+
+        }else {
+            const userData = {
+                email: data.email,
+                login: data.login,
+                password: data.password
+            }
+            const newUser = await instance.post('register', userData)
+            console.log(newUser)
+        }
     }
 
     return (
         <div className='root'>
-            <form className='form' onSubmit={handleSubmit}>
+            <form className='form' onSubmit={handleSubmit(handleSubmitForm)}>
                 <Box sx = {{
                     display: 'flex',
                     justifyContent: 'center',
@@ -36,8 +62,8 @@ const AuthRoot = () => {
                     width: '30%',
                 }}>
                     {location.pathname === '/login' ?
-                        <LoginPage setEmail={setEmail} setPassword={setPassword}/> : location.pathname === '/register' ?
-                        <RegisterPage setEmail={setEmail} setPassword={setPassword}  setRepeatPassword = {setRepeatPassword} setUsername ={setUsername}/> : null}
+                        <LoginPage setEmail={setEmail} setPassword={setPassword} register = {register} />  : location.pathname === '/register' ?
+                            <RegisterPage setEmail={setEmail} setLogin={setLogin} setPassword={setPassword}  setRepeatPassword = {setRepeatPassword} register = {register} errors = {errors}/> : null}
                 </Box>
             </form>
 
