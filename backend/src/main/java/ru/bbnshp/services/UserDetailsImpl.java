@@ -1,6 +1,6 @@
-package org.example.services;
+package ru.bbnshp.services;
 
-import org.example.entities.User;
+import ru.bbnshp.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,19 +11,16 @@ import java.util.Set;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private Integer id;
+    private final Integer id;
 
-    private String login;
+    private final String login;
 
-    private String password;
+    private final String password;
 
-    private String name;
+    private final Set<GrantedAuthority> authorities;
 
-    private Set<GrantedAuthority> authorities;
-
-    private UserDetailsImpl(Integer id, String login, String password, String name, Set<GrantedAuthority> authorities){
+    private UserDetailsImpl(Integer id, String login, String password, Set<GrantedAuthority> authorities){
         this.id = id;
-        this.name = name;
         this.login = login;
         this.password = password;
         this.authorities = authorities;
@@ -32,7 +29,7 @@ public class UserDetailsImpl implements UserDetails {
     public static UserDetailsImpl build(User user){
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
-        return new UserDetailsImpl(user.getId(), user.getName(), user.getLogin(), user.getPassword(), authorities);
+        return new UserDetailsImpl(user.getId(), user.getLogin(), user.getPassword(), authorities);
     }
 
     public Integer getId(){
@@ -55,7 +52,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.name;
+        return null;
     }
 
     @Override

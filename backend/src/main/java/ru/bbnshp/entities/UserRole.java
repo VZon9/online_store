@@ -1,4 +1,4 @@
-package org.example.entities;
+package ru.bbnshp.entities;
 
 public enum UserRole {
     ADMIN,USER

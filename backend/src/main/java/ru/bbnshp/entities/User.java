@@ -1,4 +1,4 @@
-package org.example.entities;
+package ru.bbnshp.entities;
 
 import jakarta.persistence.*;
 
@@ -23,9 +23,6 @@ public class User {
     @Column(name = "user_role")
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
-
-    @Column(name = "user_name")
-    private String name;
 
     @Column(name = "user_email")
     private String email;
@@ -73,14 +70,6 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Set<Order> getOrderSet() {
