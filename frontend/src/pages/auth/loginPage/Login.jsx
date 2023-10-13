@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 
 const LoginPage = (props) => {
 
-    const {setEmail, setPassword} = props
+    const {setEmail, setPassword, register} = props
 
     return (
         <div className="form-box">
@@ -15,13 +15,19 @@ const LoginPage = (props) => {
             <TextField
                 required fullWidth={true} margin="normal"  label="email"
                 variant="outlined" placeholder="enter your email here"
-                onChange={(e) => setEmail(e.target.value)}
+                // onChange={(e) => setEmail(e.target.value)}
+                {...register("login",{
+                    required: true
+                })}
             />
 
             <TextField type="password" required fullWidth={true} margin="normal"
-               id="standard-basic" label="password" variant="outlined"
-               placeholder="enter your password here"
-               onChange={(e)=>setPassword(e.target.value)}
+                       id="standard-basic" label="password" variant="outlined"
+                       placeholder="enter your password here"
+                // onChange={(e)=>setPassword(e.target.value)}
+                       {...register("password",{
+                           required: true
+                       })}
             />
 
             <Button variant="contained" endIcon={<LoginIcon />} sx = {{width: '60%', margin: '0 auto', display: "flex"}} color = "secondary" type = "submit">
