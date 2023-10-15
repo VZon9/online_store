@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="an" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Добавление обуви</title>
@@ -14,25 +14,26 @@
 <body>
 <br><br><br><br>
 <form th:action="@{/shoes/add}" align="center" method="POST">
-    <input name="model" type="text" id="model" class="form-control" placeholder="Model"/>
+    <input name="model" type="text" id="model" class="form-control" placeholder="Model" required/>
     <br>
     <br>
-    <input name="brand" type="text" id="brand" class="form-control" placeholder="Brand"/>
+    <input name="brand" type="text" id="brand" class="form-control" placeholder="Brand" required/>
     <br>
     <br>
-    <input name="size" type="number" id="size" class="form-control" placeholder="Size"/>
+    <input name="size" type="number" id="size" class="form-control" placeholder="Size" required/>
     <br>
     <br>
-    <input name="collor" type="text" id="collot" class="form-control" placeholder="Collor"/>
+    <input name="collor" type="text" id="collot" class="form-control" placeholder="Collor" required/>
     <br>
     <br>
-    <input name="discription" type="text" id="discription" class="form-control" placeholder="Discription"/>
+    <input name="num" type="number" id="num" class="form-control" placeholder="Amount" required/>
     <br>
     <br>
-    <input name="num" type="number" id="num" class="form-control" placeholder="Amount"/>
+    <input name="price" type="number" id="price" class="form-control" placeholder="Price" required/>
     <br>
     <br>
-    <input name="price" type="number" id="price" class="form-control" placeholder="Price"/>
+    <textarea cols="50" rows="10" name="discription" id="discription" class="form-control" placeholder="Discription" required/>Discription
+    </textarea>
     <br>
     <br>
     <button type="submit" class="btn btn-light">Add an shoes</button>
