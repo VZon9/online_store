@@ -24,11 +24,13 @@
     </table>
 <br>
 <p align="center"><button type="submit" class="btn btn-light"><a href = "shoesAdd.html" style="text-decoration: none;">Add a new shoes</a></button></p>
-<br>
+<p align="center"><button type="submit" class="btn btn-light"><a href = "brandAdd.html" style="text-decoration: none;">Add a new brand</a></button></p>
+
+    <br>
 <table th:if="${not #lists.isEmpty(shoes)}">
     <tr th:each="shoe : ${shoes}">
         <td>
-            <span th:text="${shoe.id + ' ' + shoe.model + ' ' + shoe.price + ' ' + num }"></span>
+            <span th:text="${shoe.id + ' ' + shoe.color + ' ' + shoe.price + ' ' + shoe.num }"></span>
         </td>
     </tr>
 </table>
