@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="an" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Товары</title>
+    <style>
+    body {background-color: #FFFFFF}
+    a { color:#000000; text-decoration:none;}
+    table { background-color: #DAE7E6; text-align: center}
+    button {background-color: #DAE7E6}
+    </style>
+</head>
+
+<body>
+
+    <table width="55%"  cellpadding="10px" align="center">
+        <tr>
+            <th><a href = "olders.html" style="text-decoration: none;"><h2>Заказы</h2></a></th>
+            <th><a href = "shoes.html" style="text-decoration: none;"><h2>Товары</h2></a></th>
+            <th><a href = "statistic.html" style="text-decoration: none;"><h2>Статистика</h2></a><th>
+            <th> <h2>Выход</h2><th>
+        </tr>
+    </table>
+<br>
+<p align="center"><button type="submit" class="btn btn-light"><a href = "shoesAdd.html" style="text-decoration: none;">Add a new shoes</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a href = "brandAdd.html" style="text-decoration: none;">Add a new brand</a></button></p>
+
+    <br>
+<table th:if="${not #lists.isEmpty(shoes)}">
+    <tr th:each="shoe : ${shoes}">
+        <td>
+            <span th:text="${shoe.id + ' ' + shoe.color + ' ' + shoe.price + ' ' + shoe.num }"></span>
+        </td>
+    </tr>
+</table>
+<br>
+
+</body>
+</html>
