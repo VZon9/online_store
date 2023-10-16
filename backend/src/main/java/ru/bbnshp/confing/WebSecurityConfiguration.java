@@ -31,12 +31,15 @@ import java.util.List;
 public class WebSecurityConfiguration {
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    private final AuthEntryPointJwt unauthorizedHandler;
 
-
+    public WebSecurityConfiguration(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
+        this.userDetailsService = userDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -50,7 +53,7 @@ public class WebSecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable);
         http.exceptionHandling((handling) -> handling.authenticationEntryPoint(unauthorizedHandler));
         http.sessionManagement((management) -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.authorizeHttpRequests((request) -> request.requestMatchers("/login", "/register").permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests((request) -> request.requestMatchers("/login", "/register", "/admin/login").permitAll().anyRequest().authenticated());
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

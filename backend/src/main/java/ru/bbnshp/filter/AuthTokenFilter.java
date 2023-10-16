@@ -42,7 +42,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-
         }
         catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e.getMessage());
