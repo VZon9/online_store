@@ -6,25 +6,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import ru.bbnshp.dto.LoginUserDto;
 import ru.bbnshp.dto.RegisterUserDto;
 import ru.bbnshp.entities.User;
 import ru.bbnshp.entities.UserRole;
 import ru.bbnshp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
 import ru.bbnshp.response.JwtResponse;
 import ru.bbnshp.services.UserDetailsImpl;
-import ru.bbnshp.services.UserDetailsServiceImpl;
 import ru.bbnshp.utils.JwtUtils;
 
 
 @RestController
 @CrossOrigin
-public class AppController {
+public class UserController {
 
     @Autowired
     private final UserRepository users;
@@ -35,7 +31,7 @@ public class AppController {
     @Autowired
     private final JwtUtils jwtUtils;
 
-    public AppController(UserRepository users, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public UserController(UserRepository users, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.users = users;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
@@ -61,6 +57,4 @@ public class AppController {
         users.save(user);
         return ResponseEntity.ok("New user registered");
     }
-
-
 }
