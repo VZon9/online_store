@@ -1,48 +1,61 @@
 import React from 'react';
 import {Button, TextField, Typography} from "@mui/material";
-import LoginIcon from "@mui/icons-material/Login";
 import {Link} from "react-router-dom";
 
 const RegisterPage = (props) => {
 
-    const {setEmail, setLogin, setPassword, setRepeatPassword, register, errors} = props
+    const {register, errors, watch} = props
 
     return (
         <div className="form-box">
             <Typography variant="h4" component="h2" padding = {2} textAlign = 'center' fontFamily="Poppins">
                 SIGN UP
             </Typography>
-            <TextField fullWidth={true} margin="normal"  label="email" variant="outlined" placeholder="enter your email here"
-                // onChange={(e) => setEmail(e.target.value)}
-                       error={!!errors.email}
-                       helperText={errors.email ? errors.email.message : ''}
-                       {...register("email",{
-                           required:"this field is required"
-                       })}
+            <TextField
+                fullWidth={true}
+                margin="normal"
+                label="email"
+                variant="outlined"
+                placeholder="enter your email here"
+                error={!!errors.email}
+                helperText={errors.email ? errors.email.message : ''}
+                {...register("regEmail",{
+                    required:"this field is required!"
+                })}
             />
-            <TextField  fullWidth={true} margin="normal"  label="login" variant="outlined" placeholder="enter your login here"
-                // onChange={(e) => setLogin(e.target.value)}
-                        error={!!errors.login}
-                        helperText={errors.login ? errors.login.message : ''}
-                        {...register("login",{
-                            required:"this field is required"
-                        })}
+            <TextField
+                fullWidth={true}
+                margin="normal"
+                label="login"
+                variant="outlined"
+                placeholder="enter your login here"
+                defaultValue=''
+                error={!!errors.login}
+                helperText={errors.login ? errors.login.message : ''}
+                {...register("regLogin",{
+                    required:"this field is required!"
+                })}
             />
-            <TextField type="password"  fullWidth={true}  margin="normal" label="password" variant="outlined" placeholder="enter your password here"
-                // onChange={(e) => setPassword(e.target.value)}
-                       error={!!errors.password}
-                       helperText={errors.password ? errors.password.message : ''}
-                       {...register("password",{
-                           required:"this field is required"
-                       })}
+            <TextField
+                type="password"
+                fullWidth={true}
+                margin="normal"
+                label="password"
+                variant="outlined"
+                placeholder="enter your password here"
+                error={!!errors.password}
+                helperText={errors.password ? errors.password.message : ''}
+                {...register("regPassword",{
+                    required:"this field is required!",
+                    message:"Invalid data"
+                })}
             />
-            <TextField type="password"  fullWidth={true}  margin="normal" label="password" variant="outlined" placeholder="re-enter your password here"
-                // onChange={(e) => setRepeatPassword(e.target.value)}
-                       {...register("password",{
-                           required:"this field is required"
-                       })}
-            />
-            <Button variant="contained" endIcon={<LoginIcon />} sx = {{width: '60%', margin: '0 auto', display: "flex"}} color = "secondary" type = "submit">
+            {/*<TextField type="password"  fullWidth={true}  margin="normal" label="password" variant="outlined" placeholder="re-enter your password here"*/}
+            {/*           {...register("password",{*/}
+            {/*               required:"this field is required"*/}
+            {/*           })}*/}
+            {/*/>*/}
+            <Button variant="contained"  sx = {{width: '60%', margin: '0 auto', display: "flex"}} color = "secondary" type = "submit" disabled = {watch("regEmail", '') === '' || watch("regLogin", '') === '' || watch("regPassword", '') === ''}>
                 sign up
             </Button>
             <Typography variant="body1" component="p" textAlign = 'center' sx = {{marginTop: '5px'}}>
