@@ -2,10 +2,16 @@ import React from 'react';
 import {Button, TextField, Typography} from "@mui/material";
 import LoginIcon from '@mui/icons-material/Login';
 import {Link} from "react-router-dom";
+import {useForm} from "react-hook-form";
 
 const LoginPage = (props) => {
-
-    const {setEmail, setPassword, register} = props
+    useForm({
+        defaultValues: {
+            login: '',
+            password: ''
+        }
+    })
+    const {register, errors, watch, errMessage} = props
 
     return (
         <div className="form-box">
@@ -13,29 +19,50 @@ const LoginPage = (props) => {
                 SIGN IN
             </Typography>
             <TextField
-                required fullWidth={true} margin="normal"  label="email"
-                variant="outlined" placeholder="enter your email here"
-                // onChange={(e) => setEmail(e.target.value)}
+                fullWidth={true}
+                margin="normal"
+                label="login"
+                variant="outlined"
+                placeholder="enter your login here"
+                defaultValue=''
+                error={!!errors.login}
+                helperText={errors.email ? errors.login.message : ''}
                 {...register("login",{
-                    required: true
+                    required: "Login is required"
                 })}
             />
 
-            <TextField type="password" required fullWidth={true} margin="normal"
-                       id="standard-basic" label="password" variant="outlined"
-                       placeholder="enter your password here"
-                // onChange={(e)=>setPassword(e.target.value)}
-                       {...register("password",{
-                           required: true
-                       })}
+            <TextField
+                type="password"
+                fullWidth={true}
+                margin="normal"
+                id="standard-basic"
+                label="password"
+                variant="outlined"
+                placeholder="enter your password here"
+                defaultValue=''
+                error={!!errors.password}
+                helperText={errors.email ? errors.password.message : ''}
+                {...register("password",{
+                    required: "Password is required"
+                })}
             />
 
-            <Button variant="contained" endIcon={<LoginIcon />} sx = {{width: '60%', margin: '0 auto', display: "flex"}} color = "secondary" type = "submit">
+            <Button
+                variant="contained"
+                endIcon={<LoginIcon />}
+                sx = {{width: '60%', margin: '0 auto', display: "flex"}}
+                color = "secondary"
+                type = "submit"
+                disabled = {watch("login", '') === '' || watch("password", '') === ''}>
                 sign in
             </Button>
 
             <Typography variant="body1" component="p" textAlign = 'center' sx = {{marginTop: '5px'}}>
                 don't have an account? <Link to="/register" className="link-auth"> create an account</Link>
+            </Typography>
+            <Typography variant="body2" component="p" textAlign = 'center' sx = {{marginTop: '5px'}} color = 'red'>
+                {errMessage}
             </Typography>
         </div>
     );

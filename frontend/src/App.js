@@ -13,6 +13,7 @@ function App() {
             </Route>
             <Route path="/login" element={<AuthRoot/>}/>
             <Route path="/register" element={<AuthRoot/>}/>
+            <Route path="/test" element={<AuthRoot/>}/>
         </Routes>
     </div>
   );
