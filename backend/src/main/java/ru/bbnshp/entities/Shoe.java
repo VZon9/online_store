@@ -14,6 +14,9 @@ public class Shoe {
     @Column(name = "shoes_id")
     private Integer id;
 
+    @Column(name = "model")
+    private String model;
+
     @Column(name = "size")
     private Integer size;
 
@@ -53,6 +56,14 @@ public class Shoe {
 
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getColor() {
