@@ -14,8 +14,11 @@ import ru.bbnshp.entities.UserRole;
 import ru.bbnshp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.bbnshp.response.JwtResponse;
+import ru.bbnshp.response.MassageResponse;
 import ru.bbnshp.services.UserDetailsImpl;
 import ru.bbnshp.utils.JwtUtils;
+
+import java.beans.Encoder;
 
 
 @RestController
@@ -38,9 +41,18 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginUserDto user){
-        Authentication authentication =  authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword()));
+    public ResponseEntity<?> login(@RequestBody LoginUserDto loginUser){
+        if(loginUser.getPassword() == null || loginUser.getLogin() == null){
+            return ResponseEntity.badRequest().body(new MassageResponse("All fields must be filled in"));
+        }
+        if(!users.existsByLogin(loginUser.getLogin())){
+            return ResponseEntity.badRequest().body(new MassageResponse("There is no user with this login"));
+        }
+        if(users.findByLogin(loginUser.getLogin()).isPresent() &&
+           !(new BCryptPasswordEncoder().matches(loginUser.getPassword(), users.findByLogin(loginUser.getLogin()).get().getPassword()))){
+            return ResponseEntity.badRequest().body(new MassageResponse("Invalid password"));
+        }
+        Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getLogin(), loginUser.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -49,12 +61,18 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterUserDto registerUser){
+        if(registerUser.getPassword() == null || registerUser.getLogin() == null || registerUser.getEmail() == null){
+            return ResponseEntity.badRequest().body(new MassageResponse("All fields must be filled in"));
+        }
+        if(users.existsByLogin(registerUser.getLogin())){
+            return ResponseEntity.badRequest().body(new MassageResponse("User with this login already exists"));
+        }
         User user = new User();
         user.setLogin(registerUser.getLogin());
         user.setPassword(new BCryptPasswordEncoder().encode(registerUser.getPassword()));
         user.setEmail(registerUser.getEmail());
         user.setRole(UserRole.USER);
         users.save(user);
-        return ResponseEntity.ok("New user registered");
+        return ResponseEntity.ok(new MassageResponse("New user registered"));
     }
 }
