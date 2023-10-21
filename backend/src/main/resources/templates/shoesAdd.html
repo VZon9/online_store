@@ -13,11 +13,14 @@
 </head>
 <body>
 <br><br><br><br>
-<form th:action="@{/shoes/add}" align="center" method="POST">
+<form th:action="@{/admin/shoes/add}" align="center" method="post">
     <input name="model" type="text" id="model" class="form-control" placeholder="Model" required/>
     <br>
     <br>
-    <input name="brand" type="text" id="brand" class="form-control" placeholder="Brand" required/>
+    <select name="brand" id="brand" style="width: 178px" required>
+        <option value="" disabled selected hidden>Brand</option>
+        <option th:each="brand : ${brands}"><span th:text="${brand}"></span></option>
+    </select>
     <br>
     <br>
     <input name="size" type="number" id="size" class="form-control" placeholder="Size" required/>
@@ -32,15 +35,16 @@
     <input name="price" type="number" id="price" class="form-control" placeholder="Price" required/>
     <br>
     <br>
-    <textarea cols="50" rows="10" name="description" id="description" class="form-control" placeholder="Description" required/>Description
-    </textarea>
+    <textarea cols="50" rows="10" name="description" id="description" class="form-control" placeholder="Description" required></textarea>
     <br>
     <br>
     <button type="submit" class="btn btn-light">Add an shoes</button>
 </form>
+<p th:if="${sizeError}" align="center">Размер должен быть больше нуля</p>
+<p th:if="${numError}" align="center">Колличество должено быть больше нуля</p>
 <br>
 
-<p align="center"><button type="submit" class="btn btn-light"><a href = "shoes.html" style="text-decoration: none;">Return</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes}" style="text-decoration: none;">Return</a></button></p>
 
 </body>
 </html>

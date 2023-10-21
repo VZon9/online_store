@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -12,12 +12,18 @@
     </style>
 </head>
 <body>
-    <form th:action="@{/admin/login}" method="post">
-        <input name="login" type="text" class="form-control" placeholder="Login">
-        <br>
-        <input name="password" type="password" class="form-control" placeholder="Password">
-        <br>
-        <button type="submit" class="btn btn-light" >Login</button>
-    </form>
+    <div style="text-align: center">
+        <form th:action="@{/admin/login}" method="post">
+            <input name="login" type="text" class="form-control" placeholder="Login">
+            <br>
+            <input name="password" type="password" class="form-control" placeholder="Password">
+            <br>
+            <button type="submit" class="btn btn-light" >Login</button>
+        </form>
+        <p th:if="${fieldError}">Все поля долны быть заполнены</p>
+        <p th:if="${loginError}">Нет администратра с таким логином</p>
+        <p th:if="${passwordError}">Неверный пароль</p>
+        <p th:if="${roleError}">Этот пользователь не обладает правами администратора</p>
+    </div>
 </body>
 </html>
