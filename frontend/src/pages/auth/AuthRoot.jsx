@@ -35,20 +35,14 @@ const AuthRoot = () => {
                 console.log(response.data)
                 // navigate("/home")
             }catch (error){
-                console.error("Invalid data")
-                if (error.response.status === 401) {
-                    errMessage = "Invalid login or password"
-                }else{
-                    errMessage = "Some err happend ;("
-                }
-
+                errMessage = error.response.data.message
             }
 
 
         }else if (location.pathname === '/register'){
             if (data.regPassword !== data.regRepeatPassword){
                 errMessage = 'Passwords dont match'
-            } else{
+            }else{
                 const userData = {
                     email: data.regEmail,
                     login: data.regLogin,
@@ -59,7 +53,8 @@ const AuthRoot = () => {
                     errMessage = ''
                     console.log(response)
                 }catch (error){
-                    console.error("Invalid data")
+                    errMessage = error.response.data.message
+                    console.error(error.response.data)
                 }
             }
         }
