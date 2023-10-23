@@ -52,7 +52,7 @@ public class WebSecurityConfiguration {
         http.cors(Customizer.withDefaults());
         http.csrf(AbstractHttpConfigurer::disable);
         http.exceptionHandling((handling) -> handling.authenticationEntryPoint(unauthorizedHandler));
-        http.sessionManagement((management) -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//        http.sessionManagement((management) -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authorizeHttpRequests((request) -> request.requestMatchers("/login", "/register", "/admin/login").permitAll().anyRequest().authenticated());
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

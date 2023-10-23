@@ -46,17 +46,21 @@ const AuthRoot = () => {
 
 
         }else if (location.pathname === '/register'){
-            const userData = {
-                email: data.regEmail,
-                login: data.regLogin,
-                password: data.regPassword
-            }
-            try {
-                const response = await instance.post('register', userData)
-                errMessage = ''
-                console.log(response)
-            }catch (error){
-                console.error("Invalid data")
+            if (data.regPassword !== data.regRepeatPassword){
+                errMessage = 'Passwords dont match'
+            } else{
+                const userData = {
+                    email: data.regEmail,
+                    login: data.regLogin,
+                    password: data.regPassword
+                }
+                try {
+                    const response = await instance.post('register', userData)
+                    errMessage = ''
+                    console.log(response)
+                }catch (error){
+                    console.error("Invalid data")
+                }
             }
         }
         else{
@@ -89,7 +93,7 @@ const AuthRoot = () => {
                     width: '30%',
                 }}>
                     {location.pathname === '/login' ? <LoginPage register = {register} errors = {errors} watch = {watch} errMessage = {errMessage} reset = {reset}/> : location.pathname === '/register' ?
-                        <RegisterPage register = {register} errors = {errors} watch = {watch}/> : location.pathname === '/test' ? <Test /> : null}
+                        <RegisterPage register = {register} errors = {errors} watch = {watch} errMessage={errMessage}/> : location.pathname === '/test' ? <Test /> : null}
                 </Box>
             </form>
 

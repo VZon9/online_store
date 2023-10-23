@@ -5,18 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c38b609-6b70-4712-a49d-5ccbceff8b5e" name="Changes" comment="test jwt auth">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/online-store.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/controllers/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/controllers/TestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/auth/AuthRoot.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/auth/AuthRoot.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/auth/loginPage/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/auth/loginPage/Login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/auth/registerPage/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/auth/registerPage/Register.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/utils/axios/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/axios/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/confing/WebSecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/confing/WebSecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/classes/ru/bbnshp/confing/WebSecurityConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/classes/ru/bbnshp/confing/WebSecurityConfiguration.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,14 +20,24 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 4
+}]]></component>
   <component name="ProjectId" id="2WiJPUGjTw2yQpJNhx7vgWLnhAh" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "front__feature",
+    "last_opened_file_path": "C:/WebStorm Projects/online-storeupg/online_store",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -49,7 +50,8 @@
       <workItem from="1697470388927" duration="11992000" />
       <workItem from="1697532790283" duration="11863000" />
       <workItem from="1697564735363" duration="362000" />
-      <workItem from="1697565111517" duration="447000" />
+      <workItem from="1697565111517" duration="4526000" />
+      <workItem from="1697882213298" duration="99000" />
     </task>
     <task id="LOCAL-00001" summary="test jwt auth">
       <created>1697214799078</created>
