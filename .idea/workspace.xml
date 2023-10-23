@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="5c38b609-6b70-4712-a49d-5ccbceff8b5e" name="Changes" comment="test jwt auth">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+    <list default="true" id="531f0293-e350-4239-810a-a0d7856accbb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/confing/WebSecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/confing/WebSecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/controllers/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/controllers/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/entities/Shoe.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/entities/Shoe.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/filter/AuthTokenFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/filter/AuthTokenFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/point/AuthEntryPointJwt.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/ru/bbnshp/point/AuthEntryPointJwt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/templates/admin/brandAdd.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/templates/admin/olders.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/templates/admin/shoes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/templates/admin/shoesAdd.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/templates/admin/statistic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/templates/main.html" beforeDir="false" />
+>>>>>>> 0eba4241832b677550a5abf45171c6baf784dabb
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+<<<<<<< HEAD
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -22,12 +36,16 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="2WiJPUGjTw2yQpJNhx7vgWLnhAh" />
+=======
+  <component name="ProjectId" id="2WiCTlRAe4MnPeaaeMsaBwFKF6i" />
+>>>>>>> 0eba4241832b677550a5abf45171c6baf784dabb
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+<<<<<<< HEAD
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "front__feature",
     "last_opened_file_path": "C:/WebStorm Projects/online-storeupg/online_store",
@@ -38,13 +56,36 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+=======
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Project/SberPractice/online_store"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="online-store" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="online-store" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+>>>>>>> 0eba4241832b677550a5abf45171c6baf784dabb
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5c38b609-6b70-4712-a49d-5ccbceff8b5e" name="Changes" comment="" />
-      <created>1697209442989</created>
+      <changelist id="531f0293-e350-4239-810a-a0d7856accbb" name="Changes" comment="" />
+      <created>1697206024211</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
+<<<<<<< HEAD
       <updated>1697209442989</updated>
       <workItem from="1697209444014" duration="4043000" />
       <workItem from="1697470388927" duration="11992000" />
@@ -53,33 +94,10 @@
       <workItem from="1697565111517" duration="4526000" />
       <workItem from="1697882213298" duration="99000" />
       <workItem from="1698073004507" duration="414000" />
+=======
+      <updated>1697206024211</updated>
+>>>>>>> 0eba4241832b677550a5abf45171c6baf784dabb
     </task>
-    <task id="LOCAL-00001" summary="test jwt auth">
-      <created>1697214799078</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1697214799078</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="test jwt auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="test jwt auth" />
   </component>
 </project>

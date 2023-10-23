@@ -1,13 +1,10 @@
 package ru.bbnshp.confing;
 
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import ru.bbnshp.filter.AuthTokenFilter;
@@ -27,17 +24,11 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration {
 
     @Autowired
-    private final UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
     private final AuthEntryPointJwt unauthorizedHandler;
-
-    public WebSecurityConfiguration(UserDetailsServiceImpl userDetailsService, AuthEntryPointJwt unauthorizedHandler) {
-        this.userDetailsService = userDetailsService;
+    public WebSecurityConfiguration(AuthEntryPointJwt unauthorizedHandler) {
         this.unauthorizedHandler = unauthorizedHandler;
     }
 
@@ -52,11 +43,10 @@ public class WebSecurityConfiguration {
         http.cors(Customizer.withDefaults());
         http.csrf(AbstractHttpConfigurer::disable);
         http.exceptionHandling((handling) -> handling.authenticationEntryPoint(unauthorizedHandler));
-//        http.sessionManagement((management) -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.authorizeHttpRequests((request) -> request.requestMatchers("/login", "/register", "/admin/login").permitAll().anyRequest().authenticated());
-
+        http.authorizeHttpRequests((request) ->
+                request.requestMatchers("/login", "/register", "/admin/login")
+                        .permitAll().anyRequest().authenticated());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
