@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="an" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -24,7 +24,14 @@
 <table th:if="${not #lists.isEmpty(olders)}">
     <tr th:each="older : ${olders}">
         <td>
-            <span th:text="${'Заказ №' + older.id + ' ' + older.date + ' ' + older.status }"></span>
+            <span th:text="${'Заказ №' + older.id + ' ' + older.date + ' ' older.status + ' '}"></span>
+            <form>
+                <select name="status">
+                    <option value="inprogress">Выполняется</option>
+                    <option value="done">Завершен</option>
+                </select>
+                <input type="submit" value="Изменить статус">
+            </form>
             <table th:if="${not #lists.isEmpty(older.shoesSet)}">
                 <tr th:each="shoe : ${older.shoesSet}">
                     <td>
