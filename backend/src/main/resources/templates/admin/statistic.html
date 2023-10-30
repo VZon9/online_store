@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,6 +9,15 @@
     a { color:#000000; text-decoration:none;}
     table { background-color: #DAE7E6; text-align: center}
     button {background-color: #DAE7E6}
+
+    .tab-btn-active {
+       pointer-events: none;
+       color: red;
+    }
+
+    .tab-pane:not(.tab-pane-show) {
+       display: none;
+    }
     </style>
 </head>
 <body>
@@ -20,5 +30,61 @@
     </tr>
 </table>
 <br>
+<div class="tab" id="tab-1">
+    <div class="tab-nav" align="center">
+        <button type="button" class="tab-btn tab-btn-active" data-target-id="0">Пользователи</button>
+        <button type="button" class="tab-btn" data-target-id="1">Модели</button>
+    </div>
+    <div class="tab-content" align="center">
+        <div class="tab-pane tab-pane-show" data-id="0">
+            Пользователи:
+            <table th:if="${not #lists.isEmpty(users)}">
+                <tr th:each="user : ${users}">
+                    <td>
+                        <span th:text="${user.id + ' ' + user.login + ' ' + user.email + ' ' + userSummBuy }"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="tab-pane" data-id="1">
+            Модели:
+            <table th:if="${not #lists.isEmpty(shoes)}">
+                <tr th:each="shoe : ${shoes}">
+                    <td>
+                        <span th:text="${shoe.model + ' ' + shoe.collor + ' ' + shoe.size + ' ' + modelNum }"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+  const showTab = (elTabBtn) => {
+    const elTab = elTabBtn.closest('.tab');
+    if (elTabBtn.classList.contains('tab-btn-active')) {
+      return;
+    }
+    const targetId = elTabBtn.dataset.targetId;
+    const elTabPane = elTab.querySelector(`.tab-pane[data-id="${targetId}"]`);
+    if (elTabPane) {
+      const elTabBtnActive = elTab.querySelector('.tab-btn-active');
+      elTabBtnActive.classList.remove('tab-btn-active');
+      const elTabPaneShow = elTab.querySelector('.tab-pane-show');
+      elTabPaneShow.classList.remove('tab-pane-show');
+      elTabBtn.classList.add('tab-btn-active');
+      elTabPane.classList.add('tab-pane-show');
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    if (e.target && !e.target.closest('.tab-btn')) {
+      return;
+    }
+    const elTabBtn = e.target.closest('.tab-btn');
+    showTab(elTabBtn);
+  });
+</script>
+
 </body>
 </html>
