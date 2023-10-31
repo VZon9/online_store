@@ -24,7 +24,7 @@
 <table th:if="${not #lists.isEmpty(olders)}">
     <tr th:each="older : ${olders}">
         <td>
-            <span th:text="${'Заказ №' + older.id + ' ' + older.date + ' ' older.status + ' '}"></span>
+            <span th:text="${'Заказ №' + older.id + ' ' + older.date + ' ' + older.status + ' '}"></span>
             <form>
                 <select name="status">
                     <option value="inprogress">Выполняется</option>
