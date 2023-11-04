@@ -1,10 +1,10 @@
 package ru.bbnshp.response;
 
-public class MassageResponse {
+public class MessageResponse {
 
     private String message;
 
-    public MassageResponse(String message) {
+    public MessageResponse(String message) {
         this.message = message;
     }
 

@@ -17,19 +17,22 @@ public class UserDetailsImpl implements UserDetails {
 
     private final String password;
 
+    private final String email;
+
     private final Set<GrantedAuthority> authorities;
 
-    private UserDetailsImpl(Integer id, String login, String password, Set<GrantedAuthority> authorities){
+    private UserDetailsImpl(Integer id, String login, String password, String email, Set<GrantedAuthority> authorities){
         this.id = id;
         this.login = login;
         this.password = password;
+        this.email = email;
         this.authorities = authorities;
     }
 
     public static UserDetailsImpl build(User user){
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole().name()));
-        return new UserDetailsImpl(user.getId(), user.getLogin(), user.getPassword(), authorities);
+        return new UserDetailsImpl(user.getId(), user.getLogin(), user.getPassword(), user.getEmail(), authorities);
     }
 
     public Integer getId(){
@@ -38,6 +41,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getLogin(){
         return this.login;
+    }
+
+    public String getEmail(){
+        return this.email;
     }
 
     @Override

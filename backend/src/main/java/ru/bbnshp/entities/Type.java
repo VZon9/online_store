@@ -1,9 +1,6 @@
 package ru.bbnshp.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -12,23 +9,23 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "brands")
-public class Brand {
+@Table(name = "shoe_types")
+public class Type {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "brand_id")
+    @Column(name = "type_id")
     private Integer id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
     private List<Shoe> shoesList = new ArrayList<>();
 
     private void addShoes(Shoe shoe){
         shoesList.add(shoe);
-        shoe.setBrand(this);
+        shoe.setType(this);
     }
 
     private void deleteShoes(Shoe shoe){
@@ -53,11 +50,11 @@ public class Brand {
     }
 
     @JsonIgnore
-    public List<Shoe> getShoes() {
+    public List<Shoe> getShoesList() {
         return shoesList;
     }
 
-    public void setShoes(List<Shoe> shoesSet) {
-        this.shoesList = shoesSet;
+    public void ListShoesList(List<Shoe> shoesList) {
+        this.shoesList = shoesList;
     }
 }
