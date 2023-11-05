@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Новая поставка</title>
+</head>
+<body>
+<br><br><br><br>
+<form th:action="@{/procurement/add}" align="center" method="POST">
+    <input name="idModel" type="number" id="idModel" class="form-control" placeholder="Model id" required/>
+    <br>
+    <br>
+    <input min="1" name="volume" type="number" id="volume" class="form-control" placeholder="Volume" required/>
+    <br>
+    <button type="submit" class="btn btn-light">Add an procurement</button>
+</form>
+<br>
+
+<p align="center"><button type="submit" class="btn btn-light"><a href = "shoes.html" style="text-decoration: none;">Return</a></button></p>
+
+</body>
+</html>
