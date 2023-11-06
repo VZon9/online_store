@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './style.css'
-import Card from "../card/Card";
+import PopularCard from "../popularCard/PopularCard";
 
 const Popular = () => {
     return (
@@ -11,9 +11,9 @@ const Popular = () => {
                 POPULAR PAIRS
             </div>
             <div className="popular_cards">
-                <Card/>
-                <Card/>
-                <Card/>
+                <PopularCard title = {'TITLE'} description = {'DESCRIPTION'} price = {'300$'}/>
+                <PopularCard title = {'TITLE'} description = {'DESCRIPTION'} price = {'300$'}/>
+                <PopularCard title = {'TITLE'} description = {'DESCRIPTION'} price = {'300$'}/>
             </div>
         </div>
     </section>

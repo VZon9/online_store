@@ -10,7 +10,9 @@ import Test from "./testPage/Test";
 import { useNavigate } from "react-router-dom";
 
 const ACCESS_TOKEN_KEY = "access_token"
-let errMessage = ""
+let regErrMessage = ""
+let logErrMessage = ''
+
 const AuthRoot = () => {
 
     const location = useLocation();
@@ -33,15 +35,19 @@ const AuthRoot = () => {
                 const response = await instance.post('login', userData)
                 localStorage.setItem(ACCESS_TOKEN_KEY, response.data.token)
                 console.log(response.data)
-                // navigate("/home")
+                logErrMessage = ''
+                regErrMessage = ''
+                localStorage.setItem("isAuth", 'true')
+                localStorage.setItem('username', data.login)
+                localStorage.setItem('email', response.data.email)
+                navigate("/home")
             }catch (error){
-                errMessage = error.response.data.message
+                logErrMessage = error.response.data.message
+                console.error(error.response.data.message)
             }
-
-
         }else if (location.pathname === '/register'){
             if (data.regPassword !== data.regRepeatPassword){
-                errMessage = 'Passwords dont match'
+                regErrMessage = 'Passwords dont match'
             }else{
                 const userData = {
                     email: data.regEmail,
@@ -50,27 +56,30 @@ const AuthRoot = () => {
                 }
                 try {
                     const response = await instance.post('register', userData)
-                    errMessage = ''
+                    regErrMessage = ''
+                    logErrMessage = ''
+                    localStorage.setItem('email', data.regEmail)
                     console.log(response)
+                    navigate("/login")
                 }catch (error){
-                    errMessage = error.response.data.message
-                    console.error(error.response.data)
+                    regErrMessage = error.response.data.message
+                    console.error(error.response.data.message)
                 }
             }
         }
-        else{
-            try {
-                const response = await instance.post('test', {},{headers: {
-                        Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
-                    }})
-                errMessage = '';
-                console.log("isAuth:", response.data)
-            }catch (error){
-
-                console.error("isAuth:", error.response.data)
-            }
-
-        }
+        // else{
+        //     try {
+        //         const response = await instance.post('test', {},{headers: {
+        //                 Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
+        //             }})
+        //         errMessage = '';
+        //         console.log("isAuth:", response.data)
+        //     }catch (error){
+        //
+        //         console.error("isAuth:", error.response.data)
+        //     }
+        //
+        // }
 
     }
 
@@ -87,8 +96,8 @@ const AuthRoot = () => {
                     boxShadow: '5px 5px 10px #ccc',
                     width: '30%',
                 }}>
-                    {location.pathname === '/login' ? <LoginPage register = {register} errors = {errors} watch = {watch} errMessage = {errMessage} reset = {reset}/> : location.pathname === '/register' ?
-                        <RegisterPage register = {register} errors = {errors} watch = {watch} errMessage={errMessage}/> : location.pathname === '/test' ? <Test /> : null}
+                    {location.pathname === '/login' ? <LoginPage register = {register} errors = {errors} watch = {watch} errMessage = {logErrMessage} reset = {reset}/> : location.pathname === '/register' ?
+                        <RegisterPage register = {register} errors = {errors} watch = {watch} errMessage={regErrMessage}/> : location.pathname === '/test' ? <Test /> : null}
                 </Box>
             </form>
 

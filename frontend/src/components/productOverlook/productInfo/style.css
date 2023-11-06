@@ -1,0 +1,24 @@
+.product_info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.product_brandname{
+    letter-spacing: 5px;
+    font-weight: 900;
+    font-size:34px;
+    line-height: 60px;
+    text-transform: uppercase;
+}
+.product_modelname{
+    margin-bottom: 30px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 40px;
+    letter-spacing: 0.02em;
+    color: #8E8E8E;
+}
+.sizes_text{
+    font-weight: 500;
+    font-size: 14px;
+}

@@ -1,0 +1,4 @@
+.product_overlook_box{
+    display: flex;
+    justify-content: space-between;
+}

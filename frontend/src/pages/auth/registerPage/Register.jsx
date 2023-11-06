@@ -64,11 +64,6 @@ const RegisterPage = (props) => {
                     message:"Invalid data"
                 })}
             />
-            {/*<TextField type="password"  fullWidth={true}  margin="normal" label="password" variant="outlined" placeholder="re-enter your password here"*/}
-            {/*           {...register("password",{*/}
-            {/*               required:"this field is required"*/}
-            {/*           })}*/}
-            {/*/>*/}
             <Button variant="contained"  sx = {{width: '60%', margin: '0 auto', display: "flex"}} color = "secondary" type = "submit" disabled = {watch("regEmail", '') === '' || watch("regLogin", '') === '' || watch("regPassword", '') === ''}>
                 sign up
             </Button>
