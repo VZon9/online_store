@@ -44,7 +44,7 @@ public class WebSecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable);
         http.exceptionHandling((handling) -> handling.authenticationEntryPoint(unauthorizedHandler));
         http.authorizeHttpRequests((request) ->
-                request.requestMatchers("/login", "/register", "/getProducts", "/getProduct","/admin/login", "/admin/test")
+                request.requestMatchers("/login", "/register", "/getProducts", "/getProduct","/getFilteredProducts","/admin/login", "/admin/test")
                         .permitAll().anyRequest().authenticated());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

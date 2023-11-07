@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import ru.bbnshp.dto.FilterDto;
 import ru.bbnshp.dto.LoginUserDto;
 import ru.bbnshp.dto.RegisterUserDto;
 import ru.bbnshp.dto.ShoeIdDto;
@@ -21,7 +22,6 @@ import ru.bbnshp.response.JwtResponse;
 import ru.bbnshp.response.MessageResponse;
 import ru.bbnshp.services.UserDetailsImpl;
 import ru.bbnshp.utils.JwtUtils;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -109,6 +109,9 @@ public class UserController {
 
     @PostMapping("/getProduct")
     public ResponseEntity<?> getProduct(@RequestBody ShoeIdDto shoeDto){
+        if(shoeDto.getId() == null){
+            return ResponseEntity.badRequest().body(new MessageResponse("Shoe id must not be null"));
+        }
         Optional<Shoe> shoeOptional = shoeRepository.findById(shoeDto.getId());
         if(shoeOptional.isPresent()){
             Shoe shoe = shoeOptional.get();
@@ -117,5 +120,15 @@ public class UserController {
         else{
             return ResponseEntity.badRequest().body(new MessageResponse("Shoe with this id doesn't exist"));
         }
+    }
+
+    @PostMapping("/getFilteredProducts")
+    public ResponseEntity<?> getFilteredProduct(@RequestBody FilterDto filter){
+        List<String> colorList = filter.getColors();
+        if(colorList != null){
+            List<Shoe> shoeList = shoeRepository.findByColorIn(colorList);
+            return ResponseEntity.ok(shoeList);
+        }
+        else return ResponseEntity.badRequest().body(new MessageResponse("Color list is null"));
     }
 }

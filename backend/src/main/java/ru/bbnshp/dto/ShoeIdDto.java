@@ -8,7 +8,7 @@ public class ShoeIdDto {
         return id;
     }
 
-    public void setIdShoe(Integer idShoe) {
-        this.id = idShoe;
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
