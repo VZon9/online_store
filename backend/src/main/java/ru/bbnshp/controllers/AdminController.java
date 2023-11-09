@@ -105,7 +105,6 @@ public class AdminController {
         Shoe shoe = new Shoe();
         Brand brand = brandRepository.findByName(shoeBrand);
         shoe.setBrand(brand);
-        shoe.setModel(shoesModel);
         shoe.setSize(size);
         shoe.setColor(color);
         shoe.setPrice(price);
@@ -168,5 +167,10 @@ public class AdminController {
         SecurityContextHolder.setContext(context);
         securityContextRepository.saveContext(context, request, response);
         return "redirect:/admin/shoes";
+    }
+
+    @GetMapping("/test")
+    String test(){
+        return "test";
     }
 }

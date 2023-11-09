@@ -14,9 +14,6 @@ public class Shoe {
     @Column(name = "shoes_id")
     private Integer id;
 
-    @Column(name = "model")
-    private String model;
-
     @Column(name = "size")
     private Integer size;
 
@@ -35,9 +32,20 @@ public class Shoe {
     @Column(name = "bought_num")
     private Integer boughtNum;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @Column(name = "sex")
+    @Enumerated(value = EnumType.STRING)
+    private Sex sex;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_id")
+    private Type type;
+
+    @Column(name = "name")
+    private String name;
 
     @ManyToMany(mappedBy = "shoesSet")
     private Set<Order> orderSet = new HashSet<>();
@@ -56,14 +64,6 @@ public class Shoe {
 
     public void setSize(Integer size) {
         this.size = size;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
     }
 
     public String getColor() {
@@ -109,9 +109,31 @@ public class Shoe {
     public Brand getBrand() {
         return brand;
     }
-
     public void setBrand(Brand brand) {
         this.brand = brand;
+    }
+    public Sex getSex() {
+        return sex;
+    }
+
+    public void setSex(Sex sex) {
+        this.sex = sex;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<Order> getOrderSet() {
