@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Добавление обуви</title>
@@ -40,7 +40,7 @@
 </form>
 <br>
 
-<p align="center"><button type="submit" class="btn btn-light"><a href = "shoes.html" style="text-decoration: none;">Return</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{admin/shoes}" style="text-decoration: none;">Return</a></button></p>
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="an" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:ht="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Добавление бренда</title>
@@ -20,9 +20,17 @@
   <button type="submit" class="btn btn-light">Add an brand</button>
 </form>
 <span th:if="${nameError}" align="center">Брэнд с таким именем уже существует</span>
+<span th:if="${success}" align="center">Новый брэнд добавлен</span>
 <br>
 
-<p align="center"><button type="submit" class="btn btn-light"><a href = "/admin/shoes" style="text-decoration: none;">Return</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes}" style="text-decoration: none;">Return</a></button></p>
+<br>
+<p>Спискок брэндов обуви</p>
+<ul th:each="brand : ${brandList}">
+  <li>
+    <span th:text="${brand.name}"></span>
+  </li>
+</ul>
 
 </body>
 </html>

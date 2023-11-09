@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -23,8 +23,8 @@
         </tr>
     </table>
 <br>
-<p align="center"><button type="submit" class="btn btn-light"><a href = "shoesAdd.html" style="text-decoration: none;">Add a new shoes</a></button></p>
-<p align="center"><button type="submit" class="btn btn-light"><a href = "brandAdd.html" style="text-decoration: none;">Add a new brand</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes/add}" style="text-decoration: none;">Add a new shoes</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/brand/add}" style="text-decoration: none;">Add a new brand</a></button></p>
 
     <br>
 <table th:if="${not #lists.isEmpty(shoes)}">

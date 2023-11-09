@@ -14,9 +14,6 @@ public class Shoe {
     @Column(name = "shoes_id")
     private Integer id;
 
-    @Column(name = "size")
-    private Integer size;
-
     @Column(name = "color")
     private String color;
 
@@ -50,20 +47,15 @@ public class Shoe {
     @ManyToMany(mappedBy = "shoesSet")
     private Set<Order> orderSet = new HashSet<>();
 
+    @ManyToMany(mappedBy = "shoesSet")
+    private Set<Size> sizeSet = new HashSet<>();
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
     }
 
     public String getColor() {
@@ -142,5 +134,13 @@ public class Shoe {
 
     public void setOrderSet(Set<Order> orderSet) {
         this.orderSet = orderSet;
+    }
+
+    public Set<Size> getSizeSet() {
+        return sizeSet;
+    }
+
+    public void setSizeSet(Set<Size> sizeSet) {
+        this.sizeSet = sizeSet;
     }
 }

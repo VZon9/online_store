@@ -79,20 +79,10 @@ public class AdminController {
     String getShoesAddProcess(@RequestParam(name = "model") String shoesModel,
                               @RequestParam(name = "brand") String shoeBrand,
                               @RequestParam(name = "color") String color,
-                              @RequestParam(name = "size") Integer size,
                               @RequestParam(name = "price") Integer price,
                               @RequestParam(name = "num") Integer num,
                               @RequestParam(name = "description") String description,
                               Model model){
-        if(size <= 0){
-            model.addAttribute("sizeError", true);
-            List<String> brands = new ArrayList<>();
-            for(Brand brand: brandRepository.findAll()){
-                brands.add(brand.getName());
-            }
-            model.addAttribute("brands", brands);
-            return "shoesAdd";
-        }
         if(num <= 0){
             model.addAttribute("numError", true);
             List<String> brands = new ArrayList<>();
@@ -105,7 +95,6 @@ public class AdminController {
         Shoe shoe = new Shoe();
         Brand brand = brandRepository.findByName(shoeBrand);
         shoe.setBrand(brand);
-        shoe.setSize(size);
         shoe.setColor(color);
         shoe.setPrice(price);
         shoe.setDescription(description);
@@ -116,21 +105,26 @@ public class AdminController {
     }
 
     @GetMapping("/brand/add")
-    String getBrandAdd(){
+    String getBrandAdd(Model model){
+        List<Brand> brands = brandRepository.findAll();
+        model.addAttribute("brandList", brands);
         return "brandAdd";
     }
 
     @PostMapping("/brand/add")
     String getBrandAddProcess(@RequestParam(name = "name") String name, Model model){
-        if(brandRepository.existsByName(name)){
+        List<Brand> brands = brandRepository.findAll();
+        model.addAttribute("brandList", brands);
+        String nameUp = name.toUpperCase();
+        if(brandRepository.existsByName(nameUp)){
             model.addAttribute("nameError", true);
             return "brandAdd";
         }
         Brand brand = new Brand();
-        brand.setName(name);
+        brand.setName(nameUp);
         brandRepository.save(brand);
-        return "redirect:/admin/brand/add";
-
+        model.addAttribute("success", true);
+        return "brandAdd";
     }
 
     @GetMapping("/login")
@@ -167,10 +161,5 @@ public class AdminController {
         SecurityContextHolder.setContext(context);
         securityContextRepository.saveContext(context, request, response);
         return "redirect:/admin/shoes";
-    }
-
-    @GetMapping("/test")
-    String test(){
-        return "test";
     }
 }
