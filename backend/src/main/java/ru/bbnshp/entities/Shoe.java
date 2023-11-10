@@ -2,7 +2,6 @@ package ru.bbnshp.entities;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,9 +22,6 @@ public class Shoe {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "num")
-    private Integer remainingNum;
-
     @Column(name = "bought_num")
     private Integer boughtNum;
 
@@ -45,10 +41,10 @@ public class Shoe {
     private String name;
 
     @ManyToMany(mappedBy = "shoesSet")
-    private Set<Order> orderSet = new HashSet<>();
+    private Set<Order> orderSet;
 
-    @ManyToMany(mappedBy = "shoesSet")
-    private Set<Size> sizeSet = new HashSet<>();
+    @OneToMany(mappedBy = "shoe")
+    private Set<ShoeSize> sizeSet;
 
     public Integer getId() {
         return id;
@@ -80,14 +76,6 @@ public class Shoe {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getRemainingNum() {
-        return remainingNum;
-    }
-
-    public void setRemainingNum(Integer num) {
-        this.remainingNum = num;
     }
 
     public Integer getBoughtNum() {
@@ -136,11 +124,11 @@ public class Shoe {
         this.orderSet = orderSet;
     }
 
-    public Set<Size> getSizeSet() {
+    public Set<ShoeSize> getSizeSet() {
         return sizeSet;
     }
 
-    public void setSizeSet(Set<Size> sizeSet) {
+    public void setSizeSet(Set<ShoeSize> sizeSet) {
         this.sizeSet = sizeSet;
     }
 }

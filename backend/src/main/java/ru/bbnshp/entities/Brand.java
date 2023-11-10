@@ -24,7 +24,7 @@ public class Brand {
     private String name;
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
-    private List<Shoe> shoesList = new ArrayList<>();
+    private List<Shoe> shoesList;
 
     private void addShoes(Shoe shoe){
         shoesList.add(shoe);

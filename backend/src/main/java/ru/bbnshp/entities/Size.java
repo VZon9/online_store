@@ -13,9 +13,8 @@ public class Size {
     @Column(name = "size_value")
     Integer value;
 
-    @ManyToMany
-    @JoinTable(name = "shoes_sizes", joinColumns = @JoinColumn(name = "size"), inverseJoinColumns = @JoinColumn(name = "shoes_id"))
-    private Set<Shoe> shoesSet = new HashSet<>();
+    @OneToMany(mappedBy = "size")
+    private Set<ShoeSize> sizeSet;
 
     public Integer getValue() {
         return value;
@@ -25,11 +24,11 @@ public class Size {
         this.value = value;
     }
 
-    public Set<Shoe> getShoesSet() {
-        return shoesSet;
+    public Set<ShoeSize> getSizeSet() {
+        return sizeSet;
     }
 
-    public void setShoesSet(Set<Shoe> shoesSet) {
-        this.shoesSet = shoesSet;
+    public void setSizeSet(Set<ShoeSize> sizeSet) {
+        this.sizeSet = sizeSet;
     }
 }

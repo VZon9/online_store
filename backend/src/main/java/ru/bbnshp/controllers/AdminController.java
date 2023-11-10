@@ -98,7 +98,6 @@ public class AdminController {
         shoe.setColor(color);
         shoe.setPrice(price);
         shoe.setDescription(description);
-        shoe.setRemainingNum(num);
         shoe.setBoughtNum(0);
         shoeRepository.save(shoe);
         return "redirect:/admin/shoes/add";
