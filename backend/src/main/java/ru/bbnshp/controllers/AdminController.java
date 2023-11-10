@@ -18,14 +18,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.bbnshp.entities.Brand;
-import ru.bbnshp.entities.Shoe;
-import ru.bbnshp.entities.UserRole;
+import ru.bbnshp.entities.*;
 import ru.bbnshp.repositories.BrandRepository;
 import ru.bbnshp.repositories.ShoeRepository;
+import ru.bbnshp.repositories.TypeRepository;
 import ru.bbnshp.repositories.UserRepository;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,16 +43,21 @@ public class AdminController {
     @Autowired
     private final ShoeRepository shoeRepository;
 
+    @Autowired
+    private final TypeRepository typeRepository;
+
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     public AdminController(AuthenticationManager authenticationManager,
                            UserRepository userRepository,
                            BrandRepository brandRepository,
-                           ShoeRepository shoeRepository) {
+                           ShoeRepository shoeRepository,
+                           TypeRepository typeRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.brandRepository = brandRepository;
         this.shoeRepository = shoeRepository;
+        this.typeRepository = typeRepository;
     }
 
     @GetMapping("/shoes")
@@ -67,46 +71,55 @@ public class AdminController {
 
     @GetMapping("/shoes/add")
     String getShoesAdd(Model model){
-        List<String> brands = new ArrayList<>();
-        for(Brand brand: brandRepository.findAll()){
-            brands.add(brand.getName());
-        }
-        model.addAttribute("brands", brands);
+        model.addAttribute("brandList", brandRepository.findAll());
+        model.addAttribute("typeList", typeRepository.findAll());
+        model.addAttribute("sexList", Arrays.asList(Sex.values()));
         return "shoesAdd";
     }
 
     @PostMapping("/shoes/add")
-    String getShoesAddProcess(@RequestParam(name = "model") String shoesModel,
+    String getShoesAddProcess(@RequestParam(name = "type") String shoesType,
                               @RequestParam(name = "brand") String shoeBrand,
+                              @RequestParam(name = "sex") Sex sex,
+                              @RequestParam(name = "name") String name,
                               @RequestParam(name = "color") String color,
                               @RequestParam(name = "price") Integer price,
-                              @RequestParam(name = "num") Integer num,
                               @RequestParam(name = "description") String description,
                               Model model){
-        if(num <= 0){
-            model.addAttribute("numError", true);
-            List<String> brands = new ArrayList<>();
-            for(Brand brand: brandRepository.findAll()){
-                brands.add(brand.getName());
-            }
-            model.addAttribute("brands", brands);
+        model.addAttribute("brandList", brandRepository.findAll());
+        model.addAttribute("typeList", typeRepository.findAll());
+        model.addAttribute("sexList", Arrays.asList(Sex.values()));
+        if(!typeRepository.existsByName(shoesType)){
+            model.addAttribute("existTypeErr", true);
+            return "shoeAdd";
+        }
+        if(!brandRepository.existsByName(shoeBrand)){
+            model.addAttribute("existBrandErr", true);
+            return "shoesAdd";
+        }
+        if(price <= 0){
+            model.addAttribute("priceError", true);
             return "shoesAdd";
         }
         Shoe shoe = new Shoe();
         Brand brand = brandRepository.findByName(shoeBrand);
+        Type type = typeRepository.findByName(shoesType);
+        shoe.setType(type);
         shoe.setBrand(brand);
+        shoe.setSex(sex);
+        shoe.setName(name);
         shoe.setColor(color);
         shoe.setPrice(price);
         shoe.setDescription(description);
         shoe.setBoughtNum(0);
         shoeRepository.save(shoe);
-        return "redirect:/admin/shoes/add";
+        model.addAttribute("success", true);
+        return "shoesAdd";
     }
 
     @GetMapping("/brand/add")
     String getBrandAdd(Model model){
-        List<Brand> brands = brandRepository.findAll();
-        model.addAttribute("brandList", brands);
+        model.addAttribute("brandList", brandRepository.findAll());
         return "brandAdd";
     }
 
