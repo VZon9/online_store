@@ -19,14 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.bbnshp.entities.*;
-import ru.bbnshp.repositories.BrandRepository;
-import ru.bbnshp.repositories.ShoeRepository;
-import ru.bbnshp.repositories.TypeRepository;
-import ru.bbnshp.repositories.UserRepository;
+import ru.bbnshp.repositories.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -46,18 +41,27 @@ public class AdminController {
     @Autowired
     private final TypeRepository typeRepository;
 
+    @Autowired
+    private final ShoeSizeRepository shoeSizeRepository;
+    @Autowired
+    private final SizeRepository sizeRepository;
+
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     public AdminController(AuthenticationManager authenticationManager,
                            UserRepository userRepository,
                            BrandRepository brandRepository,
                            ShoeRepository shoeRepository,
-                           TypeRepository typeRepository) {
+                           TypeRepository typeRepository,
+                           ShoeSizeRepository shoeSizeRepository,
+                           SizeRepository sizeRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.brandRepository = brandRepository;
         this.shoeRepository = shoeRepository;
         this.typeRepository = typeRepository;
+        this.shoeSizeRepository = shoeSizeRepository;
+        this.sizeRepository = sizeRepository;
     }
 
     @GetMapping("/shoes")
@@ -112,6 +116,16 @@ public class AdminController {
         shoe.setPrice(price);
         shoe.setDescription(description);
         shoe.setBoughtNum(0);
+        shoeRepository.save(shoe);
+
+        shoe = shoeRepository.getReferenceById(shoeRepository.findAll().size());
+        for(Size size: sizeRepository.findAll()){
+            ShoeSize shoeSize = new ShoeSize();
+            shoeSize.setSize(size);
+            shoeSize.setExistingNum(0);
+            shoe.addSize(shoeSize);
+            shoeSizeRepository.save(shoeSize);
+        }
         shoeRepository.save(shoe);
         model.addAttribute("success", true);
         return "shoesAdd";

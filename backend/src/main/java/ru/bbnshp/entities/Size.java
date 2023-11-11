@@ -14,7 +14,7 @@ public class Size {
     Integer value;
 
     @OneToMany(mappedBy = "size")
-    private Set<ShoeSize> sizeSet;
+    private Set<ShoeSize> sizeSet = new HashSet<>();
 
     public Integer getValue() {
         return value;

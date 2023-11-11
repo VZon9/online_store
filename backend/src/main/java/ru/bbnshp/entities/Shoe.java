@@ -2,6 +2,7 @@ package ru.bbnshp.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -41,10 +42,20 @@ public class Shoe {
     private String name;
 
     @ManyToMany(mappedBy = "shoesSet")
-    private Set<Order> orderSet;
+    private Set<Order> orderSet = new HashSet<>();
 
     @OneToMany(mappedBy = "shoe")
-    private Set<ShoeSize> sizeSet;
+    private Set<ShoeSize> sizeSet = new HashSet<>();
+
+    public void addSize(ShoeSize size){
+        sizeSet.add(size);
+        size.setShoe(this);
+    }
+
+    public void deleteSize(ShoeSize size){
+        sizeSet.remove(size);
+        size.setShoe(null);
+    }
 
     public Integer getId() {
         return id;

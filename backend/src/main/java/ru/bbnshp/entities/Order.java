@@ -27,7 +27,7 @@ public class Order {
 
     @ManyToMany
     @JoinTable(name = "orders_shoes", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "shoes_id"))
-    private Set<Shoe> shoesSet;
+    private Set<Shoe> shoesSet = new HashSet<>();
 
     public void addShoes(Shoe shoe){
         shoesSet.add(shoe);

@@ -30,17 +30,4 @@ public class ShoeSizeKey implements Serializable {
     public void setSize(Integer size) {
         this.size = size;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ShoeSizeKey that = (ShoeSizeKey) o;
-        return Objects.equals(shoeId, that.shoeId) && Objects.equals(size, that.size);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(shoeId, size);
-    }
 }

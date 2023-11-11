@@ -6,28 +6,27 @@ import ru.bbnshp.entities.composite_key.ShoeSizeKey;
 @Entity
 @Table(name = "shoes_sizes")
 public class ShoeSize {
-
-    @EmbeddedId
-    private ShoeSizeKey id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
 
     @ManyToOne
-    @MapsId("shoeId")
     @JoinColumn(name = "shoes_id")
     private Shoe shoe;
 
     @ManyToOne
-    @MapsId("size")
     @JoinColumn(name = "size")
     private Size size;
 
     @Column(name = "num")
     private Integer existingNum;
 
-    public ShoeSizeKey getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(ShoeSizeKey id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

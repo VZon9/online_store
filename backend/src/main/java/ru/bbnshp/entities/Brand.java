@@ -24,15 +24,15 @@ public class Brand {
     private String name;
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
-    private List<Shoe> shoesList;
+    private Set<Shoe> shoesSet= new HashSet<>();
 
     private void addShoes(Shoe shoe){
-        shoesList.add(shoe);
+        shoesSet.add(shoe);
         shoe.setBrand(this);
     }
 
     private void deleteShoes(Shoe shoe){
-        shoesList.remove(shoe);
+        shoesSet.remove(shoe);
         shoe.setBrand(null);
     }
 
@@ -53,11 +53,11 @@ public class Brand {
     }
 
     @JsonIgnore
-    public List<Shoe> getShoes() {
-        return shoesList;
+    public Set<Shoe> getShoes() {
+        return shoesSet;
     }
 
-    public void setShoes(List<Shoe> shoesSet) {
-        this.shoesList = shoesSet;
+    public void setShoes(Set<Shoe> shoesSet) {
+        this.shoesSet = shoesSet;
     }
 }

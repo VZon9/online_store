@@ -3,9 +3,7 @@ package ru.bbnshp.entities;
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,15 +19,15 @@ public class Type {
     private String name;
 
     @OneToMany(mappedBy = "type", cascade = CascadeType.ALL)
-    private List<Shoe> shoesList = new ArrayList<>();
+    private Set<Shoe> shoesSet = new HashSet<>();
 
     private void addShoes(Shoe shoe){
-        shoesList.add(shoe);
+        shoesSet.add(shoe);
         shoe.setType(this);
     }
 
     private void deleteShoes(Shoe shoe){
-        shoesList.remove(shoe);
+        shoesSet.remove(shoe);
         shoe.setBrand(null);
     }
 
@@ -50,11 +48,11 @@ public class Type {
     }
 
     @JsonIgnore
-    public List<Shoe> getShoesList() {
-        return shoesList;
+    public Set<Shoe> getShoesList() {
+        return shoesSet;
     }
 
-    public void ListShoesList(List<Shoe> shoesList) {
-        this.shoesList = shoesList;
+    public void setShoesSet(Set<Shoe> shoesSet) {
+        this.shoesSet = shoesSet;
     }
 }
