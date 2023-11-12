@@ -1,7 +1,6 @@
 package ru.bbnshp.entities;
 
 import jakarta.persistence.*;
-import ru.bbnshp.entities.composite_key.ShoeSizeKey;
 
 @Entity
 @Table(name = "shoes_sizes")
