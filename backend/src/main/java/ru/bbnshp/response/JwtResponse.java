@@ -3,7 +3,6 @@ package ru.bbnshp.response;
 public class JwtResponse {
     private String token;
     private final String type = "Barer";
-
     private Integer id;
 
     private String login;

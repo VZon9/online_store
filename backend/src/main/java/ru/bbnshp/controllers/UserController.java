@@ -7,13 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.bbnshp.dto.FilterDto;
-import ru.bbnshp.dto.LoginUserDto;
-import ru.bbnshp.dto.RegisterUserDto;
-import ru.bbnshp.dto.ShoeIdDto;
+import ru.bbnshp.dto.*;
+import ru.bbnshp.entities.Basket;
 import ru.bbnshp.entities.Shoe;
 import ru.bbnshp.entities.User;
 import ru.bbnshp.entities.UserRole;
+import ru.bbnshp.repositories.BasketRepository;
 import ru.bbnshp.repositories.BrandRepository;
 import ru.bbnshp.repositories.ShoeRepository;
 import ru.bbnshp.repositories.UserRepository;
@@ -22,6 +21,8 @@ import ru.bbnshp.response.JwtResponse;
 import ru.bbnshp.response.MessageResponse;
 import ru.bbnshp.services.UserDetailsImpl;
 import ru.bbnshp.utils.JwtUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -41,6 +42,9 @@ public class UserController {
     private final BrandRepository brandRepository;
 
     @Autowired
+    private final BasketRepository basketRepository;
+
+    @Autowired
     private final AuthenticationManager authenticationManager;
 
     @Autowired
@@ -48,10 +52,16 @@ public class UserController {
     private final Pattern emailPattern = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
 
-    public UserController(UserRepository userRepository, ShoeRepository shoeRepository, BrandRepository brandRepository, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public UserController(UserRepository userRepository,
+                          ShoeRepository shoeRepository,
+                          BrandRepository brandRepository,
+                          BasketRepository basketRepository,
+                          AuthenticationManager authenticationManager,
+                          JwtUtils jwtUtils) {
         this.userRepository = userRepository;
         this.shoeRepository = shoeRepository;
         this.brandRepository = brandRepository;
+        this.basketRepository = basketRepository;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
     }
@@ -130,5 +140,35 @@ public class UserController {
             return ResponseEntity.ok(shoeList);
         }
         else return ResponseEntity.badRequest().body(new MessageResponse("Color list is null"));
+    }
+
+    @PostMapping("/basketAdd")
+    public ResponseEntity<?> basketAdd(@RequestBody ShoeToBasketDto dto){
+        if(!shoeRepository.existsById(dto.getShoeId())){
+            return ResponseEntity.badRequest().body(new MessageResponse("Shoe with this id doesn't exist"));
+        }
+        if(!userRepository.existsById(dto.getUserId())){
+            return ResponseEntity.badRequest().body(new MessageResponse("User with this id doesn't exist"));
+        }
+        User user = userRepository.getReferenceById(dto.getUserId());
+        Shoe shoe = shoeRepository.getReferenceById(dto.getShoeId());
+        Basket basket = new Basket();
+        basket.setShoe(shoe);
+        user.addBasket(basket);
+        userRepository.save(user);
+        return ResponseEntity.ok(shoe);
+    }
+
+    @PostMapping("/getBasket")
+    public ResponseEntity<?> getBasket(@RequestBody UserIdDto userId){
+        if(!userRepository.existsById(userId.getUserId())){
+            return ResponseEntity.badRequest().body(new MessageResponse("User with this id doesn't exist"));
+        }
+        List<Basket> basketList = basketRepository.findByUserId(userId.getUserId());
+        List<Shoe> shoeList = new ArrayList<>();
+        for(Basket basket: basketList){
+            shoeList.add(basket.getShoe());
+        }
+        return ResponseEntity.ok(shoeList);
     }
 }
