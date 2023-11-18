@@ -1,6 +1,6 @@
-package ru.bbnshp.dto;
+package ru.bbnshp.request;
 
-public class UserIdDto {
+public class UserIdRequest {
 
     private Integer userId;
 

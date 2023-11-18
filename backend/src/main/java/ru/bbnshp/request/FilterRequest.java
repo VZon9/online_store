@@ -1,10 +1,10 @@
-package ru.bbnshp.dto;
+package ru.bbnshp.request;
 
 import ru.bbnshp.entities.Sex;
 
 import java.util.List;
 
-public class FilterDto {
+public class FilterRequest {
 
     private List<String> brands;
 

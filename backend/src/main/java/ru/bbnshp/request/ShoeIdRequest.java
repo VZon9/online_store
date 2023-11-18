@@ -1,6 +1,6 @@
-package ru.bbnshp.dto;
+package ru.bbnshp.request;
 
-public class ShoeIdDto {
+public class ShoeIdRequest {
 
     private Integer id;
 

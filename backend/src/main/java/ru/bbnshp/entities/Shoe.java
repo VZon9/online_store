@@ -1,6 +1,5 @@
 package ru.bbnshp.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -44,8 +43,7 @@ public class Shoe {
 
     @ManyToMany(mappedBy = "shoesSet")
     private Set<Order> orderSet = new HashSet<>();
-
-    @OneToMany(mappedBy = "shoe")
+    @OneToMany(mappedBy = "shoe",  cascade = CascadeType.ALL)
     private Set<ShoeSize> sizeSet = new HashSet<>();
 
     public void addSize(ShoeSize size){

@@ -11,7 +11,7 @@ public class Size {
 
     @Id
     @Column(name = "size_value")
-    Integer value;
+    private Integer value;
 
     @OneToMany(mappedBy = "size")
     private Set<ShoeSize> sizeSet = new HashSet<>();

@@ -14,14 +14,14 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.bbnshp.mapper.BrandMapper;
+import ru.bbnshp.mapper.TypeMapper;
 import ru.bbnshp.entities.*;
 import ru.bbnshp.repositories.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -75,8 +75,8 @@ public class AdminController {
 
     @GetMapping("/shoes/add")
     String getShoesAdd(Model model){
-        model.addAttribute("brandList", brandRepository.findAll());
-        model.addAttribute("typeList", typeRepository.findAll());
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
+        model.addAttribute("typeList", typeRepository.findAll().stream().map(TypeMapper::toTypeDto).collect(Collectors.toList()));
         model.addAttribute("sexList", Arrays.asList(Sex.values()));
         return "shoesAdd";
     }
@@ -90,8 +90,8 @@ public class AdminController {
                               @RequestParam(name = "price") Integer price,
                               @RequestParam(name = "description") String description,
                               Model model){
-        model.addAttribute("brandList", brandRepository.findAll());
-        model.addAttribute("typeList", typeRepository.findAll());
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
+        model.addAttribute("typeList", typeRepository.findAll().stream().map(TypeMapper::toTypeDto).collect(Collectors.toList()));
         model.addAttribute("sexList", Arrays.asList(Sex.values()));
         if(!typeRepository.existsByName(shoesType)){
             model.addAttribute("existTypeErr", true);
@@ -117,14 +117,11 @@ public class AdminController {
         shoe.setDescription(description);
         shoe.setBoughtNum(0);
         shoeRepository.save(shoe);
-
-        shoe = shoeRepository.getReferenceById(shoeRepository.findAll().size());
         for(Size size: sizeRepository.findAll()){
             ShoeSize shoeSize = new ShoeSize();
             shoeSize.setSize(size);
             shoeSize.setExistingNum(0);
             shoe.addSize(shoeSize);
-            shoeSizeRepository.save(shoeSize);
         }
         shoeRepository.save(shoe);
         model.addAttribute("success", true);
@@ -133,14 +130,12 @@ public class AdminController {
 
     @GetMapping("/brand/add")
     String getBrandAdd(Model model){
-        model.addAttribute("brandList", brandRepository.findAll());
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
         return "brandAdd";
     }
 
     @PostMapping("/brand/add")
     String getBrandAddProcess(@RequestParam(name = "name") String name, Model model){
-        List<Brand> brands = brandRepository.findAll();
-        model.addAttribute("brandList", brands);
         String nameUp = name.toUpperCase();
         if(brandRepository.existsByName(nameUp)){
             model.addAttribute("nameError", true);
@@ -150,6 +145,7 @@ public class AdminController {
         brand.setName(nameUp);
         brandRepository.save(brand);
         model.addAttribute("success", true);
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
         return "brandAdd";
     }
 

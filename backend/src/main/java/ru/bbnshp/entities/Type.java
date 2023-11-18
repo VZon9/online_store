@@ -1,6 +1,6 @@
 package ru.bbnshp.entities;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -47,7 +47,6 @@ public class Type {
         this.name = name;
     }
 
-    @JsonIgnore
     public Set<Shoe> getShoesList() {
         return shoesSet;
     }
