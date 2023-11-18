@@ -2,8 +2,8 @@ package ru.bbnshp.dto;
 
 import ru.bbnshp.entities.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
 
 public class ShoeDto {
 
@@ -23,10 +23,10 @@ public class ShoeDto {
 
     private String name;
 
-    private Set<ShoeSizeDto> sizeSet;
+    private List<ShoeSizeDto> sizeList;
 
     public ShoeDto(Integer id, String color, Integer price, String description,
-                   BrandDto brand, Sex sex, TypeDto type, String name, Set<ShoeSizeDto> sizeSet) {
+                   BrandDto brand, Sex sex, TypeDto type, String name, List<ShoeSizeDto> sizeList) {
         this.id = id;
         this.color = color;
         this.price = price;
@@ -35,7 +35,7 @@ public class ShoeDto {
         this.sex = sex;
         this.type = type;
         this.name = name;
-        this.sizeSet = sizeSet;
+        this.sizeList = sizeList;
     }
 
     public Integer getId() {
@@ -102,11 +102,11 @@ public class ShoeDto {
         this.name = name;
     }
 
-    public Set<ShoeSizeDto> getSizeSet() {
-        return sizeSet;
+    public List<ShoeSizeDto> getSizeList() {
+        return sizeList;
     }
 
-    public void setSizeSet(Set<ShoeSizeDto> sizeSet) {
-        this.sizeSet = sizeSet;
+    public void setSizeList(List<ShoeSizeDto> sizeList) {
+        this.sizeList = sizeList;
     }
 }

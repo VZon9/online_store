@@ -23,8 +23,9 @@
         </tr>
     </table>
 <br>
-<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes/add}" style="text-decoration: none;">Add a new shoes</a></button></p>
-<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/brand/add}" style="text-decoration: none;">Add a new brand</a></button></p>
+    <p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes/add}" style="text-decoration: none;">Add a new shoes</a></button></p>
+    <p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/brand/add}" style="text-decoration: none;">Add a new brand</a></button></p>
+    <p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/procurement}" style="text-decoration: none;">Add a new procurement</a></button></p>
 
     <br>
 <table th:if="${not #lists.isEmpty(shoes)}">

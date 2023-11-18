@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.bbnshp.mapper.BrandMapper;
+import ru.bbnshp.mapper.ShoeMapper;
 import ru.bbnshp.mapper.TypeMapper;
 import ru.bbnshp.entities.*;
 import ru.bbnshp.repositories.*;
@@ -117,11 +118,35 @@ public class AdminController {
         shoe.setDescription(description);
         shoe.setBoughtNum(0);
         shoeRepository.save(shoe);
-        for(Size size: sizeRepository.findAll()){
-            ShoeSize shoeSize = new ShoeSize();
-            shoeSize.setSize(size);
-            shoeSize.setExistingNum(0);
-            shoe.addSize(shoeSize);
+        switch (sex){
+            case MALE -> {
+                for(Size size: sizeRepository.findAll()){
+                    if(size.getValue() >= 39) {
+                        ShoeSize shoeSize = new ShoeSize();
+                        shoeSize.setSize(size);
+                        shoeSize.setExistingNum(0);
+                        shoe.addSize(shoeSize);
+                    }
+                }
+            }
+            case FEMALE -> {
+                for(Size size: sizeRepository.findAll()){
+                    if(size.getValue() <= 41) {
+                        ShoeSize shoeSize = new ShoeSize();
+                        shoeSize.setSize(size);
+                        shoeSize.setExistingNum(0);
+                        shoe.addSize(shoeSize);
+                    }
+                }
+            }
+            case UNISEX -> {
+                for(Size size: sizeRepository.findAll()){
+                    ShoeSize shoeSize = new ShoeSize();
+                    shoeSize.setSize(size);
+                    shoeSize.setExistingNum(0);
+                    shoe.addSize(shoeSize);
+                }
+            }
         }
         shoeRepository.save(shoe);
         model.addAttribute("success", true);
@@ -183,5 +208,25 @@ public class AdminController {
         SecurityContextHolder.setContext(context);
         securityContextRepository.saveContext(context, request, response);
         return "redirect:/admin/shoes";
+    }
+
+    @GetMapping("/procurement")
+    String getProcurement(Model model){
+        model.addAttribute("shoesList", shoeRepository.findAll().stream().map(ShoeMapper::toShoeDto).toList());
+        return "procurement";
+    }
+
+    @PostMapping("/procurement/add/{id}")
+    String AddProcurement(Model model, @PathVariable Integer id,
+                          @RequestParam Map<String,String> sizes){
+        model.addAttribute("shoesList", shoeRepository.findAll().stream().map(ShoeMapper::toShoeDto).toList());
+        Optional<Shoe> shoeOp = shoeRepository.findById(id);
+        if(shoeOp.isPresent()){
+            for(ShoeSize size: shoeOp.get().getSizeSet().stream().toList()){
+                size.setExistingNum(Integer.valueOf(sizes.get(id + "_" + size.getSize().getValue())));
+                shoeSizeRepository.save(size);
+            }
+        }
+        return "redirect:/admin/procurement";
     }
 }

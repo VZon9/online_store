@@ -6,6 +6,6 @@ import ru.bbnshp.entities.ShoeSize;
 public class ShoeSizeMapper {
 
     public static ShoeSizeDto toShoeSizeDto(ShoeSize size){
-        return new ShoeSizeDto(SizeMapper.toSizeDto(size.getSize()), size.getExistingNum());
+        return new ShoeSizeDto(size.getId(), SizeMapper.toSizeDto(size.getSize()), size.getExistingNum());
     }
 }
