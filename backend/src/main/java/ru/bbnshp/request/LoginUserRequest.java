@@ -1,6 +1,6 @@
-package ru.bbnshp.dto;
+package ru.bbnshp.request;
 
-public class LoginUserDto {
+public class LoginUserRequest {
 
     private String login;
 

@@ -14,9 +14,6 @@ public class Shoe {
     @Column(name = "shoes_id")
     private Integer id;
 
-    @Column(name = "size")
-    private Integer size;
-
     @Column(name = "color")
     private String color;
 
@@ -25,9 +22,6 @@ public class Shoe {
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "num")
-    private Integer remainingNum;
 
     @Column(name = "bought_num")
     private Integer boughtNum;
@@ -49,6 +43,18 @@ public class Shoe {
 
     @ManyToMany(mappedBy = "shoesSet")
     private Set<Order> orderSet = new HashSet<>();
+    @OneToMany(mappedBy = "shoe",  cascade = CascadeType.ALL)
+    private Set<ShoeSize> sizeSet = new HashSet<>();
+
+    public void addSize(ShoeSize size){
+        sizeSet.add(size);
+        size.setShoe(this);
+    }
+
+    public void deleteSize(ShoeSize size){
+        sizeSet.remove(size);
+        size.setShoe(null);
+    }
 
     public Integer getId() {
         return id;
@@ -56,14 +62,6 @@ public class Shoe {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getSize() {
-        return size;
-    }
-
-    public void setSize(Integer size) {
-        this.size = size;
     }
 
     public String getColor() {
@@ -88,14 +86,6 @@ public class Shoe {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getRemainingNum() {
-        return remainingNum;
-    }
-
-    public void setRemainingNum(Integer num) {
-        this.remainingNum = num;
     }
 
     public Integer getBoughtNum() {
@@ -142,5 +132,13 @@ public class Shoe {
 
     public void setOrderSet(Set<Order> orderSet) {
         this.orderSet = orderSet;
+    }
+
+    public Set<ShoeSize> getSizeSet() {
+        return sizeSet;
+    }
+
+    public void setSizeSet(Set<ShoeSize> sizeSet) {
+        this.sizeSet = sizeSet;
     }
 }

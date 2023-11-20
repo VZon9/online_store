@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Добавление обуви</title>
@@ -13,34 +13,56 @@
 </head>
 <body>
 <br><br><br><br>
-<form th:action="@{/shoes/add}" align="center" method="POST">
-    <input name="model" type="text" id="model" class="form-control" placeholder="Model" required/>
+<form th:action="@{/admin/shoes/add}" align="center" method="POST">
+    <select name="type" id="type" style="width: 178px" required>
+        <option value="" disabled selected hidden>Type</option>
+        <option th:each="type : ${typeList}"><span th:text="${type.name}"></span></option>
+    </select>
     <br>
     <br>
-    <input name="brand" type="text" id="brand" class="form-control" placeholder="Brand" required/>
+    <select name="brand" id="brand" style="width: 178px" required>
+        <option value="" disabled selected hidden>Brand</option>
+        <option th:each="brand : ${brandList}"><span th:text="${brand.name}"></span></option>
+    </select>
     <br>
     <br>
-    <input min="35" max="48" name="size" type="number" id="size" class="form-control" placeholder="Size" required/>
+    <select name="sex" id="sex" style="width: 178px" required>
+        <option value="" disabled selected hidden>Sex</option>
+        <option th:each="sex : ${sexList}"><span th:text="${sex}"></span></option>
+    </select>
     <br>
     <br>
-    <input name="collor" type="text" id="collot" class="form-control" placeholder="Collor" required/>
+    <input name="name" type="text" id="name" class="form-control" placeholder="Name" required/>
     <br>
     <br>
-    <input min="1" name="num" type="number" id="num" class="form-control" placeholder="Amount" required/>
+    <input name="color" type="text" id="color" class="form-control" placeholder="Color" required/>
     <br>
     <br>
     <input min="0" name="price" type="number" id="price" class="form-control" placeholder="Price" required/>
     <br>
     <br>
-    <textarea cols="50" rows="10" name="discription" id="discription" class="form-control" placeholder="Discription" required/>Discription
+    <p>Выберете лицевое фото</p>
+    <input type="file" name="image" accept="image/*" class="form-control-file" required>
+    <br>
+    <br>
+    <p>Выберете остальные фото</p>
+    <input type="file" name="images" accept="image/*" class="form-control-file" multiple required>
+    <br>
+    <br>
+    <textarea cols="50" rows="10" name="description" id="description" class="form-control" placeholder="Description" required>
     </textarea>
     <br>
     <br>
     <button type="submit" class="btn btn-light">Add an shoes</button>
 </form>
 <br>
-
-<p align="center"><button type="submit" class="btn btn-light"><a href = "shoes.html" style="text-decoration: none;">Return</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes}" style="text-decoration: none;">Return</a></button></p>
+<br>
+<p th:if="${existTypeErr}" align="center">Нет такого типа обуви</p>
+<p th:if="${existBrandErr}" align="center">Нет такого брэнда обуви</p>
+<p th:if="${existSexErr}" align="center">Нет такого пола</p>
+<p th:if="${priceError}" align="center">Цена должна быть больше нуля</p>
+<p th:if="${success}" align="center">Новая обувь добавлена</p>
 
 </body>
 </html>

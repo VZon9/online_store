@@ -7,12 +7,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.bbnshp.dto.LoginUserDto;
-import ru.bbnshp.dto.RegisterUserDto;
-import ru.bbnshp.dto.ShoeIdDto;
+import ru.bbnshp.mapper.BasketMapper;
+import ru.bbnshp.mapper.ShoeMapper;
+import ru.bbnshp.request.*;
+import ru.bbnshp.entities.Basket;
 import ru.bbnshp.entities.Shoe;
 import ru.bbnshp.entities.User;
 import ru.bbnshp.entities.UserRole;
+import ru.bbnshp.repositories.BasketRepository;
 import ru.bbnshp.repositories.BrandRepository;
 import ru.bbnshp.repositories.ShoeRepository;
 import ru.bbnshp.repositories.UserRepository;
@@ -25,6 +27,7 @@ import ru.bbnshp.utils.JwtUtils;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -41,6 +44,9 @@ public class UserController {
     private final BrandRepository brandRepository;
 
     @Autowired
+    private final BasketRepository basketRepository;
+
+    @Autowired
     private final AuthenticationManager authenticationManager;
 
     @Autowired
@@ -48,16 +54,22 @@ public class UserController {
     private final Pattern emailPattern = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
 
-    public UserController(UserRepository userRepository, ShoeRepository shoeRepository, BrandRepository brandRepository, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
+    public UserController(UserRepository userRepository,
+                          ShoeRepository shoeRepository,
+                          BrandRepository brandRepository,
+                          BasketRepository basketRepository,
+                          AuthenticationManager authenticationManager,
+                          JwtUtils jwtUtils) {
         this.userRepository = userRepository;
         this.shoeRepository = shoeRepository;
         this.brandRepository = brandRepository;
+        this.basketRepository = basketRepository;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginUserDto loginUser){
+    public ResponseEntity<?> login(@RequestBody LoginUserRequest loginUser){
         if(loginUser.getPassword() == null || loginUser.getLogin() == null){
             return ResponseEntity.badRequest().body(new MessageResponse("All fields must be filled in"));
         }
@@ -76,7 +88,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterUserDto registerUser){
+    public ResponseEntity<?> register(@RequestBody RegisterUserRequest registerUser){
         if(registerUser.getPassword() == null || registerUser.getLogin() == null || registerUser.getEmail() == null){
             return ResponseEntity.badRequest().body(new MessageResponse("All fields must be filled in"));
         }
@@ -104,18 +116,69 @@ public class UserController {
     @GetMapping("/getProducts")
     public ResponseEntity<?> getProducts(){
         List<Shoe> shoeList = shoeRepository.findAll();
-        return ResponseEntity.ok(shoeList);
+        return ResponseEntity.ok(shoeList.stream().map(ShoeMapper::toShoeDto).collect(Collectors.toList()));
     }
 
     @PostMapping("/getProduct")
-    public ResponseEntity<?> getProduct(@RequestBody ShoeIdDto shoeDto){
-        Optional<Shoe> shoeOptional = shoeRepository.findById(shoeDto.getId());
+    public ResponseEntity<?> getProduct(@RequestBody ShoeIdRequest request){
+        if(request.getId() == null){
+            return ResponseEntity.badRequest().body(new MessageResponse("Shoe id must not be null"));
+        }
+        Optional<Shoe> shoeOptional = shoeRepository.findById(request.getId());
         if(shoeOptional.isPresent()){
             Shoe shoe = shoeOptional.get();
-            return ResponseEntity.ok(shoe);
+            return ResponseEntity.ok(ShoeMapper.toShoeDto(shoe));
         }
         else{
             return ResponseEntity.badRequest().body(new MessageResponse("Shoe with this id doesn't exist"));
         }
+    }
+
+    @PostMapping("/getFilteredProducts")
+    public ResponseEntity<?> getFilteredProduct(@RequestBody FilterRequest filter){
+        List<String> colorList = filter.getColors();
+        if(colorList != null){
+            List<Shoe> shoeList = shoeRepository.findByColorIn(colorList);
+            return ResponseEntity.ok(shoeList.stream().map(ShoeMapper::toShoeDto).collect(Collectors.toList()));
+        }
+        else return ResponseEntity.badRequest().body(new MessageResponse("Color list is null"));
+    }
+
+    @PostMapping("/basketAdd")
+    public ResponseEntity<?> basketAdd(@RequestBody ShoeToBasketRequest request){
+        if(!shoeRepository.existsById(request.getShoeId())){
+            return ResponseEntity.badRequest().body(new MessageResponse("Shoe with this id doesn't exist"));
+        }
+        if(!userRepository.existsById(request.getUserId())){
+            return ResponseEntity.badRequest().body(new MessageResponse("User with this id doesn't exist"));
+        }
+        User user = userRepository.getReferenceById(request.getUserId());
+        Shoe shoe = shoeRepository.getReferenceById(request.getShoeId());
+        Basket basket = new Basket();
+        basket.setShoe(shoe);
+        user.addBasket(basket);
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("Shoe added to basket"));
+    }
+
+    @PostMapping("/getBasket")
+    public ResponseEntity<?> getBasket(@RequestBody UserIdRequest userId){
+        if(!userRepository.existsById(userId.getUserId())){
+            return ResponseEntity.badRequest().body(new MessageResponse("User with this id doesn't exist"));
+        }
+        List<Basket> basketList = basketRepository.findByUserId(userId.getUserId());
+        return ResponseEntity.ok(basketList.stream().map(BasketMapper::toBasketDto).toList());
+    }
+
+    @PostMapping("/removeFromBasket")
+    public ResponseEntity<?> removeBasket(@RequestBody BasketRequest request){
+        if(!basketRepository.existsById(request.getBasketId())){
+            return ResponseEntity.badRequest().body(new MessageResponse("Shoe with this id doesn't exist"));
+        }
+        if(!userRepository.existsById(request.getUserId())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("User with this id doesn't exist"));
+        }
+        basketRepository.deleteById(request.getBasketId());
+        return ResponseEntity.ok(new MessageResponse("Shoe deleted from basket"));
     }
 }
