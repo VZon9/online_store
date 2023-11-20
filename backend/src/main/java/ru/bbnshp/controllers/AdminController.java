@@ -14,20 +14,21 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.bbnshp.entities.Brand;
-import ru.bbnshp.entities.Shoe;
-import ru.bbnshp.entities.UserRole;
-import ru.bbnshp.repositories.BrandRepository;
-import ru.bbnshp.repositories.ShoeRepository;
-import ru.bbnshp.repositories.UserRepository;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import ru.bbnshp.mapper.BrandMapper;
+import ru.bbnshp.mapper.ShoeMapper;
+import ru.bbnshp.mapper.TypeMapper;
+import ru.bbnshp.entities.*;
+import ru.bbnshp.repositories.*;
+import ru.bbnshp.services.ImageUploadService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -44,16 +45,35 @@ public class AdminController {
     @Autowired
     private final ShoeRepository shoeRepository;
 
+    @Autowired
+    private final TypeRepository typeRepository;
+
+    @Autowired
+    private final ShoeSizeRepository shoeSizeRepository;
+    @Autowired
+    private final SizeRepository sizeRepository;
+
+    @Autowired
+    private final ImageUploadService imageUploadService;
+
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     public AdminController(AuthenticationManager authenticationManager,
                            UserRepository userRepository,
                            BrandRepository brandRepository,
-                           ShoeRepository shoeRepository) {
+                           ShoeRepository shoeRepository,
+                           TypeRepository typeRepository,
+                           ShoeSizeRepository shoeSizeRepository,
+                           SizeRepository sizeRepository,
+                           ImageUploadService imageUploadService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.brandRepository = brandRepository;
         this.shoeRepository = shoeRepository;
+        this.typeRepository = typeRepository;
+        this.shoeSizeRepository = shoeSizeRepository;
+        this.sizeRepository = sizeRepository;
+        this.imageUploadService = imageUploadService;
     }
 
     @GetMapping("/shoes")
@@ -67,71 +87,102 @@ public class AdminController {
 
     @GetMapping("/shoes/add")
     String getShoesAdd(Model model){
-        List<String> brands = new ArrayList<>();
-        for(Brand brand: brandRepository.findAll()){
-            brands.add(brand.getName());
-        }
-        model.addAttribute("brands", brands);
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
+        model.addAttribute("typeList", typeRepository.findAll().stream().map(TypeMapper::toTypeDto).collect(Collectors.toList()));
+        model.addAttribute("sexList", Arrays.asList(Sex.values()));
         return "shoesAdd";
     }
 
     @PostMapping("/shoes/add")
-    String getShoesAddProcess(@RequestParam(name = "model") String shoesModel,
+    String getShoesAddProcess(@RequestParam(name = "type") String shoesType,
                               @RequestParam(name = "brand") String shoeBrand,
+                              @RequestParam(name = "sex") Sex sex,
+                              @RequestParam(name = "name") String name,
                               @RequestParam(name = "color") String color,
-                              @RequestParam(name = "size") Integer size,
                               @RequestParam(name = "price") Integer price,
-                              @RequestParam(name = "num") Integer num,
                               @RequestParam(name = "description") String description,
                               Model model){
-        if(size <= 0){
-            model.addAttribute("sizeError", true);
-            List<String> brands = new ArrayList<>();
-            for(Brand brand: brandRepository.findAll()){
-                brands.add(brand.getName());
-            }
-            model.addAttribute("brands", brands);
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
+        model.addAttribute("typeList", typeRepository.findAll().stream().map(TypeMapper::toTypeDto).collect(Collectors.toList()));
+        model.addAttribute("sexList", Arrays.asList(Sex.values()));
+        if(!typeRepository.existsByName(shoesType)){
+            model.addAttribute("existTypeErr", true);
+            return "shoeAdd";
+        }
+        if(!brandRepository.existsByName(shoeBrand)){
+            model.addAttribute("existBrandErr", true);
             return "shoesAdd";
         }
-        if(num <= 0){
-            model.addAttribute("numError", true);
-            List<String> brands = new ArrayList<>();
-            for(Brand brand: brandRepository.findAll()){
-                brands.add(brand.getName());
-            }
-            model.addAttribute("brands", brands);
+        if(price <= 0){
+            model.addAttribute("priceError", true);
             return "shoesAdd";
         }
         Shoe shoe = new Shoe();
         Brand brand = brandRepository.findByName(shoeBrand);
+        Type type = typeRepository.findByName(shoesType);
+        shoe.setType(type);
         shoe.setBrand(brand);
-        shoe.setModel(shoesModel);
-        shoe.setSize(size);
+        shoe.setSex(sex);
+        shoe.setName(name);
         shoe.setColor(color);
         shoe.setPrice(price);
         shoe.setDescription(description);
-        shoe.setRemainingNum(num);
         shoe.setBoughtNum(0);
         shoeRepository.save(shoe);
-        return "redirect:/admin/shoes/add";
+        switch (sex){
+            case MALE -> {
+                for(Size size: sizeRepository.findAll()){
+                    if(size.getValue() >= 39) {
+                        ShoeSize shoeSize = new ShoeSize();
+                        shoeSize.setSize(size);
+                        shoeSize.setExistingNum(0);
+                        shoe.addSize(shoeSize);
+                    }
+                }
+            }
+            case FEMALE -> {
+                for(Size size: sizeRepository.findAll()){
+                    if(size.getValue() <= 41) {
+                        ShoeSize shoeSize = new ShoeSize();
+                        shoeSize.setSize(size);
+                        shoeSize.setExistingNum(0);
+                        shoe.addSize(shoeSize);
+                    }
+                }
+            }
+            case UNISEX -> {
+                for(Size size: sizeRepository.findAll()){
+                    ShoeSize shoeSize = new ShoeSize();
+                    shoeSize.setSize(size);
+                    shoeSize.setExistingNum(0);
+                    shoe.addSize(shoeSize);
+                }
+            }
+        }
+        shoeRepository.save(shoe);
+        model.addAttribute("success", true);
+        return "shoesAdd";
     }
 
     @GetMapping("/brand/add")
-    String getBrandAdd(){
+    String getBrandAdd(Model model){
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
         return "brandAdd";
     }
 
     @PostMapping("/brand/add")
     String getBrandAddProcess(@RequestParam(name = "name") String name, Model model){
-        if(brandRepository.existsByName(name)){
+        String nameUp = name.toUpperCase();
+        if(brandRepository.existsByName(nameUp)){
             model.addAttribute("nameError", true);
             return "brandAdd";
         }
         Brand brand = new Brand();
-        brand.setName(name);
+        brand.setName(nameUp);
         brandRepository.save(brand);
-        return "redirect:/admin/brand/add";
-
+        model.addAttribute("success", true);
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
+        return "brandAdd";
     }
 
     @GetMapping("/login")
@@ -168,5 +219,38 @@ public class AdminController {
         SecurityContextHolder.setContext(context);
         securityContextRepository.saveContext(context, request, response);
         return "redirect:/admin/shoes";
+    }
+
+    @GetMapping("/procurement")
+    String getProcurement(Model model){
+        model.addAttribute("shoesList", shoeRepository.findAll().stream().map(ShoeMapper::toShoeDto).toList());
+        return "procurement";
+    }
+
+    @PostMapping("/procurement/add/{id}")
+    String AddProcurement(Model model, @PathVariable Integer id,
+                          @RequestParam Map<String,String> sizes){
+        model.addAttribute("shoesList", shoeRepository.findAll().stream().map(ShoeMapper::toShoeDto).toList());
+        Optional<Shoe> shoeOp = shoeRepository.findById(id);
+        if(shoeOp.isPresent()){
+            for(ShoeSize size: shoeOp.get().getSizeSet().stream().toList()){
+                size.setExistingNum(Integer.valueOf(sizes.get(id + "_" + size.getSize().getValue())));
+                shoeSizeRepository.save(size);
+            }
+        }
+        return "redirect:/admin/procurement";
+    }
+
+    @GetMapping("/upload")
+    String getTestImage(){
+        return "testImage";
+    }
+
+    @PostMapping("/upload")
+    String uploadImage(Model model, @RequestParam(name = "image") MultipartFile file,
+                                    @RequestParam(name = "images") MultipartFile[] files) throws IOException {
+        imageUploadService.uploadImage(file, "shoe_1_main");
+        model.addAttribute("msg", "Uploaded images: " + file.getOriginalFilename());
+        return "testImage";
     }
 }

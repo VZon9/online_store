@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Новая поставка</title>
+  <meta charset="UTF-8">
+  <title>Новая поставка</title>
+  <style>
+    td{
+      text-align: center;
+      width: 110px;
+    }
+  </style>
 </head>
 <body>
-<br><br><br><br>
-<form th:action="@{/procurement/add}" align="center" method="POST">
-    <input name="idModel" type="number" id="idModel" class="form-control" placeholder="Model id" required/>
-    <br>
-    <br>
-    <input min="1" name="volume" type="number" id="volume" class="form-control" placeholder="Volume" required/>
-    <br>
-    <button type="submit" class="btn btn-light">Add an procurement</button>
-</form>
 <br>
-
-<p align="center"><button type="submit" class="btn btn-light"><a href = "shoes.html" style="text-decoration: none;">Return</a></button></p>
-
+<br>
+<br>
+<br>
+<table border="1" style="border-collapse: collapse; border: 1px solid black;" align="center">
+  <tr th:each="shoe : ${shoesList}">
+    <td>
+      <span  th:text="${shoe.name}"></span>
+      <br>
+      <span  th:text="${shoe.color}"></span>
+    </td>
+      <form th:action="@{/admin/procurement/add/{id}(id=${shoe.id})}" method="POST">
+        <td th:each="size: ${shoe.sizeList}">
+          <span th:text="${size.size.value}"></span>
+          <input th:name="${shoe.id}+'_'+${size.size.value}" style="width: 100px" th:value="${size.existingNum}" min="1" type="number"  class="form-control" required>
+        </td>
+        <td>
+          <button style="width: 100px" type="submit" class="btn btn-light">Make procurement</button>
+        </td>
+      </form>
+  </tr>
+</table>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes}" style="text-decoration: none;">Return</a></button></p>
 </body>
 </html>
