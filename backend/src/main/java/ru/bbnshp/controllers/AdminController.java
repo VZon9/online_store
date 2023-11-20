@@ -15,12 +15,18 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.bbnshp.mapper.BrandMapper;
 import ru.bbnshp.mapper.ShoeMapper;
 import ru.bbnshp.mapper.TypeMapper;
 import ru.bbnshp.entities.*;
 import ru.bbnshp.repositories.*;
+import ru.bbnshp.services.ImageUploadService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,6 +53,9 @@ public class AdminController {
     @Autowired
     private final SizeRepository sizeRepository;
 
+    @Autowired
+    private final ImageUploadService imageUploadService;
+
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     public AdminController(AuthenticationManager authenticationManager,
@@ -55,7 +64,8 @@ public class AdminController {
                            ShoeRepository shoeRepository,
                            TypeRepository typeRepository,
                            ShoeSizeRepository shoeSizeRepository,
-                           SizeRepository sizeRepository) {
+                           SizeRepository sizeRepository,
+                           ImageUploadService imageUploadService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.brandRepository = brandRepository;
@@ -63,6 +73,7 @@ public class AdminController {
         this.typeRepository = typeRepository;
         this.shoeSizeRepository = shoeSizeRepository;
         this.sizeRepository = sizeRepository;
+        this.imageUploadService = imageUploadService;
     }
 
     @GetMapping("/shoes")
@@ -228,5 +239,18 @@ public class AdminController {
             }
         }
         return "redirect:/admin/procurement";
+    }
+
+    @GetMapping("/upload")
+    String getTestImage(){
+        return "testImage";
+    }
+
+    @PostMapping("/upload")
+    String uploadImage(Model model, @RequestParam(name = "image") MultipartFile file,
+                                    @RequestParam(name = "images") MultipartFile[] files) throws IOException {
+        imageUploadService.uploadImage(file, "shoe_1_main");
+        model.addAttribute("msg", "Uploaded images: " + file.getOriginalFilename());
+        return "testImage";
     }
 }
