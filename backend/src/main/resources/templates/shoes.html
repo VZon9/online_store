@@ -14,20 +14,20 @@
 
 <body>
 
-    <table width="55%"  cellpadding="10px" align="center">
-        <tr>
-            <th><a href = "olders.html" style="text-decoration: none;"><h2>Заказы</h2></a></th>
-            <th><a href = "shoes.html" style="text-decoration: none;"><h2>Товары</h2></a></th>
-            <th><a href = "statistic.html" style="text-decoration: none;"><h2>Статистика</h2></a><th>
-            <th> <h2>Выход</h2><th>
-        </tr>
-    </table>
+<table width="55%"  cellpadding="10px" align="center">
+    <tr>
+        <th><a href = "olders.html" style="text-decoration: none;"><h2>Заказы</h2></a></th>
+        <th><a href = "shoes.html" style="text-decoration: none;"><h2>Товары</h2></a></th>
+        <th><a href = "statistic.html" style="text-decoration: none;"><h2>Статистика</h2></a><th>
+        <th> <h2>Выход</h2><th>
+    </tr>
+</table>
 <br>
-    <p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes/add}" style="text-decoration: none;">Add a new shoes</a></button></p>
-    <p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/brand/add}" style="text-decoration: none;">Add a new brand</a></button></p>
-    <p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/procurement}" style="text-decoration: none;">Add a new procurement</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes/add}" style="text-decoration: none;">Add a new shoes</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/brand/add}" style="text-decoration: none;">Add a new brand</a></button></p>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/procurement}" style="text-decoration: none;">Add a new procurement</a></button></p>
 
-    <br>
+<br>
 <table th:if="${not #lists.isEmpty(shoes)}">
     <tr th:each="shoe : ${shoes}">
         <td>

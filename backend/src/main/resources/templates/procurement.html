@@ -22,15 +22,15 @@
       <br>
       <span  th:text="${shoe.color}"></span>
     </td>
-      <form th:action="@{/admin/procurement/add/{id}(id=${shoe.id})}" method="POST">
-        <td th:each="size: ${shoe.sizeList}">
-          <span th:text="${size.size.value}"></span>
-          <input th:name="${shoe.id}+'_'+${size.size.value}" style="width: 100px" th:value="${size.existingNum}" min="1" type="number"  class="form-control" required>
-        </td>
-        <td>
-          <button style="width: 100px" type="submit" class="btn btn-light">Make procurement</button>
-        </td>
-      </form>
+    <form th:action="@{/admin/procurement/add/{id}(id=${shoe.id})}" method="POST">
+      <td th:each="size: ${shoe.sizeList}">
+        <span th:text="${size.size.value}"></span>
+        <input th:name="${shoe.id}+'_'+${size.size.value}" style="width: 100px" th:value="${size.existingNum}" min="1" type="number"  class="form-control" required>
+      </td>
+      <td>
+        <button style="width: 100px" type="submit" class="btn btn-light">Make procurement</button>
+      </td>
+    </form>
   </tr>
 </table>
 <p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes}" style="text-decoration: none;">Return</a></button></p>
