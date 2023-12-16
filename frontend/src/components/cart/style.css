@@ -1,0 +1,14 @@
+.cart_content{
+    display: flex;
+    justify-content: space-between;
+}
+
+.cart_shoelist{
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin-right: 6%;
+}
+.cart_makeorder{
+    width: 25%;
+}

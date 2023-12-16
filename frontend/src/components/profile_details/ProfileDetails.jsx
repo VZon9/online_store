@@ -1,14 +1,74 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import "./style.css"
 import {Button, TextField} from "@mui/material";
 import 'dayjs/locale/ru'
+import {instance} from "../../utils/axios";
+import {ACCESS_TOKEN_KEY} from "../../pages/auth/AuthRoot";
+import CartItem from "../cartItem/CartItem";
 const ProfileDetails = () => {
+
+    const [orders, setOrders] = useState([])
+    useEffect(() => {
+        const fetchOrders = async () => {
+            const response = await instance.post('getOrders', {'userId': localStorage.getItem('userId')}, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
+                }
+            })
+            const data = await response.data
+            console.log('orders:', data)
+            setOrders(data)
+        }
+        fetchOrders();
+    }, []);
+
     return (
         <div>
             <section className="Profile_details">
                 <div className="container">
                     <div className="content">
                         <div className="details_title">My details</div>
+                        <div className="details_personal">My orders</div>
+                        <hr className="profile_hr"/>
+                        <div className="form_container">
+                            <div className="form_text">Here is your history of orders. Thanks for choosing us.</div>
+                        </div>
+                        <div className="form_box">
+                            <div className="orders_history">
+                                {orders.map(item => {
+                                    return(
+                                        <div className="orders_history_card" key = {item.id}>
+                                            <div className="orders_history_card_wrapper">
+                                                <div className="order_text">
+                                                    <div className="item_info">
+                                                        <h4>order from</h4>
+                                                        <p>{item.date}</p>
+                                                    </div>
+                                                    <div className="item_info">
+                                                        <h4> order status </h4>
+                                                        <p>{item.status}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="item_info">
+                                                    <h4> order number </h4>
+                                                    <p>{item.id}</p>
+                                                </div>
+                                                    {item.orderSet.map(itm => {
+                                                        return(
+                                                            <div className="details_items_in_order" key = {itm.id}>
+                                                                <p>{itm.shoe.brand.name}</p>
+                                                                <p>{itm.shoe.name}</p>
+                                                                <p>{itm.size.value}</p>
+                                                                <p>{itm.num}</p>
+                                                            </div>
+                                                        )
+                                                    })}
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
                         <div className="details_personal">Personal information</div>
                         <hr className="hr"/>
                         <div className="form_container">
@@ -87,18 +147,7 @@ const ProfileDetails = () => {
                                 </Button>
                             </div>
                         </div>
-                        <div className="details_personal">My orders</div>
-                        <hr className="hr"/>
-                        <div className="form_container">
-                            <div className="form_text">Here is your history of orders. Thanks for choosen us.</div>
-                        </div>
-                        <div className="form_box">
-                            <div className="history_item">
-                            </div>
-
-                        </div>
                     </div>
-
                 </div>
             </section>
         </div>

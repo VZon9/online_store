@@ -2,112 +2,94 @@ import React, {useContext, useState} from 'react';
 import './style.css'
 import Card from "../card/Card";
 import {ProductContext} from "../../contexts/ProductContext/ProductContext";
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import {defaultProducts} from "../../contexts/ProductContext/ProductContext";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {instance} from "../../utils/axios";
-import Product from "../../pages/productPage/Product";
-import {Home} from "@mui/icons-material";
-import {Button} from "@mui/material";
+import {Backdrop, Button, CircularProgress} from "@mui/material";
+import Filter from '../filters/Filter'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
 
 const ProductsList = () => {
     const navigate = useNavigate()
-
-    const [isTrue, setIsTrue] = useState(true)
-
-    const {products} = useContext(ProductContext)
+    const [sort, setSort] = useState('')
+    const {products, loading} = useContext(ProductContext)
     const {setProducts} = useContext(ProductContext)
     console.log("productsListContext", products)
-    function getFiltered(isTrue, filterName){
-        if (isTrue) {
-            return setProducts([...products].filter(item =>
-                    item.type.name === filterName))
-        }else
-            setProducts(defaultProducts)
-                return defaultProducts
-    }
 
+    const handleChangeSort = (event) => {
+        setSort(event.target.value);
+    };
 
     const getProduct = async (id) => {
-        navigate("/products/" + id)
+        await navigate("/products/" + id)
+    }
+
+    const getSorted = async (type, direction) => {
+        if (type === 'price'){
+            if (direction === 'up') {
+                const response = await instance.post('sort', {'sortType': 'price', 'direction': 'up'})
+                setProducts(response.data)
+            }else {
+                const response = await instance.post('sort', {'sortType': 'price', 'direction': 'down'})
+                setProducts(response.data)
+            }
+        }else{
+            if (direction === 'up') {
+                const response = await instance.post('sort', {'sortType': 'default', 'direction':'up'})
+                setProducts(response.data)
+            } else {
+                const response = await instance.post('sort', {'sortType': 'default', 'direction':'down'})
+                setProducts(response.data)
+            }
+
+        }
+
     }
 
     return (
         <section className="products_list">
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={loading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+
             <div className="container">
+                <div className="sort">
+                    <FormControl sx={{
+                        m: 1,
+                        minWidth: 120
+                    }}>
+                        <InputLabel id="demo-simple-select-autowidth-label">Sorting</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-autowidth-label"
+                            id="demo-simple-select-autowidth"
+                            value = {sort}
+                            onChange={handleChangeSort}
+                            autoWidth
+                            label="Sorting"
+                            color='secondary'
+                            sx = {{
+                                borderRadius: '12px'
+                            }}
+                        >
+                            <MenuItem value={'priceUp'} onClick={() => getSorted('price', 'up')}>Sort by descending price</MenuItem>
+                            <MenuItem value={'priceDown'} onClick={() => getSorted('price', 'down')}>Sort by ascending price</MenuItem>
+                            <MenuItem value={'popularityUp'} onClick={() => getSorted('default', 'up')}> Sort by descending popularity</MenuItem>
+                            <MenuItem value={'popularityDown'} onClick={() => getSorted('default', 'down')}> Sort by ascending popularity</MenuItem>
+                        </Select>
+                    </FormControl>
+                </div>
                 <div className="products_list_content">
-                    <div className="filters">
-                        <div className="filters_box">
-                            <div className="filter_name">TYPE</div>
-                            <hr className="hr"/>
-                            <div className="filter_body">
-                                <FormControlLabel control={
-                                    <Checkbox
-                                        defaultChecked
-                                        size="small"
-                                        color="secondary"
-                                        onChange={e => {
-                                            getFiltered(isTrue, "slipper")
-                                            setIsTrue(e.target.checked)
-                                        }}
-                                />} label="Sneackers"
-                                    />
-                                <FormControlLabel control={
-                                    <Checkbox
-                                        defaultChecked
-                                        size="small"
-                                        color="secondary"
-                                    />}
-                                    label="Slippers" />
-                            </div>
-                            <div className="filter_name">COLOR</div>
-                            <hr className="hr"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    defaultChecked
-                                    size="small"
-                                />} label="RED" />
-                            <FormControlLabel control={
-                                <Checkbox
-                                    defaultChecked
-                                    size="small"
-                                />} label="BLACK" />
-                            <FormControlLabel control={
-                                <Checkbox
-                                    defaultChecked
-                                    size="small"
-                                />} label="WHITE" />
-                            <FormControlLabel control={
-                                <Checkbox
-                                    defaultChecked
-                                    size="small"
-                                />} label="GREEN" />
-                            <div className="filter_name">BRAND</div>
-                            <hr className="hr"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    defaultChecked
-                                    size="small"
-                                />} label="ADIDAS" />
-                            <FormControlLabel control={
-                                <Checkbox
-                                    defaultChecked
-                                    size="small"
-                                />} label="NIKE" />
-                            <FormControlLabel control={
-                                <Checkbox
-                                    defaultChecked
-                                    size="small"
-                                />} label="REEBOK" />
-                        </div>
-                    </div>
+                    <Filter/>
                     <div className="products_list_wrapper">
                         {products.map(product => {
                             return(
-                                <div className="product_card" onClick={() => getProduct(product.id)}>
-                                    <Card key = {product.id} brand = {product.brand.name} model = {product.name} color = {product.color} />
-                                    {/*<Card key = {product.id} title = {product.title} rating = {product.rating.rate}/>*/}
+                                <div className="product_card" onClick={() => getProduct(product.id)} key = {product.id}>
+                                    <Card key = {product.id} brand = {product.brand.name} model = {product.name} color = {product.color}  price = {product.price} img = {product.imagePattern}/>
                                 </div>
                             )
                         })}

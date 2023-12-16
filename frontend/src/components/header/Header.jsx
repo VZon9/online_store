@@ -2,15 +2,16 @@ import React from 'react';
 import logoImg from '../../img/logologo.png'
 import './style.css'
 import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
-const Header = (props) => {
+const Header = () => {
     let to = ''
     if (localStorage.getItem("isAuth") === 'true'){
         to = '/profile'
     }else {
         to = '/login'
     }
+    const navigate = useNavigate();
     return (
         <header className="header">
             <div className="container">
@@ -23,7 +24,10 @@ const Header = (props) => {
                         <ul>
                             <li><a href="#!">FOR MEN</a></li>
                             <li><a href="#!">FOR WOMEN</a></li>
-                            <li><a href="#!">CART</a></li>
+                            <li style={{cursor: 'pointer'}}
+                                onClick={() => {
+                                navigate("/cart")
+                            }}>CART</li>
                             {/*<li><a href="#!" className="header_nav-btn">SIGN UP</a></li>*/}
                             <li>
                                 <Button variant="contained"  color = "secondary" size="large" sx ={{

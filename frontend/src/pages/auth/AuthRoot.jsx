@@ -9,7 +9,7 @@ import {useForm} from "react-hook-form";
 import Test from "./testPage/Test";
 import { useNavigate } from "react-router-dom";
 
-const ACCESS_TOKEN_KEY = "access_token"
+export const ACCESS_TOKEN_KEY = "access_token"
 let regErrMessage = ""
 let logErrMessage = ''
 
@@ -40,6 +40,7 @@ const AuthRoot = () => {
                 localStorage.setItem("isAuth", 'true')
                 localStorage.setItem('username', data.login)
                 localStorage.setItem('email', response.data.email)
+                localStorage.setItem('userId', response.data.id)
                 navigate("/home")
             }catch (error){
                 logErrMessage = error.response.data.message

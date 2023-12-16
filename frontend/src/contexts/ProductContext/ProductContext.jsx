@@ -1,26 +1,24 @@
 import React, {createContext, useState, useEffect} from "react";
-import axios from "axios";
 import {instance} from "../../utils/axios";
 
 export const ProductContext = React.createContext();
-export let defaultProducts ={}
  const ProductProvider = ({ children }) => {
 
      const [products, setProducts] = useState([])
-
+     const [loading, setLoading] = useState(false)
      useEffect(() => {
          const fetchProducts = async () => {
-             //const response = await axios.get('https://fakestoreapi.com/products')
              const response = await instance.get('getProducts')
              const data = await response.data
-             defaultProducts = data
              console.log("context:", data)
              setProducts(data)
          }
+         setLoading(true)
          fetchProducts();
+         setLoading(false)
      }, []);
 
-     return <ProductContext.Provider value={{products, setProducts}}>{ children }</ProductContext.Provider>
+     return <ProductContext.Provider value={{products, setProducts, loading}}>{ children }</ProductContext.Provider>
 
 }
 export default ProductProvider

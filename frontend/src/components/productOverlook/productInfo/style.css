@@ -1,4 +1,5 @@
 .product_info{
+    width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,5 +21,62 @@
 }
 .sizes_text{
     font-weight: 500;
-    font-size: 14px;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.size_list{
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    width: 60%;
+    display: flex;
+    column-gap: 16px;
+    justify-content: center;
+}
+
+.size_not_available {
+    font-size: 18px;
+    color: white;
+    box-sizing: border-box;
+    pointer-events: none;
+    padding: 6px 8px;
+    border: 1px solid;
+    border-radius: 8px;
+    background-color: #8E8E8E;
+}
+
+.size_not_available:hover:before {
+    content: "Size not avaiable";
+}
+
+.size_box_def{
+    font-size: 18px;
+    /*margin-bottom: 10px;*/
+    cursor: pointer;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+}
+
+.size_box_sel{
+    font-size: 18px;
+    color: white;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    cursor: pointer;
+    border: 1px solid;
+    border-radius: 8px;
+    background-color: #ef5350;
+}
+
+.product_desc{
+    width: 50%;
+    letter-spacing: 2px;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: justify;
+}
+.desc_str{
+    text-indent: 20px;
 }
