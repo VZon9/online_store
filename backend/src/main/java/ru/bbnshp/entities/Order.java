@@ -25,18 +25,17 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinTable(name = "orders_shoes", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "shoes_id"))
-    private Set<Shoe> shoesSet = new HashSet<>();
+    @OneToMany(mappedBy = "order",  cascade = CascadeType.ALL)
+    private Set<OrderShoe> orderSet = new HashSet<>();
 
-    public void addShoes(Shoe shoe){
-        shoesSet.add(shoe);
-        shoe.getOrderSet().add(this);
+    public void addOrder(OrderShoe orderShoe){
+        orderSet.add(orderShoe);
+        orderShoe.setOrder(this);
     }
 
-    public void deleteShoe(Shoe shoe){
-        shoesSet.remove(shoe);
-        shoe.getOrderSet().remove(this);
+    public void deleteOrder(OrderShoe orderShoe){
+        orderSet.add(orderShoe);
+        orderShoe.setOrder(null);
     }
 
     public Integer getId() {
@@ -71,11 +70,11 @@ public class Order {
         this.user = user;
     }
 
-    public Set<Shoe> getShoesSet() {
-        return shoesSet;
+    public Set<OrderShoe> getOrderSet() {
+        return orderSet;
     }
 
-    public void setShoesSet(Set<Shoe> shoesSet) {
-        this.shoesSet = shoesSet;
+    public void setOrderSet(Set<OrderShoe> orderSet) {
+        this.orderSet = orderSet;
     }
 }

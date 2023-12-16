@@ -25,7 +25,7 @@
       <form th:action="@{/admin/procurement/add/{id}(id=${shoe.id})}" method="POST">
         <td th:each="size: ${shoe.sizeList}">
           <span th:text="${size.size.value}"></span>
-          <input th:name="${shoe.id}+'_'+${size.size.value}" style="width: 100px" th:value="${size.existingNum}" min="1" type="number"  class="form-control" required>
+          <input th:name="${shoe.id}+'_'+${size.size.value}" style="width: 100px" th:value="${size.existingNum}" th:min="${size.existingNum}" type="number"  class="form-control" required>
         </td>
         <td>
           <button style="width: 100px" type="submit" class="btn btn-light">Make procurement</button>

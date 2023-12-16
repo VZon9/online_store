@@ -32,7 +32,6 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Basket> basketSet = new HashSet<>();
-
     public void addOrder(Order order){
         orderSet.add(order);
         order.setUser(this);

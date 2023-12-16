@@ -13,7 +13,7 @@
 </head>
 <body>
 <br><br><br><br>
-<form th:action="@{/admin/shoes/add}" align="center" method="POST">
+<form th:action="@{/admin/shoes/add}" align="center" method="POST" enctype="multipart/form-data">
     <select name="type" id="type" style="width: 178px" required>
         <option value="" disabled selected hidden>Type</option>
         <option th:each="type : ${typeList}"><span th:text="${type.name}"></span></option>

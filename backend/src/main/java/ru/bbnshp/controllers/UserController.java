@@ -7,23 +7,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.bbnshp.mapper.BasketMapper;
-import ru.bbnshp.mapper.ShoeMapper;
+import ru.bbnshp.entities.*;
+import ru.bbnshp.mapper.Mapper;
+import ru.bbnshp.repositories.*;
 import ru.bbnshp.request.*;
-import ru.bbnshp.entities.Basket;
-import ru.bbnshp.entities.Shoe;
-import ru.bbnshp.entities.User;
-import ru.bbnshp.entities.UserRole;
-import ru.bbnshp.repositories.BasketRepository;
-import ru.bbnshp.repositories.BrandRepository;
-import ru.bbnshp.repositories.ShoeRepository;
-import ru.bbnshp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.bbnshp.response.JwtResponse;
 import ru.bbnshp.response.MessageResponse;
 import ru.bbnshp.services.UserDetailsImpl;
 import ru.bbnshp.utils.JwtUtils;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -41,10 +40,13 @@ public class UserController {
     private final ShoeRepository shoeRepository;
 
     @Autowired
-    private final BrandRepository brandRepository;
+    private final BasketRepository basketRepository;
 
     @Autowired
-    private final BasketRepository basketRepository;
+    private final ShoeSizeRepository shoeSizeRepository;
+
+    @Autowired
+    private final OrderRepository orderRepository;
 
     @Autowired
     private final AuthenticationManager authenticationManager;
@@ -56,15 +58,16 @@ public class UserController {
 
     public UserController(UserRepository userRepository,
                           ShoeRepository shoeRepository,
-                          BrandRepository brandRepository,
                           BasketRepository basketRepository,
+                          ShoeSizeRepository shoeSizeRepository,
                           AuthenticationManager authenticationManager,
-                          JwtUtils jwtUtils) {
+                          OrderRepository orderRepository, JwtUtils jwtUtils) {
         this.userRepository = userRepository;
         this.shoeRepository = shoeRepository;
-        this.brandRepository = brandRepository;
         this.basketRepository = basketRepository;
+        this.shoeSizeRepository = shoeSizeRepository;
         this.authenticationManager = authenticationManager;
+        this.orderRepository = orderRepository;
         this.jwtUtils = jwtUtils;
     }
 
@@ -116,7 +119,7 @@ public class UserController {
     @GetMapping("/getProducts")
     public ResponseEntity<?> getProducts(){
         List<Shoe> shoeList = shoeRepository.findAll();
-        return ResponseEntity.ok(shoeList.stream().map(ShoeMapper::toShoeDto).collect(Collectors.toList()));
+        return ResponseEntity.ok(shoeList.stream().map(Mapper::toShoeDto).collect(Collectors.toList()));
     }
 
     @PostMapping("/getProduct")
@@ -127,7 +130,7 @@ public class UserController {
         Optional<Shoe> shoeOptional = shoeRepository.findById(request.getId());
         if(shoeOptional.isPresent()){
             Shoe shoe = shoeOptional.get();
-            return ResponseEntity.ok(ShoeMapper.toShoeDto(shoe));
+            return ResponseEntity.ok(Mapper.toShoeDto(shoe));
         }
         else{
             return ResponseEntity.badRequest().body(new MessageResponse("Shoe with this id doesn't exist"));
@@ -139,7 +142,7 @@ public class UserController {
         List<String> colorList = filter.getColors();
         if(colorList != null){
             List<Shoe> shoeList = shoeRepository.findByColorIn(colorList);
-            return ResponseEntity.ok(shoeList.stream().map(ShoeMapper::toShoeDto).collect(Collectors.toList()));
+            return ResponseEntity.ok(shoeList.stream().map(Mapper::toShoeDto).collect(Collectors.toList()));
         }
         else return ResponseEntity.badRequest().body(new MessageResponse("Color list is null"));
     }
@@ -152,12 +155,32 @@ public class UserController {
         if(!userRepository.existsById(request.getUserId())){
             return ResponseEntity.badRequest().body(new MessageResponse("User with this id doesn't exist"));
         }
-        User user = userRepository.getReferenceById(request.getUserId());
-        Shoe shoe = shoeRepository.getReferenceById(request.getShoeId());
-        Basket basket = new Basket();
-        basket.setShoe(shoe);
-        user.addBasket(basket);
-        userRepository.save(user);
+        if(request.getSizeId() == 0){
+            return ResponseEntity.badRequest().body(new MessageResponse("Size didn't choose"));
+        }
+        if(shoeSizeRepository.findById(request.getSizeId()).get().getExistingNum() == 0){
+            return ResponseEntity.badRequest().body(new MessageResponse("The size is not available"));
+        }
+        Optional<Basket> basketOptional = basketRepository.findByUserIdAndShoeIdAndSizeValue(
+                request.getUserId(),
+                request.getShoeId(),
+                shoeSizeRepository.findById(request.getSizeId()).get().getSize().getValue());
+        if(basketOptional.isPresent()){
+            Basket basket = basketOptional.get();
+            basket.setNum(basket.getNum() + 1);
+            basketRepository.save(basket);
+        }
+        else {
+            User user = userRepository.getReferenceById(request.getUserId());
+            Shoe shoe = shoeRepository.getReferenceById(request.getShoeId());
+            ShoeSize size = shoeSizeRepository.getReferenceById(request.getSizeId());
+            Basket basket = new Basket();
+            basket.setShoe(shoe);
+            basket.setSize(size.getSize());
+            basket.setNum(1);
+            user.addBasket(basket);
+            userRepository.save(user);
+        }
         return ResponseEntity.ok(new MessageResponse("Shoe added to basket"));
     }
 
@@ -167,7 +190,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(new MessageResponse("User with this id doesn't exist"));
         }
         List<Basket> basketList = basketRepository.findByUserId(userId.getUserId());
-        return ResponseEntity.ok(basketList.stream().map(BasketMapper::toBasketDto).toList());
+        return ResponseEntity.ok(basketList.stream().map(Mapper::toBasketDto).toList());
     }
 
     @PostMapping("/removeFromBasket")
@@ -181,4 +204,72 @@ public class UserController {
         basketRepository.deleteById(request.getBasketId());
         return ResponseEntity.ok(new MessageResponse("Shoe deleted from basket"));
     }
+
+    @PostMapping("/sort")
+    public ResponseEntity<?> sortShoesList(@RequestBody SortRequest sortRequest){
+        List<Shoe> shoeList = shoeRepository.findAll();
+        if(sortRequest.getSortType().equals("default")){
+            shoeList.sort(Comparator.comparing(Shoe::getBoughtNum));
+
+        }
+        if(sortRequest.getSortType().equals("price")){
+            shoeList.sort(Comparator.comparing(Shoe::getPrice));
+
+        }
+        if(sortRequest.getDirection().equals("up")){
+            Collections.reverse(shoeList);
+        }
+        return ResponseEntity.ok(shoeList.stream().map(Mapper::toShoeDto).toList());
+    }
+
+    @PostMapping("/makeOrder")
+    public ResponseEntity<?> makeOrder(@RequestBody BasketToOrderRequest request){
+        Optional<User> userOptional = userRepository.findById(request.getUserId());
+        if(userOptional.isEmpty()){
+            return ResponseEntity.badRequest().body(new MessageResponse("There is no user with this id"));
+        }
+        if(request.getBasketsId().size() == 0){
+            return ResponseEntity.badRequest().body(new MessageResponse("New order has been not created, because shoe set is null"));
+        }
+        User user = userOptional.get();
+        Order order = new Order();
+        for(Integer basketId: request.getBasketsId()){
+            Optional<Basket> basketOptional = basketRepository.findById(basketId);
+            if(basketOptional.isEmpty()){
+                return ResponseEntity.badRequest().body(new MessageResponse("There is no basket with this id"));
+            }
+            Basket basket = basketOptional.get();
+            OrderShoe orderShoe = new OrderShoe();
+            orderShoe.setShoe(basket.getShoe());
+            orderShoe.setSize(basket.getSize());
+            orderShoe.setNum(basket.getNum());
+            Optional<ShoeSize> shoeSizeOptional = shoeSizeRepository.findByShoeIdAndSizeValue(basket.getShoe().getId(), basket.getSize().getValue());
+            if(shoeSizeOptional.isEmpty()){
+                return ResponseEntity.badRequest().body(new MessageResponse("There is no size of this shoe"));
+            }
+            ShoeSize shoeSize = shoeSizeOptional.get();
+            int existingNum = shoeSize.getExistingNum();
+            shoeSize.setExistingNum(existingNum - basket.getNum());
+            shoeSizeRepository.save(shoeSize);
+            order.addOrder(orderShoe);
+            basketRepository.delete(basket);
+        }
+        LocalDateTime localDateTime = LocalDateTime.now();
+        ZonedDateTime zdt = ZonedDateTime.of(localDateTime, ZoneId.systemDefault());
+        order.setDate(new Date(zdt.toInstant().toEpochMilli()));
+        order.setStatus(OrderStatus.ACCEPTED_FOR_PROCESSING);
+        user.addOrder(order);
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("New order has been created"));
+    }
+
+    @PostMapping("/getOrders")
+    public ResponseEntity<?> getOrders(@RequestBody UserIdRequest request){
+        if(!userRepository.existsById(request.getUserId())){
+            return ResponseEntity.badRequest().body(new MessageResponse("User with this id doesn't exist"));
+        }
+        List<Order> basketList = orderRepository.findByUserId(request.getUserId());
+        return ResponseEntity.ok(basketList.stream().map(Mapper::toOrderDto).toList());
+    }
+
 }

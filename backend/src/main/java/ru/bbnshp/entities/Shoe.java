@@ -3,6 +3,7 @@ package ru.bbnshp.entities;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -41,8 +42,11 @@ public class Shoe {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "shoesSet")
-    private Set<Order> orderSet = new HashSet<>();
+    @Column(name = "image_pattern")
+    private String imagePattern;
+
+    @OneToMany(mappedBy = "shoe",  cascade = CascadeType.ALL)
+    private Set<OrderShoe> orderSet = new HashSet<>();
     @OneToMany(mappedBy = "shoe",  cascade = CascadeType.ALL)
     private Set<ShoeSize> sizeSet = new HashSet<>();
 
@@ -126,11 +130,11 @@ public class Shoe {
         this.name = name;
     }
 
-    public Set<Order> getOrderSet() {
+    public Set<OrderShoe> getOrderSet() {
         return orderSet;
     }
 
-    public void setOrderSet(Set<Order> orderSet) {
+    public void setOrderSet(Set<OrderShoe> orderSet) {
         this.orderSet = orderSet;
     }
 
@@ -140,5 +144,18 @@ public class Shoe {
 
     public void setSizeSet(Set<ShoeSize> sizeSet) {
         this.sizeSet = sizeSet;
+    }
+
+    public String getImagePattern() {
+        return imagePattern;
+    }
+
+    public void setImagePattern(String imagePattern) {
+        this.imagePattern = imagePattern;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(color, price, description, brand, sex, type, name);
     }
 }
