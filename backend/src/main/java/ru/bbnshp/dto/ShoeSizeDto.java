@@ -7,7 +7,6 @@ public class ShoeSizeDto {
 
     private Integer id;
     private SizeDto size;
-
     private Integer existingNum;
 
     public ShoeSizeDto(Integer id, SizeDto size, Integer existingNum) {

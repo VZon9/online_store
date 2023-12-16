@@ -1,9 +1,7 @@
 package ru.bbnshp.dto;
 
-import ru.bbnshp.entities.Shoe;
-import ru.bbnshp.entities.Size;
 
-public class BasketDto {
+public class OrderShoeDto {
 
     private Integer id;
 
@@ -13,7 +11,7 @@ public class BasketDto {
 
     private Integer num;
 
-    public BasketDto(Integer id, ShoeDto shoe, SizeDto size, Integer num) {
+    public OrderShoeDto(Integer id, ShoeDto shoe, SizeDto size, Integer num) {
         this.id = id;
         this.shoe = shoe;
         this.size = size;

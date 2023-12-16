@@ -3,25 +3,24 @@ package ru.bbnshp.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "baskets")
-public class Basket {
-
+@Table(name = "orders_shoes")
+public class OrderShoe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "shoe_id")
+    @JoinColumn(name = "shoes_id")
     private Shoe shoe;
 
     @ManyToOne
     @JoinColumn(name = "size")
     private Size size;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @Column(name = "num")
     private Integer num;
@@ -32,14 +31,6 @@ public class Basket {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Shoe getShoe() {
@@ -56,6 +47,14 @@ public class Basket {
 
     public void setSize(Size size) {
         this.size = size;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Integer getNum() {

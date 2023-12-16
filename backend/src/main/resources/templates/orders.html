@@ -14,36 +14,70 @@
 <body>
 <table width="55%"  cellpadding="10px" align="center">
     <tr>
-        <th><a href = "orders.html" style="text-decoration: none;"><h2>Заказы</h2></a></th>
+        <th><a th:href = "@{/admin/orders}" style="text-decoration: none;"><h2>Заказы</h2></a></th>
         <th><a href = "shoes.html" style="text-decoration: none;"><h2>Товары</h2></a></th>
         <th><a href = "statistic.html" style="text-decoration: none;"><h2>Статистика</h2></a><th>
         <th> <h2>Выход</h2><th>
     </tr>
 </table>
 <br>
-<table th:if="${not #lists.isEmpty(olders)}">
-    <tr th:each="older : ${olders}">
-        <td>
-            <span th:text="${'Заказ №' + older.id + ' ' + older.date + ' ' + older.status + ' '}"></span>
-            <form>
-                <select name="status">
-                    <option value="inprogress">Выполняется</option>
-                    <option value="done">Завершен</option>
-                </select>
+<p th:if="${orderErr}">Нет заказа с таким id</p>
+<table align="center">
+    <tr th:each="order: ${orderList}">
+        <td th:if="${order.status.toString() != 'RECEIVED'}">
+            <span><b>Заказ № <span th:text="${order.id}"></span></b></span>
+            <br>
+            <span><b>Дата заказа: <span th:text="${order.date}"></span></b></span>
+            <br>
+            <br>
+            <span th:if="${order.status.toString() == 'ACCEPTED_FOR_PROCESSING'}"><b>ПРИНЯТ В ОБРАБОТКУ</b></span>
+            <span th:if="${order.status.toString() == 'IN_ASSEMBLY'}"><b>В СБОРКЕ</b></span>
+            <span th:if="${order.status.toString() == 'SENT_FOR_DELIVERY'}"><b>ОТПРАВЛЕН В ДОСТАВКУ</b></span>
+            <span th:if="${order.status.toString() == 'READY_TO_RECEIVE'}"><b>ГОТОВ К ПОЛУЧЕНИЮ</b></span>
+            <form th:action="@{/admin/orders/change/{id}(id=${order.id})}" method="POST">
                 <input type="submit" value="Изменить статус">
             </form>
-            <table th:if="${not #lists.isEmpty(older.shoesSet)}">
-                <tr th:each="shoe : ${older.shoesSet}">
+            <table border="1" style="border-collapse: collapse; border: 1px solid black;">
+                <tr>
+                    <td style="width: 100px">
+                        <span><b>Название</b></span>
+                    </td>
+                    <td style="width: 100px">
+                        <span><b>Брэнд</b></span>
+                    </td>
+                    <td style="width: 100px">
+                        <span><b>Цвет</b></span>
+                    </td>
+                    <td style="width: 100px">
+                        <span><b>Размер</b></span>
+                    </td>
+                    <td style="width: 100px">
+                        <span><b>Количество</b></span>
+                    </td>
+                </tr>
+                <tr th:each="shoe : ${order.orderSet}">
                     <td>
-                        <span th:text="${shoe.id + ' ' + shoe.color + ' ' + shoe.price + ' ' + shoe.num }"></span>
+                        <span th:text="${shoe.shoe.name}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${shoe.shoe.brand.name}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${shoe.shoe.color}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${shoe.size.value}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${shoe.num}"></span></span>
                     </td>
                 </tr>
             </table>
-            <span th:text="${older.sum}"></span>
         </td>
     </tr>
 </table>
-
+<br>
+<p align="center"><button type="submit" class="btn btn-light"><a th:href = "@{/admin/shoes}" style="text-decoration: none;">Return</a></button></p>
 
 </body>
 </html>

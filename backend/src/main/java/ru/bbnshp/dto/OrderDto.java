@@ -1,10 +1,8 @@
 package ru.bbnshp.dto;
 
 import ru.bbnshp.entities.OrderStatus;
-import ru.bbnshp.entities.Shoe;
 
 import java.sql.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 public class OrderDto {
@@ -15,13 +13,13 @@ public class OrderDto {
 
     private OrderStatus status;
 
-    private Set<ShoeDto> shoesSet;
+    private Set<OrderShoeDto> orderSet;
 
-    public OrderDto(Integer id, Date date, OrderStatus status, Set<ShoeDto> shoesSet) {
+    public OrderDto(Integer id, Date date, OrderStatus status, Set<OrderShoeDto> orderSet) {
         this.id = id;
         this.date = date;
         this.status = status;
-        this.shoesSet = shoesSet;
+        this.orderSet = orderSet;
     }
 
     public Integer getId() {
@@ -48,11 +46,11 @@ public class OrderDto {
         this.status = status;
     }
 
-    public Set<ShoeDto> getShoesSet() {
-        return shoesSet;
+    public Set<OrderShoeDto> getOrderSet() {
+        return orderSet;
     }
 
-    public void setShoesSet(Set<ShoeDto> shoesSet) {
-        this.shoesSet = shoesSet;
+    public void setOrderSet(Set<OrderShoeDto> orderSet) {
+        this.orderSet = orderSet;
     }
 }

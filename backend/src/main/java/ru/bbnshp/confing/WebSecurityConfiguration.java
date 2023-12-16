@@ -3,17 +3,14 @@ package ru.bbnshp.confing;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import ru.bbnshp.filter.AuthTokenFilter;
 import ru.bbnshp.point.AuthEntryPointJwt;
-import ru.bbnshp.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -44,7 +41,9 @@ public class WebSecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable);
         http.exceptionHandling((handling) -> handling.authenticationEntryPoint(unauthorizedHandler));
         http.authorizeHttpRequests((request) ->
-                request.requestMatchers("/login", "/register", "/getProducts", "/getProduct","/getFilteredProducts","/admin/login", "/admin/upload")
+                request.requestMatchers("/login", "/register", "/getProducts",
+                                        "/getProduct","/getFilteredProducts","/admin/login",
+                                        "/admin/upload", "/sort", "/img/**")
                         .permitAll().anyRequest().authenticated());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();

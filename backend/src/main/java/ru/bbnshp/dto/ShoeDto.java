@@ -2,6 +2,7 @@ package ru.bbnshp.dto;
 
 import ru.bbnshp.entities.*;
 
+import javax.print.attribute.standard.Fidelity;
 import java.util.List;
 
 
@@ -23,10 +24,12 @@ public class ShoeDto {
 
     private String name;
 
+    private String imagePattern;
+
     private List<ShoeSizeDto> sizeList;
 
     public ShoeDto(Integer id, String color, Integer price, String description,
-                   BrandDto brand, Sex sex, TypeDto type, String name, List<ShoeSizeDto> sizeList) {
+                   BrandDto brand, Sex sex, TypeDto type, String name, String imagePattern, List<ShoeSizeDto> sizeList) {
         this.id = id;
         this.color = color;
         this.price = price;
@@ -35,6 +38,7 @@ public class ShoeDto {
         this.sex = sex;
         this.type = type;
         this.name = name;
+        this.imagePattern = imagePattern;
         this.sizeList = sizeList;
     }
 
@@ -100,6 +104,14 @@ public class ShoeDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImagePattern() {
+        return imagePattern;
+    }
+
+    public void setImagePattern(String imagePattern) {
+        this.imagePattern = imagePattern;
     }
 
     public List<ShoeSizeDto> getSizeList() {

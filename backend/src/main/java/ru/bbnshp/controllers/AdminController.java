@@ -16,17 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.bbnshp.mapper.BrandMapper;
-import ru.bbnshp.mapper.ShoeMapper;
-import ru.bbnshp.mapper.TypeMapper;
+import ru.bbnshp.dto.OrderDto;
+import ru.bbnshp.dto.ShoeSizeDto;
 import ru.bbnshp.entities.*;
+import ru.bbnshp.mapper.Mapper;
 import ru.bbnshp.repositories.*;
 import ru.bbnshp.services.ImageUploadService;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,6 +51,12 @@ public class AdminController {
     private final SizeRepository sizeRepository;
 
     @Autowired
+    private final OrderRepository orderRepository;
+
+    @Autowired
+    private final OrderShoeRepository orderShoeRepository;
+
+    @Autowired
     private final ImageUploadService imageUploadService;
 
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
@@ -65,6 +68,8 @@ public class AdminController {
                            TypeRepository typeRepository,
                            ShoeSizeRepository shoeSizeRepository,
                            SizeRepository sizeRepository,
+                           OrderRepository orderRepository,
+                           OrderShoeRepository orderShoeRepository,
                            ImageUploadService imageUploadService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
@@ -73,6 +78,8 @@ public class AdminController {
         this.typeRepository = typeRepository;
         this.shoeSizeRepository = shoeSizeRepository;
         this.sizeRepository = sizeRepository;
+        this.orderRepository = orderRepository;
+        this.orderShoeRepository = orderShoeRepository;
         this.imageUploadService = imageUploadService;
     }
 
@@ -87,8 +94,8 @@ public class AdminController {
 
     @GetMapping("/shoes/add")
     String getShoesAdd(Model model){
-        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
-        model.addAttribute("typeList", typeRepository.findAll().stream().map(TypeMapper::toTypeDto).collect(Collectors.toList()));
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(Mapper::toBrandDto).collect(Collectors.toList()));
+        model.addAttribute("typeList", typeRepository.findAll().stream().map(Mapper::toTypeDto).collect(Collectors.toList()));
         model.addAttribute("sexList", Arrays.asList(Sex.values()));
         return "shoesAdd";
     }
@@ -101,9 +108,11 @@ public class AdminController {
                               @RequestParam(name = "color") String color,
                               @RequestParam(name = "price") Integer price,
                               @RequestParam(name = "description") String description,
-                              Model model){
-        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
-        model.addAttribute("typeList", typeRepository.findAll().stream().map(TypeMapper::toTypeDto).collect(Collectors.toList()));
+                              @RequestParam(name = "image") MultipartFile file,
+                              @RequestParam(name = "images") MultipartFile[] files,
+                              Model model) throws IOException {
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(Mapper::toBrandDto).collect(Collectors.toList()));
+        model.addAttribute("typeList", typeRepository.findAll().stream().map(Mapper::toTypeDto).collect(Collectors.toList()));
         model.addAttribute("sexList", Arrays.asList(Sex.values()));
         if(!typeRepository.existsByName(shoesType)){
             model.addAttribute("existTypeErr", true);
@@ -128,6 +137,12 @@ public class AdminController {
         shoe.setPrice(price);
         shoe.setDescription(description);
         shoe.setBoughtNum(0);
+        String imgPattern = "shoe_" + shoe.hashCode();
+        imageUploadService.uploadImage(file, imgPattern + "_main");
+        for(int i = 1; i <= files.length; i++){
+            imageUploadService.uploadImage(files[i - 1], imgPattern + "_" + i);
+        }
+        shoe.setImagePattern(imgPattern);
         shoeRepository.save(shoe);
         switch (sex){
             case MALE -> {
@@ -166,7 +181,7 @@ public class AdminController {
 
     @GetMapping("/brand/add")
     String getBrandAdd(Model model){
-        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(Mapper::toBrandDto).collect(Collectors.toList()));
         return "brandAdd";
     }
 
@@ -181,7 +196,7 @@ public class AdminController {
         brand.setName(nameUp);
         brandRepository.save(brand);
         model.addAttribute("success", true);
-        model.addAttribute("brandList", brandRepository.findAll().stream().map(BrandMapper::toBrandDto).collect(Collectors.toList()));
+        model.addAttribute("brandList", brandRepository.findAll().stream().map(Mapper::toBrandDto).collect(Collectors.toList()));
         return "brandAdd";
     }
 
@@ -223,14 +238,14 @@ public class AdminController {
 
     @GetMapping("/procurement")
     String getProcurement(Model model){
-        model.addAttribute("shoesList", shoeRepository.findAll().stream().map(ShoeMapper::toShoeDto).toList());
+        model.addAttribute("shoesList", shoeRepository.findAll().stream().map(Mapper::toShoeDto).toList());
         return "procurement";
     }
 
     @PostMapping("/procurement/add/{id}")
     String AddProcurement(Model model, @PathVariable Integer id,
                           @RequestParam Map<String,String> sizes){
-        model.addAttribute("shoesList", shoeRepository.findAll().stream().map(ShoeMapper::toShoeDto).toList());
+        model.addAttribute("shoesList", shoeRepository.findAll().stream().map(Mapper::toShoeDto).toList());
         Optional<Shoe> shoeOp = shoeRepository.findById(id);
         if(shoeOp.isPresent()){
             for(ShoeSize size: shoeOp.get().getSizeSet().stream().toList()){
@@ -248,9 +263,40 @@ public class AdminController {
 
     @PostMapping("/upload")
     String uploadImage(Model model, @RequestParam(name = "image") MultipartFile file,
-                                    @RequestParam(name = "images") MultipartFile[] files) throws IOException {
-        imageUploadService.uploadImage(file, "shoe_1_main");
+                                    @RequestParam(name = "images") MultipartFile[] files,
+                                    @RequestParam(name = "name") String name) throws IOException {
+        imageUploadService.uploadImage(file, name + "_shoe_1_main");
         model.addAttribute("msg", "Uploaded images: " + file.getOriginalFilename());
         return "testImage";
+    }
+
+    @GetMapping("/orders")
+    String getOrders(Model model){
+        List<OrderDto> orderList = new ArrayList<>(orderRepository.findAll().stream().map(Mapper::toOrderDto).toList());
+        orderList.sort(Comparator.comparing(OrderDto::getId));
+        model.addAttribute("orderList", orderList);
+        return "orders";
+    }
+
+    @PostMapping("/orders/change/{id}")
+    String changeStatus(Model model, @PathVariable Integer id){
+        Optional<Order> orderOptional = orderRepository.findById(id);
+        if(orderOptional.isPresent()){
+            Order order = orderOptional.get();
+            switch (order.getStatus()){
+                case ACCEPTED_FOR_PROCESSING -> order.setStatus(OrderStatus.IN_ASSEMBLY);
+                case IN_ASSEMBLY -> order.setStatus(OrderStatus.SENT_FOR_DELIVERY);
+                case SENT_FOR_DELIVERY -> order.setStatus(OrderStatus.READY_TO_RECEIVE);
+                case READY_TO_RECEIVE -> order.setStatus(OrderStatus.RECEIVED);
+            }
+            orderRepository.save(order);
+        }
+        else{
+            model.addAttribute("orderErr", true);
+        }
+        List<OrderDto> orderList = new ArrayList<>(orderRepository.findAll().stream().map(Mapper::toOrderDto).toList());
+        orderList.sort(Comparator.comparing(OrderDto::getId));
+        model.addAttribute("orderList", orderList);
+        return "orders";
     }
 }

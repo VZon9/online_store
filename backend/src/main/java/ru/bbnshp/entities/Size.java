@@ -16,6 +16,12 @@ public class Size {
     @OneToMany(mappedBy = "size")
     private Set<ShoeSize> sizeSet = new HashSet<>();
 
+    @OneToMany(mappedBy = "size", cascade = CascadeType.ALL)
+    private Set<Basket> basketSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "size")
+    private Set<OrderShoe> orderSet = new HashSet<>();
+
     public Integer getValue() {
         return value;
     }
@@ -30,5 +36,21 @@ public class Size {
 
     public void setSizeSet(Set<ShoeSize> sizeSet) {
         this.sizeSet = sizeSet;
+    }
+
+    public Set<Basket> getBasketSet() {
+        return basketSet;
+    }
+
+    public void setBasketSet(Set<Basket> basketSet) {
+        this.basketSet = basketSet;
+    }
+
+    public Set<OrderShoe> getOrderSet() {
+        return orderSet;
+    }
+
+    public void setOrderSet(Set<OrderShoe> orderSet) {
+        this.orderSet = orderSet;
     }
 }
