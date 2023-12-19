@@ -6,9 +6,11 @@ import {CartContext} from "../../contexts/CartContext/CartContext";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import {Button, Typography} from "@mui/material";
 const CartItem = (props) => {
     const {rmFromCart} = useContext(CartContext)
-    const {brand, model, price, id, size, img, type, quantity, totalPrice, setTotalPrice,  totalCnt, setTotalCnt, selectedForOrder} = props
+    const {brand, model, price, id, size, img, type, color, quantity, totalPrice, setTotalPrice,  totalCnt, setTotalCnt, selectedForOrder} = props
     const image = 'http://26.134.246.98:8080/img/' + img + '_main.png'
     const refreshCartInfo = (isChecked) => {
         if (isChecked) {
@@ -28,52 +30,42 @@ const CartItem = (props) => {
     return (
         <section className="cart_item">
             <div className="cart_item_wrapper">
-                <div className="title_price">
-                    <div className="cart_item_title">
-                        {type}
-                    </div>
-                    <div className="cart_item_price">
-                        {price}
-                    </div>
-                </div>
-                <hr className="cart_item_hr" />
-                <div className="cart_item_body">
+                <div className="item_info">
                         <Checkbox
-                            size="small"
+                            size="medium"
                             color="secondary"
                             onChange={e => {
                                 refreshCartInfo(e.target.checked)
                             }}
-                    />
+                        />
                     <div className="cart_item_img_box">
                         <img src={image} alt='img' className="cart_item_img"/>
                     </div>
-                    <div className="cart_item_info">
-                        <h1 className="cart_item_cat-name"> PRODUCT </h1>
-                        <h3> {brand} </h3>
-                        <h4> {model} </h4>
+                    <div className="item_text">
+                        <div className="item_name">
+                            <p> {brand} {model} </p>
+                        </div>
+
+                        <div className="item_size_color">
+                            <p>Size: {size}, Color: {color}</p>
+                        </div>
+                        <div className="item_qty">
+                            <p>Quantity: {quantity}</p>
+                        </div>
+                        <div className="item_btn">
+                            <Button variant="contained"  size="medium" onClick={() => rmFromCart(id)} sx = {{
+                                textAlign: 'center',
+                                borderRadius: '25px',
+                                background: '#ef5350'
+                            }}>
+                                <Typography fontWeight='900' fontSize='14px' > Remove </Typography>
+                            </Button>
+                        </div>
                     </div>
 
-                    <div className="cart_item_quantity">
-                        <h1 className="cart_item_cat-name"> QUANTITY </h1>
-                        <div className="cart_item-count"> {quantity} </div>
-                    </div>
-
-                    <div className="cart_item_size">
-                        <h1 className="cart_item_cat-name"> SIZE </h1>
-                        <div className="cart_item-size"> {size} </div>
-                    </div>
-
-                    <div className="cart_item_remove">
-                        <h1 className="cart_item_cat-name"> REMOVE </h1>
-                        <ClearIcon sx = {{
-                            cursor: 'pointer'
-                        }}
-                                   onClick={() => {
-                            rmFromCart(id)
-                        }}/>
-                    </div>
-
+                </div>
+                <div className="item_price">
+                     <p> ${price} </p>
                 </div>
             </div>
         </section>

@@ -1,0 +1,24 @@
+.product_in_order {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.product_text {
+    min-width: 20%;
+    text-align: right;
+    margin-bottom: 6px;
+}
+.product_text p{
+    margin: 0;
+    padding: 3px;
+    font-size: 18px;
+
+}
+.image {
+    width: 84px;
+    height: 84px;
+}
+.product_price p {
+    font-size: 22px;
+    letter-spacing: 0.04em;
+}

@@ -4,23 +4,36 @@ import {Button, TextField} from "@mui/material";
 import 'dayjs/locale/ru'
 import {instance} from "../../utils/axios";
 import {ACCESS_TOKEN_KEY} from "../../pages/auth/AuthRoot";
-import CartItem from "../cartItem/CartItem";
+import {useNavigate} from "react-router-dom";
+import ProductInOrderCard from "../produtctInOrderCard/ProductInOrderCard";
+export let price = 0
 const ProfileDetails = () => {
 
+    const navigate = useNavigate()
     const [orders, setOrders] = useState([])
+
     useEffect(() => {
         const fetchOrders = async () => {
-            const response = await instance.post('getOrders', {'userId': localStorage.getItem('userId')}, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
-                }
-            })
-            const data = await response.data
-            console.log('orders:', data)
-            setOrders(data)
+            try {
+                const response = await instance.post('getOrders', {'userId': localStorage.getItem('userId')}, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
+                    }
+                })
+                const data = await response.data
+                console.log('orders:', data)
+                setOrders(data)
+            } catch (error) {
+                navigate("/error" + "fail-fetch-orders")
+            }
         }
         fetchOrders();
     }, []);
+
+    const logout =  () => {
+        localStorage.setItem('isAuth', 'false')
+        navigate("/home")
+    }
 
     return (
         <div>
@@ -30,36 +43,35 @@ const ProfileDetails = () => {
                         <div className="details_title">My details</div>
                         <div className="details_personal">My orders</div>
                         <hr className="profile_hr"/>
-                        <div className="form_container">
-                            <div className="form_text">Here is your history of orders. Thanks for choosing us.</div>
-                        </div>
                         <div className="form_box">
                             <div className="orders_history">
                                 {orders.map(item => {
+                                    {price = 0}
                                     return(
                                         <div className="orders_history_card" key = {item.id}>
                                             <div className="orders_history_card_wrapper">
                                                 <div className="order_text">
-                                                    <div className="item_info">
-                                                        <h4>order from</h4>
-                                                        <p>{item.date}</p>
+                                                    <div className="item_info_date">
+                                                        <h5>Order from: {item.date} </h5>
                                                     </div>
-                                                    <div className="item_info">
-                                                        <h4> order status </h4>
-                                                        <p>{item.status}</p>
+                                                    <div className="item_info_status">
+                                                        {item.status}
                                                     </div>
                                                 </div>
-                                                <div className="item_info">
-                                                    <h4> order number </h4>
-                                                    <p>{item.id}</p>
+                                                <div className="item_info_number">
+                                                    Order number: {item.id}
                                                 </div>
+                                                <hr className="divider"/>
                                                     {item.orderSet.map(itm => {
                                                         return(
-                                                            <div className="details_items_in_order" key = {itm.id}>
-                                                                <p>{itm.shoe.brand.name}</p>
-                                                                <p>{itm.shoe.name}</p>
-                                                                <p>{itm.size.value}</p>
-                                                                <p>{itm.num}</p>
+                                                            <div className="order_content" key = {itm.id}>
+                                                                <ProductInOrderCard
+                                                                    brand = {itm.shoe.brand.name}
+                                                                    model = {itm.shoe.name}
+                                                                    size = {itm.size.value}
+                                                                    img = {itm.shoe.imagePattern}
+                                                                    productPrice = {itm.shoe.price}
+                                                                    />
                                                             </div>
                                                         )
                                                     })}
@@ -101,49 +113,17 @@ const ProfileDetails = () => {
                                     />
                             </div>
                         </div>
-                        <div className="details_personal">Password</div>
+                        <div className="details_personal">Logout</div>
                         <hr className="hr"/>
                         <div className="form_container">
-                            <div className="form_text">Here is your password. You can change it whenever you want. Your safety is very important for us.</div>
+                            <div className="form_text">Here is the logout button. You can press it and then you will use our site as anonymous.</div>
                             <div className="form_box">
-                                <TextField
-                                    id="outlined-basic"
-                                    label="current password"
-                                    margin = "normal"
-                                    variant="outlined"
-                                    size = "large"
-                                    color = "secondary"
-                                    sx = {{
-                                        width: '40%'
-                                    }}
-                                />
-                                <TextField
-                                    id="outlined-basic"
-                                    label="new password"
-                                    variant="outlined"
-                                    size = "large"
-                                    color = "secondary"
-                                    margin="normal"
-                                    sx = {{
-                                        width: '40%'
-                                    }}
-                                />
-                                <TextField
-                                    id="outlined-basic"
-                                    label="re-enter new password"
-                                    variant="outlined"
-                                    size = "large"
-                                    color = "secondary"
-                                    margin="normal"
-                                    sx = {{
-                                        width: '40%'
-                                    }}
-                                />
-                                <Button variant="contained" color = "secondary" sx = {{
+                                <Button variant="contained" size = "large" color = "secondary" onClick={logout} sx = {{
                                     width: '20%',
-                                    marginTop: '26px'
+                                    marginTop: '26px',
+                                    marginBottom: '40px'
                                 }}>
-                                    save
+                                    Logout
                                 </Button>
                             </div>
                         </div>

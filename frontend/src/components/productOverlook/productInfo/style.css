@@ -19,6 +19,13 @@
     letter-spacing: 0.02em;
     color: #8E8E8E;
 }
+.product_modelprice {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    margin-bottom: 40px;
+}
+
 .sizes_text{
     font-weight: 500;
     font-size: 18px;

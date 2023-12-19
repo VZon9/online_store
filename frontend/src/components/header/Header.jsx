@@ -3,6 +3,7 @@ import logoImg from '../../img/logologo.png'
 import './style.css'
 import {Button} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 const Header = () => {
     let to = ''
@@ -22,13 +23,10 @@ const Header = () => {
                     </div>
                     <nav className="header_nav">
                         <ul>
-                            <li><a href="#!">FOR MEN</a></li>
-                            <li><a href="#!">FOR WOMEN</a></li>
                             <li style={{cursor: 'pointer'}}
                                 onClick={() => {
                                 navigate("/cart")
-                            }}>CART</li>
-                            {/*<li><a href="#!" className="header_nav-btn">SIGN UP</a></li>*/}
+                            }}><ShoppingCartOutlinedIcon/></li>
                             <li>
                                 <Button variant="contained"  color = "secondary" size="large" sx ={{
                                 textAlign: 'center',

@@ -18,7 +18,6 @@ const ProductOverlook = () => {
             const response =    await instance.post("getProduct", {'id':prodId})
             setProduct( await response.data)
         }
-        setIsLoading(true)
         fetchProduct(prodId);
         setIsLoading(false)
     },[prodId]);
@@ -34,8 +33,8 @@ const ProductOverlook = () => {
             <div className="container">
                 <div className="product_overlook_box">
                     <MiniImgSwiper img = {product.imagePattern}/>
-                    <LargeImgSwiper img = {product.imagePattern}/>
-                    <ProductInfo brand={product.brand?.name} model={product.name} id={prodId} sizeList={product.sizeList} desc = {product.description}/>
+                    <LargeImgSwiper img = {product.imagePattern} desc = {product.description} />
+                    <ProductInfo brand={product.brand?.name} model={product.name} id={prodId} sizeList={product.sizeList} desc = {product.description} price = {product.price}/>
                 </div>
             </div>
         </section>

@@ -1,24 +1,29 @@
-import React, {createContext, useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {instance} from "../../utils/axios";
+import {useNavigate} from "react-router-dom";
 
 export const ProductContext = React.createContext();
  const ProductProvider = ({ children }) => {
 
+     const navigate = useNavigate()
      const [products, setProducts] = useState([])
-     const [loading, setLoading] = useState(false)
+
+
      useEffect(() => {
          const fetchProducts = async () => {
-             const response = await instance.get('getProducts')
-             const data = await response.data
-             console.log("context:", data)
-             setProducts(data)
+             try {
+                 const response = await instance.get('getProducts')
+                 const data = await response.data
+                 console.log("context:", data)
+                 setProducts(data)
+             }catch (error) {
+                 navigate("/error" + "fail-fetch-products")
+             }
          }
-         setLoading(true)
          fetchProducts();
-         setLoading(false)
      }, []);
 
-     return <ProductContext.Provider value={{products, setProducts, loading}}>{ children }</ProductContext.Provider>
+     return <ProductContext.Provider value={{products, setProducts}}>{ children }</ProductContext.Provider>
 
 }
 export default ProductProvider

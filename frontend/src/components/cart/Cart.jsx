@@ -3,7 +3,7 @@ import './style.css'
 import {CartContext} from "../../contexts/CartContext/CartContext";
 import CartItem from "../cartItem/CartItem";
 import CartEmptyItem from "../cartEmptyItem/CartEmptyItem";
-import {Box, Button, Typography} from "@mui/material";
+import {Box, Button, Divider, Typography} from "@mui/material";
 import {instance} from "../../utils/axios";
 import {ACCESS_TOKEN_KEY} from "../../pages/auth/AuthRoot";
 import Snackbar from '@mui/material/Snackbar';
@@ -38,7 +38,6 @@ const Cart = () => {
             console.log(error)
             setMakeOrderMes(await error.message)
         }
-
     }
 
     const handleCloseSnackbar = (event, reason) => {
@@ -62,6 +61,7 @@ const Cart = () => {
                                               id = {item.id}
                                               size = {item.size.value}
                                               quantity = {item.num}
+                                              color = {item.shoe.color}
                                               img = {item.shoe.imagePattern}
                                               type = {item.shoe.type.name}
                                               totalPrice = {totalPrice}
@@ -74,41 +74,45 @@ const Cart = () => {
                             })}
                         </div>
                         <div className="cart_makeorder">
-                                <Button variant="contained" onClick={makeOrder} sx = {{
-                                    marginTop: 0,
-                                    textAlign: 'center',
-                                    borderRadius: '25px',
-                                    width: '100%',
-                                    background: '#ef5350'
-                                }}>
-                                    <Typography fontWeight='900' fontSize='16px' padding='10px 20px'> Make an order </Typography>
-                                </Button>
-
-                            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
-                                <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
-                                    {makeOrderMes}
-                                </Alert>
-                            </Snackbar>
-
-                            <Typography fontWeight='500' fontSize='18px' padding='10px 20px' fontFamily='Poppins'> Information </Typography>
-                            <Box sx ={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                paddingLeft: '5%'
+                            <Box sx = {{
+                                padding: '20px'
                             }}>
-                                <Box sx = {{
+
+                                <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+                                    <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+                                        {makeOrderMes}
+                                    </Alert>
+                                </Snackbar>
+
+                                <Typography fontWeight='500' fontSize='24px' padding='10px 20px' fontFamily='Poppins'> Order information </Typography>
+                                <Box sx ={{
                                     display: 'flex',
-                                    justifyContent: 'space-between'
+                                    flexDirection: 'column',
+                                    paddingLeft: '5%'
                                 }}>
-                                    <Typography fontWeight='500' fontSize='16px' padding='10px 20px' fontFamily='Poppins'> Products </Typography>
-                                    <Typography fontWeight='500' fontSize='16px' padding='10px 20px' fontFamily='Poppins'> {totalCnt} </Typography>
-                                </Box>
-                                <Box sx = {{
-                                    display: 'flex',
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <Typography fontWeight='500' fontSize='16px' padding='10px 20px' fontFamily='Poppins'> Total price </Typography>
-                                    <Typography fontWeight='500' fontSize='16px' padding='10px 20px' fontFamily='Poppins'> {totalPrice} </Typography>
+                                    <Box sx = {{
+                                        display: 'flex',
+                                        justifyContent: 'space-between'
+                                    }}>
+                                        <Typography fontWeight='500' fontSize='20px' padding='10px 20px' fontFamily='Poppins'> Products: </Typography>
+                                        <Typography fontWeight='500' fontSize='20px' padding='10px 20px' fontFamily='Poppins'> {totalCnt} </Typography>
+                                    </Box>
+                                    <Box sx = {{
+                                        display: 'flex',
+                                        justifyContent: 'space-between'
+                                    }}>
+                                        <Typography fontWeight='900' fontSize='20px' padding='10px 20px' fontFamily='Poppins'> Total price: </Typography>
+                                        <Typography fontWeight='900' fontSize='20px' padding='10px 20px' fontFamily='Poppins'> ${totalPrice} </Typography>
+                                    </Box>
+                                    <Button variant="contained" onClick={makeOrder} sx = {{
+                                        marginTop: '10px',
+                                        textAlign: 'center',
+                                        borderRadius: '25px',
+                                        width: '100%',
+                                        background: '#ef5350'
+                                    }}>
+                                        <Typography fontWeight='900' fontSize='16px' padding='10px 20px'> Make an order </Typography>
+                                    </Button>
                                 </Box>
                             </Box>
                         </div>

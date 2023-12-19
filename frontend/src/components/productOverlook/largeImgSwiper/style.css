@@ -1,6 +1,42 @@
-.large_img_swiper{
+.slider_text{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .shoe_large_img{
     height: 680px;
     width: 680px;
 }
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+.item1 {
+    background-color: #8E8E8E;
+}
+.item2 {
+    background-color: #7e57c2;
+}
+.item3 {
+    background-color: #e53935;
+}
+.all-photos {
+    display: flex;
+}
+.description {
+    width: 100%;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: left;
+}
+.description p {
+    margin: 5px;
+    padding: 0;
+}
+
+

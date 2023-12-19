@@ -1,25 +1,35 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {instance} from "../../utils/axios";
 import {ACCESS_TOKEN_KEY} from "../../pages/auth/AuthRoot";
+import {useNavigate} from "react-router-dom";
 
 export const CartContext = createContext()
 const CartProvider = ({ children }) => {
+
     const [sizeErrMess, setSizeErrMess] = useState('')
     const [cart, setCart] = useState([])
-    const [openSnackbar, setOpenSnackbar] = useState(false)
+    const [openSnackbarSuc, setOpenSnackbarSuc] = useState(false)
+    const [openSnackbarFail, setOpenSnackbarFail] = useState(false)
+    const navigate = useNavigate()
+
     const [addToCartMes, setAddToCartMes] = useState('')
+
     useEffect(() => {
         const fetchBasket = async () => {
-            const response = await instance.post('getBasket', {'userId': localStorage.getItem('userId')}, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
-                }
-            })
-            const data = await response.data
-            console.log('cartContext:', data)
-            setCart(data)
+            try{
+                const response = await instance.post('getBasket', {'userId': localStorage.getItem('userId')}, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
+                    }
+                })
+                const data = await response.data
+                console.log('cartContext:', data)
+                setCart(data)
+            }catch (error) {
+                navigate("/error/" + "fail-fetch-cart")
+            }
         }
-        fetchBasket();
+            fetchBasket();
     }, []);
 
 
@@ -45,10 +55,11 @@ const CartProvider = ({ children }) => {
             )
             setSizeErrMess('')
             setAddToCartMes(await response.data.message)
-            setOpenSnackbar(true)
+            setOpenSnackbarSuc(true)
             await refreshBasket()
         }catch (error){
-            setSizeErrMess(error.response.data.message)
+            setOpenSnackbarFail(true)
+            setSizeErrMess(await error.response.data.message)
         }
 
     }
@@ -66,15 +77,22 @@ const CartProvider = ({ children }) => {
         await refreshBasket()
     }
 
-    const handleCloseSnackbar = (event, reason) => {
+    const handleCloseSnackbarSuc = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-        setOpenSnackbar(false);
+        setOpenSnackbarSuc(false);
+    }
+
+    const handleCloseSnackbarFail = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbarFail(false);
     }
 
     return (
-        <CartContext.Provider value={{addToCart, cart, rmFromCart, sizeErrMess, refreshBasket, openSnackbar, handleCloseSnackbar, addToCartMes}}>
+        <CartContext.Provider value={{addToCart, cart, rmFromCart, sizeErrMess, refreshBasket, openSnackbarSuc, openSnackbarFail, handleCloseSnackbarSuc, handleCloseSnackbarFail, addToCartMes}}>
             {children}
         </CartContext.Provider>
     );

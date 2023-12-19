@@ -10,7 +10,7 @@ import Test from "./testPage/Test";
 import { useNavigate } from "react-router-dom";
 
 export const ACCESS_TOKEN_KEY = "access_token"
-let regErrMessage = ""
+let regErrMessage = ''
 let logErrMessage = ''
 
 const AuthRoot = () => {

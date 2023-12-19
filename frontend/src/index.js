@@ -7,15 +7,15 @@ import CartProvider from "./contexts/CartContext/CartContext";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <CartProvider>
-        <ProductProvider>
-            <React.StrictMode>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </React.StrictMode>
-        </ProductProvider>
-    </CartProvider>
+    <BrowserRouter>
+        <CartProvider>
+            <ProductProvider>
+                <React.StrictMode>
+                        <App />
+                </React.StrictMode>
+            </ProductProvider>
+        </CartProvider>
+    </BrowserRouter>
 
 );
 

@@ -14,7 +14,7 @@ const Card = (props) => {
                         <div className="card_header_brand">{props.brand}</div>
                         <div className="card_header_model">{props.model}</div>
                         <div className="card_desc">{props.color}</div>
-                        <div className="card_price">{props.price}</div>
+                        <div className="card_price">${props.price}</div>
                     </div>
                     <div className="card_icon">
                         <ArrowForwardIosIcon/>
