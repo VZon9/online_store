@@ -140,11 +140,13 @@ public class UserController {
     @PostMapping("/getFilteredProducts")
     public ResponseEntity<?> getFilteredProduct(@RequestBody FilterRequest filter){
         List<String> colorList = filter.getColors();
-        if(colorList != null){
-            List<Shoe> shoeList = shoeRepository.findByColorIn(colorList);
-            return ResponseEntity.ok(shoeList.stream().map(Mapper::toShoeDto).collect(Collectors.toList()));
+        List<String> brandList = filter.getBrands();
+        List<String> typesList = filter.getTypes();
+        if(colorList == null || brandList == null || typesList == null){
+            return ResponseEntity.badRequest().body(new MessageResponse("One of filter is null"));
         }
-        else return ResponseEntity.badRequest().body(new MessageResponse("Color list is null"));
+        List<Shoe> shoeList = shoeRepository.findByColorInAndBrandNameInAndTypeNameIn(colorList, brandList, typesList);
+        return ResponseEntity.ok(shoeList.stream().map(Mapper::toShoeDto).collect(Collectors.toList()));
     }
 
     @PostMapping("/basketAdd")
@@ -243,15 +245,14 @@ public class UserController {
             orderShoe.setShoe(basket.getShoe());
             orderShoe.setSize(basket.getSize());
             orderShoe.setNum(basket.getNum());
-            Optional<ShoeSize> shoeSizeOptional = shoeSizeRepository.findByShoeIdAndSizeValue(basket.getShoe().getId(), basket.getSize().getValue());
-            if(shoeSizeOptional.isEmpty()){
-                return ResponseEntity.badRequest().body(new MessageResponse("There is no size of this shoe"));
-            }
-            ShoeSize shoeSize = shoeSizeOptional.get();
-            int existingNum = shoeSize.getExistingNum();
-            shoeSize.setExistingNum(existingNum - basket.getNum());
-            shoeSizeRepository.save(shoeSize);
             order.addOrder(orderShoe);
+            Optional<Shoe> shoeOptional = shoeRepository.findById(orderShoe.getShoe().getId());
+            if(shoeOptional.isEmpty()){
+                return ResponseEntity.badRequest().body(new MessageResponse("There is no shoe with this id"));
+            }
+            Shoe shoe = shoeOptional.get();
+            shoe.setBoughtNum(shoe.getBoughtNum() + orderShoe.getNum());
+            shoeRepository.save(shoe);
             basketRepository.delete(basket);
         }
         LocalDateTime localDateTime = LocalDateTime.now();

@@ -35,7 +35,7 @@ public class Mapper {
                 shoe.getSex(),
                 Mapper.toTypeDto(shoe.getType()),
                 shoe.getName(),
-                shoe.getImagePattern(),
+                shoe.getBoughtNum(), shoe.getImagePattern(),
                 shoeSizeList
         );
     }
@@ -56,7 +56,7 @@ public class Mapper {
         return new UserDto(user.getId(),
                 user.getLogin(),
                 user.getEmail(),
-                user.getOrderSet().stream().map(Mapper::toOrderDto).collect(Collectors.toSet()),
+                user.getRole(), user.getOrderSet().stream().map(Mapper::toOrderDto).collect(Collectors.toSet()),
                 user.getBasketSet().stream().map(Mapper::toBasketDto).collect(Collectors.toSet()));
     }
 }

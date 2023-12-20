@@ -15,8 +15,8 @@
 <table width="55%"  cellpadding="10px" align="center">
     <tr>
         <th><a th:href = "@{/admin/orders}" style="text-decoration: none;"><h2>Заказы</h2></a></th>
-        <th><a href = "shoes.html" style="text-decoration: none;"><h2>Товары</h2></a></th>
-        <th><a href = "statistic.html" style="text-decoration: none;"><h2>Статистика</h2></a><th>
+        <th><a th:href = "@{/admin/shoes}" style="text-decoration: none;"><h2>Товары</h2></a></th>
+        <th><a th:href = "@{/admin/statistic}" style="text-decoration: none;"><h2>Статистика</h2></a><th>
         <th> <h2>Выход</h2><th>
     </tr>
 </table>
@@ -71,6 +71,11 @@
                     <td>
                         <span th:text="${shoe.num}"></span></span>
                     </td>
+                    <p th:with="errName=${shoe.shoe.id} + '_' + ${shoe.size.value} + '_numErr'">
+                        <span th:if="${#ctx.containsVariable('__${errName}__')}">
+                            Невозможно собрать заказ из за нехватки <span th:text="${shoe.shoe.name}"></span> <span th:text="${shoe.size.value}"></span> размера
+                        </span>
+                    </p>
                 </tr>
             </table>
         </td>

@@ -1,6 +1,7 @@
 package ru.bbnshp.request;
 
 import ru.bbnshp.entities.Sex;
+import ru.bbnshp.entities.Type;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class FilterRequest {
 
     private List<String> brands;
 
-    private List<Sex> sex;
+    private List<String> types;
 
     private List<String> colors;
 
@@ -20,12 +21,12 @@ public class FilterRequest {
         this.brands = brands;
     }
 
-    public List<Sex> getSex() {
-        return sex;
+    public List<String> getTypes() {
+        return types;
     }
 
-    public void setSex(List<Sex> sex) {
-        this.sex = sex;
+    public void setTypes(List<String> types) {
+        this.types = types;
     }
 
     public List<String> getColors() {
