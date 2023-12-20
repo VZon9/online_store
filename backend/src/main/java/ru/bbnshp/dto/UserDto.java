@@ -2,6 +2,8 @@ package ru.bbnshp.dto;
 
 
 
+import ru.bbnshp.entities.UserRole;
+
 import java.util.Set;
 
 public class UserDto {
@@ -12,17 +14,20 @@ public class UserDto {
 
     private String email;
 
+    private UserRole role;
+
     private Set<OrderDto> orderSet;
 
-    public UserDto(Integer id, String login, String email, Set<OrderDto> orderSet, Set<BasketDto> basket) {
+    private Set<BasketDto> basket;
+
+    public UserDto(Integer id, String login, String email, UserRole role, Set<OrderDto> orderSet, Set<BasketDto> basket) {
         this.id = id;
         this.login = login;
         this.email = email;
+        this.role = role;
         this.orderSet = orderSet;
         this.basket = basket;
     }
-
-    private Set<BasketDto> basket;
 
     public Integer getId() {
         return id;
@@ -46,6 +51,14 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public Set<OrderDto> getOrderSet() {

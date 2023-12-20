@@ -17,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.bbnshp.dto.OrderDto;
+import ru.bbnshp.dto.ShoeDto;
 import ru.bbnshp.dto.ShoeSizeDto;
+import ru.bbnshp.dto.UserDto;
 import ru.bbnshp.entities.*;
 import ru.bbnshp.mapper.Mapper;
 import ru.bbnshp.repositories.*;
@@ -84,11 +86,14 @@ public class AdminController {
     }
 
     @GetMapping("/shoes")
-    String getShoes(){
+    String getShoes(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication instanceof AnonymousAuthenticationToken){
             return "redirect:/admin/login";
         }
+        List<ShoeDto> shoeList = new ArrayList<>(shoeRepository.findAll().stream().map(Mapper::toShoeDto).toList());
+        shoeList.sort(Comparator.comparing(ShoeDto::getId));
+        model.addAttribute("shoeList",shoeList);
         return "shoes";
     }
 
@@ -285,7 +290,21 @@ public class AdminController {
             Order order = orderOptional.get();
             switch (order.getStatus()){
                 case ACCEPTED_FOR_PROCESSING -> order.setStatus(OrderStatus.IN_ASSEMBLY);
-                case IN_ASSEMBLY -> order.setStatus(OrderStatus.SENT_FOR_DELIVERY);
+                case IN_ASSEMBLY -> {
+                    for(OrderShoe shoe: order.getOrderSet()){
+                        ShoeSize shoeSize = shoeSizeRepository.findByShoeIdAndSizeValue(shoe.getShoe().getId(), shoe.getSize().getValue()).get();
+                        if(shoeSize.getExistingNum() < shoe.getNum()){
+                            model.addAttribute(shoeSize.getShoe().getId() + "_" + shoeSize.getSize().getValue() + "_numErr", true);
+                            break;
+                        }
+                        else {
+                            shoeSize.setExistingNum(shoeSize.getExistingNum() - shoe.getNum());
+                        }
+                    }
+                    if (model.asMap().size() == 0){
+                        order.setStatus(OrderStatus.SENT_FOR_DELIVERY);
+                    }
+                }
                 case SENT_FOR_DELIVERY -> order.setStatus(OrderStatus.READY_TO_RECEIVE);
                 case READY_TO_RECEIVE -> order.setStatus(OrderStatus.RECEIVED);
             }
@@ -298,5 +317,17 @@ public class AdminController {
         orderList.sort(Comparator.comparing(OrderDto::getId));
         model.addAttribute("orderList", orderList);
         return "orders";
+    }
+
+    @GetMapping("/statistic")
+    String getStatistic(Model model){
+        List<ShoeDto> shoeList = new ArrayList<>(shoeRepository.findAll().stream().map(Mapper::toShoeDto).toList());
+        shoeList.sort(Comparator.comparing(ShoeDto::getBoughtNum));
+        Collections.reverse(shoeList);
+        List<UserDto> userList = new ArrayList<>(userRepository.findAll().stream().map(Mapper::toUserDto).toList());
+        userList.sort(Comparator.comparing(UserDto::getId));
+        model.addAttribute("shoeList", shoeList);
+        model.addAttribute("userList",userList.stream().filter(u -> u.getRole() == UserRole.USER));
+        return "statistic";
     }
 }
