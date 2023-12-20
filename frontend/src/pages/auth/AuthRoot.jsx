@@ -9,8 +9,10 @@ import {useForm} from "react-hook-form";
 import Test from "./testPage/Test";
 import { useNavigate } from "react-router-dom";
 
-const ACCESS_TOKEN_KEY = "access_token"
-let errMessage = ""
+export const ACCESS_TOKEN_KEY = "access_token"
+let regErrMessage = ''
+let logErrMessage = ''
+
 const AuthRoot = () => {
 
     const location = useLocation();
@@ -33,45 +35,52 @@ const AuthRoot = () => {
                 const response = await instance.post('login', userData)
                 localStorage.setItem(ACCESS_TOKEN_KEY, response.data.token)
                 console.log(response.data)
-                // navigate("/home")
+                logErrMessage = ''
+                regErrMessage = ''
+                localStorage.setItem("isAuth", 'true')
+                localStorage.setItem('username', data.login)
+                localStorage.setItem('email', response.data.email)
+                localStorage.setItem('userId', response.data.id)
+                navigate("/home")
             }catch (error){
-                console.error("Invalid data")
-                if (error.response.status === 401) {
-                    errMessage = "Invalid login or password"
-                }else{
-                    errMessage = "Some err happend ;("
-                }
-
+                logErrMessage = error.response.data.message
+                console.error(error.response.data.message)
             }
-
-
         }else if (location.pathname === '/register'){
-            const userData = {
-                email: data.regEmail,
-                login: data.regLogin,
-                password: data.regPassword
-            }
-            try {
-                const response = await instance.post('register', userData)
-                errMessage = ''
-                console.log(response)
-            }catch (error){
-                console.error("Invalid data")
+            if (data.regPassword !== data.regRepeatPassword){
+                regErrMessage = 'Passwords dont match'
+            }else{
+                const userData = {
+                    email: data.regEmail,
+                    login: data.regLogin,
+                    password: data.regPassword
+                }
+                try {
+                    const response = await instance.post('register', userData)
+                    regErrMessage = ''
+                    logErrMessage = ''
+                    localStorage.setItem('email', data.regEmail)
+                    console.log(response)
+                    navigate("/login")
+                }catch (error){
+                    regErrMessage = error.response.data.message
+                    console.error(error.response.data.message)
+                }
             }
         }
-        else{
-            try {
-                const response = await instance.post('test', {},{headers: {
-                        Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
-                    }})
-                errMessage = '';
-                console.log("isAuth:", response.data)
-            }catch (error){
-
-                console.error("isAuth:", error.response.data)
-            }
-
-        }
+        // else{
+        //     try {
+        //         const response = await instance.post('test', {},{headers: {
+        //                 Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
+        //             }})
+        //         errMessage = '';
+        //         console.log("isAuth:", response.data)
+        //     }catch (error){
+        //
+        //         console.error("isAuth:", error.response.data)
+        //     }
+        //
+        // }
 
     }
 
@@ -88,8 +97,8 @@ const AuthRoot = () => {
                     boxShadow: '5px 5px 10px #ccc',
                     width: '30%',
                 }}>
-                    {location.pathname === '/login' ? <LoginPage register = {register} errors = {errors} watch = {watch} errMessage = {errMessage} reset = {reset}/> : location.pathname === '/register' ?
-                        <RegisterPage register = {register} errors = {errors} watch = {watch}/> : location.pathname === '/test' ? <Test /> : null}
+                    {location.pathname === '/login' ? <LoginPage register = {register} errors = {errors} watch = {watch} errMessage = {logErrMessage} reset = {reset}/> : location.pathname === '/register' ?
+                        <RegisterPage register = {register} errors = {errors} watch = {watch} errMessage={regErrMessage}/> : location.pathname === '/test' ? <Test /> : null}
                 </Box>
             </form>
 

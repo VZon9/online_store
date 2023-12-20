@@ -1,0 +1,89 @@
+.product_info{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.product_brandname{
+    letter-spacing: 5px;
+    font-weight: 900;
+    font-size:34px;
+    line-height: 60px;
+    text-transform: uppercase;
+}
+.product_modelname{
+    margin-bottom: 30px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 40px;
+    letter-spacing: 0.02em;
+    color: #8E8E8E;
+}
+.product_modelprice {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    margin-bottom: 40px;
+}
+
+.sizes_text{
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.size_list{
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    width: 60%;
+    display: flex;
+    column-gap: 16px;
+    justify-content: center;
+}
+
+.size_not_available {
+    font-size: 18px;
+    color: white;
+    box-sizing: border-box;
+    pointer-events: none;
+    padding: 6px 8px;
+    border: 1px solid;
+    border-radius: 8px;
+    background-color: #8E8E8E;
+}
+
+.size_not_available:hover:before {
+    content: "Size not avaiable";
+}
+
+.size_box_def{
+    font-size: 18px;
+    /*margin-bottom: 10px;*/
+    cursor: pointer;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+}
+
+.size_box_sel{
+    font-size: 18px;
+    color: white;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    cursor: pointer;
+    border: 1px solid;
+    border-radius: 8px;
+    background-color: #ef5350;
+}
+
+.product_desc{
+    width: 50%;
+    letter-spacing: 2px;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: justify;
+}
+.desc_str{
+    text-indent: 20px;
+}

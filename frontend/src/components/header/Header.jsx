@@ -2,24 +2,31 @@ import React from 'react';
 import logoImg from '../../img/logologo.png'
 import './style.css'
 import {Button} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 const Header = () => {
+    let to = ''
+    if (localStorage.getItem("isAuth") === 'true'){
+        to = '/profile'
+    }else {
+        to = '/login'
+    }
+    const navigate = useNavigate();
     return (
         <header className="header">
             <div className="container">
                 <div className="header_row">
                     <div className="header_logo">
                         <img className="logoimg" src={logoImg} alt="logo"/>
-                        <span>BubnaShop</span>
+                        <span><Link style = {{color:'black', textDecoration: 'none'}} to="/home">BUBNASHOP</Link></span>
                     </div>
                     <nav className="header_nav">
                         <ul>
-                            <li><a href="#!">FOR MEN</a></li>
-                            <li><a href="#!">FOR WOMEN</a></li>
-                            <li><a href="#!">CART</a></li>
-                            <li><a href="#!">PROFILE</a></li>
-                            {/*<li><a href="#!" className="header_nav-btn">SIGN UP</a></li>*/}
+                            <li style={{cursor: 'pointer'}}
+                                onClick={() => {
+                                navigate("/cart")
+                            }}><ShoppingCartOutlinedIcon/></li>
                             <li>
                                 <Button variant="contained"  color = "secondary" size="large" sx ={{
                                 textAlign: 'center',
@@ -30,7 +37,7 @@ const Header = () => {
                                 padding: '17px 22px 17px',
                                 borderRadius: '7px'
                             }}>
-                                <Link style = {{color:'white'}} to="/login"> sign in</Link>
+                                <Link style = {{color:'white'}} to={to}>{localStorage.getItem("isAuth") === 'true' ? localStorage.getItem("username") : 'sign in!'}</Link>
                             </Button>
                             </li>
                         </ul>

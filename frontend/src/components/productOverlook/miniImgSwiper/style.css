@@ -1,0 +1,19 @@
+.mini_img_swiper{
+    display: flex;
+    flex-direction: column;
+    top:10%;
+    position: sticky;
+}
+.shoe_mini_img{
+    height: 48px;
+    width: 48px;
+    padding: 4px;
+}
+.shoe_mini_box{
+    margin-bottom: 5px;
+    border: 2px solid transparent;
+}
+
+.mini_img_swiper_selected {
+    -webkit-filter: contrast(75%);
+}
