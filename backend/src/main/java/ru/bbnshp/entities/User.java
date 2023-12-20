@@ -24,15 +24,14 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
 
-    @Column(name = "user_name")
-    private String name;
-
     @Column(name = "user_email")
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Order> orderSet = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Basket> basketSet = new HashSet<>();
     public void addOrder(Order order){
         orderSet.add(order);
         order.setUser(this);
@@ -41,6 +40,16 @@ public class User {
     public void deleteOrder(Order order){
         orderSet.remove(order);
         order.setUser(null);
+    }
+
+    public void addBasket(Basket basket){
+        basketSet.add(basket);
+        basket.setUser(this);
+    }
+
+    public void deleteBasket(Basket basket){
+        basketSet.remove(basket);
+        basket.setUser(null);
     }
 
     public Integer getId() {
@@ -75,14 +84,6 @@ public class User {
         this.role = role;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Set<Order> getOrderSet() {
         return orderSet;
     }
@@ -97,5 +98,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Basket> getBasketSet() {
+        return basketSet;
+    }
+
+    public void setBasketSet(Set<Basket> basketSet) {
+        this.basketSet = basketSet;
     }
 }

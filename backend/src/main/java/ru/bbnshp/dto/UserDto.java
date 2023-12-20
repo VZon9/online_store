@@ -1,12 +1,41 @@
 package ru.bbnshp.dto;
 
+
+
+import ru.bbnshp.entities.UserRole;
+
+import java.util.Set;
+
 public class UserDto {
 
+    private Integer id;
+
     private String login;
-    private String password;
-    private String name;
 
     private String email;
+
+    private UserRole role;
+
+    private Set<OrderDto> orderSet;
+
+    private Set<BasketDto> basket;
+
+    public UserDto(Integer id, String login, String email, UserRole role, Set<OrderDto> orderSet, Set<BasketDto> basket) {
+        this.id = id;
+        this.login = login;
+        this.email = email;
+        this.role = role;
+        this.orderSet = orderSet;
+        this.basket = basket;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getLogin() {
         return login;
@@ -16,27 +45,35 @@ public class UserDto {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public Set<OrderDto> getOrderSet() {
+        return orderSet;
+    }
+
+    public void setOrderSet(Set<OrderDto> orderSet) {
+        this.orderSet = orderSet;
+    }
+
+    public Set<BasketDto> getBasket() {
+        return basket;
+    }
+
+    public void setBasket(Set<BasketDto> basket) {
+        this.basket = basket;
     }
 }

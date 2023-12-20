@@ -1,30 +1,83 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './style.css'
 import {useLocation} from "react-router-dom";
 import LoginPage from "./loginPage/Login";
 import RegisterPage from "./registerPage/Register";
 import {Box} from "@mui/material";
+import {instance} from "../../utils/axios";
+import {useForm} from "react-hook-form";
+import Test from "./testPage/Test";
+import { useNavigate } from "react-router-dom";
 
+const ACCESS_TOKEN_KEY = "access_token"
+let errMessage = ""
 const AuthRoot = () => {
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [repeatPassword, setRepeatPassword] = useState('')
-    const [username, setUsername] = useState('')
-
     const location = useLocation();
+    const navigate = useNavigate()
+    const {
+        register,
+        reset,
+        watch,
+        formState:{errors},
+        handleSubmit
+        } = useForm()
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(email)
-        console.log(password)
-        console.log(repeatPassword)
-        console.log(username)
+    const handleSubmitForm = async (data) => {
+        if (location.pathname === '/login'){
+            const userData = {
+                login: data.login,
+                password: data.password
+            }
+            try {
+                const response = await instance.post('login', userData)
+                localStorage.setItem(ACCESS_TOKEN_KEY, response.data.token)
+                console.log(response.data)
+                // navigate("/home")
+            }catch (error){
+                console.error("Invalid data")
+                if (error.response.status === 401) {
+                    errMessage = "Invalid login or password"
+                }else{
+                    errMessage = "Some err happend ;("
+                }
+
+            }
+
+
+        }else if (location.pathname === '/register'){
+            const userData = {
+                email: data.regEmail,
+                login: data.regLogin,
+                password: data.regPassword
+            }
+            try {
+                const response = await instance.post('register', userData)
+                errMessage = ''
+                console.log(response)
+            }catch (error){
+                console.error("Invalid data")
+            }
+        }
+        else{
+            try {
+                const response = await instance.post('test', {},{headers: {
+                        Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`
+                    }})
+                errMessage = '';
+                console.log("isAuth:", response.data)
+            }catch (error){
+
+                console.error("isAuth:", error.response.data)
+            }
+
+        }
+
     }
 
     return (
         <div className='root'>
-            <form className='form' onSubmit={handleSubmit}>
+            <form className='form' onSubmit={handleSubmit(handleSubmitForm)}>
                 <Box sx = {{
                     display: 'flex',
                     justifyContent: 'center',
@@ -35,9 +88,8 @@ const AuthRoot = () => {
                     boxShadow: '5px 5px 10px #ccc',
                     width: '30%',
                 }}>
-                    {location.pathname === '/login' ?
-                        <LoginPage setEmail={setEmail} setPassword={setPassword}/> : location.pathname === '/register' ?
-                        <RegisterPage setEmail={setEmail} setPassword={setPassword}  setRepeatPassword = {setRepeatPassword} setUsername ={setUsername}/> : null}
+                    {location.pathname === '/login' ? <LoginPage register = {register} errors = {errors} watch = {watch} errMessage = {errMessage} reset = {reset}/> : location.pathname === '/register' ?
+                        <RegisterPage register = {register} errors = {errors} watch = {watch}/> : location.pathname === '/test' ? <Test /> : null}
                 </Box>
             </form>
 
