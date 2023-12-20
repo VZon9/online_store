@@ -1,0 +1,37 @@
+.products_list {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.products_list_content{
+    display: flex;
+}
+.products_list_wrapper{
+    margin-left: 50px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: left;
+    column-gap: normal;
+    width: 100%;
+}
+.product_card{
+    display: inline-block;
+}
+
+.sort{
+    text-align: left;
+}
+.products_list_products{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.hr {
+    border: none;
+    background-color: #7e57c2;
+    height: 4px;
+    border-radius: 20px;
+    width: 100%;
+    margin-bottom: 0px;
+}

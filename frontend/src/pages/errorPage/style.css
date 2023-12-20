@@ -1,0 +1,14 @@
+.error {
+
+}
+.error p {
+    font-weight: 900;
+    font-size: 36px;
+}
+.err_link{
+    text-decoration: none;
+}
+.error_text{
+    align-items: center;
+    margin: auto;
+}

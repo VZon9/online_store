@@ -1,0 +1,11 @@
+.cart_empty-item{
+    display: flex;
+    box-shadow: 5px 5px 10px #8E8E8E;
+    border: 4px;
+    border-radius: 6px;
+    margin-bottom: 30px;
+    width: 200%
+}
+.cart_empty-text{
+    width: 100%;
+}

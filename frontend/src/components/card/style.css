@@ -1,39 +1,54 @@
 .card:hover .card_img{
-    animation: opacity 0.4s ease-in;
+    opacity: 0.55;
 }
-@keyframes opacity {
-    0%{
-        opacity: 1;
-    }
-    50%{
-        opacity: 0.8;
-    }
-   100%{
-       opacity: 1;
-   }
+
+.card {
+    cursor: pointer;
+    display: flex;
+    /*width: 20%;*/
+    margin-bottom: 20px;
+}
+.card_wrapper{
+    width: 256px;
+    margin: 0 auto;
 }
 .card_img{
     border-radius: 20px;
     margin-bottom: 20px;
-    width: 512px;
-    height: 678px;
+    width: 256px;
+    height: 336px;
 }
 .card_body{
+    padding-left: 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.card_header{
+.card_header_brand{
     margin-bottom: 7px;
     font-weight: 500;
-    font-size: 32px;
+    font-size: 24px;
+    line-height: 1.56;
+    letter-spacing: -0.04em;
+}
+.card_header_model{
+    margin-bottom: 7px;
+    font-weight: 500;
+    font-size: 18px;
     line-height: 1.56;
     letter-spacing: -0.04em;
 }
 .card_desc{
+    display: inline-block;
     font-weight: 500;
-    font-size: 24px;
+    font-size: 16px;
     line-height: 2.08;
     letter-spacing: -0.04em;
     color:#7e57c2;
+}
+.card_price{
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 2.08;
+    letter-spacing: -0.04em;
 }

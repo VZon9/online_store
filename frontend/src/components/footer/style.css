@@ -1,5 +1,6 @@
 .footer{
     background-color: black;
+    margin-top: auto;
 }
 .footer_content{
     display: flex;
@@ -29,6 +30,7 @@
 
 }
 .footer_list{
+    display: flex;
     list-style: none;
     justify-content: space-between;
 }

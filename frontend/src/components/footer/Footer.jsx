@@ -11,12 +11,9 @@ const Footer = () => {
                         <div className="footer_desc">Complete your style with awesome sneakers from us</div>
                     </div>
                     <div className="footer_about">
-                        <ul className="footer_list">
-                            <li>Company</li>
-                            <li>Contact us</li>
-                            <li>Support</li>
-                            <li>Careers</li>
-                        </ul>
+                        <div className="footer_list">
+                            <p>Company | Contact us | Support | Careers </p>
+                        </div>
                     </div>
                 </div>
             </div>

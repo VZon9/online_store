@@ -2,6 +2,7 @@ import React from 'react';
 import promoImg from '../../img/promo2.jpg'
 import './style.css'
 import {Button} from "@mui/material";
+import {Link} from "react-router-dom";
 const Promo = () => {
     return (
         <section className="promo">
@@ -23,7 +24,7 @@ const Promo = () => {
                                 padding: '7px 12px 7px',
                                 borderRadius: '7px'
                             }}>
-                                SHOP NOW
+                                <Link style = {{color:'white', textDecoration:'none'}} to='/products'> SHOP NOW </Link>
                             </Button>
                         </div>
                     </div>
